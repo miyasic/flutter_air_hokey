@@ -1,6 +1,5 @@
+import 'package:air_hokey/counter/cubit/counter_cubit.dart';
 import 'package:dart_frog/dart_frog.dart';
-
-import 'package:web_socket_counter/counter/cubit/counter_cubit.dart';
 
 final _counter = CounterCubit();
 
