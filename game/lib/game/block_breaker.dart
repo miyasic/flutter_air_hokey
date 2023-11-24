@@ -3,10 +3,12 @@ import 'package:flame/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/palette.dart';
 import 'package:game/components/field.dart';
+import 'package:game/components/paddle/draggable_paddle.dart';
+import 'package:game/components/paddle/opponent_paddle.dart';
 
 import '../components/ball.dart';
 import '../components/block.dart';
-import '../components/paddle.dart';
+import '../components/paddle/paddle.dart';
 import '../constants/constants.dart';
 
 class BlockBreaker extends FlameGame with HasCollisionDetection {
@@ -20,11 +22,16 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
         fieldSize: fieldSize,
         paint: BasicPalette.darkBlue.paint(),
       ),
-      Paddle(
+      DraggablePaddle(
           draggingPaddle: draggingPaddle,
           paddleSize: paddleSize,
           fieldSize: fieldSize,
           gameSize: size),
+      OpponentPaddle(
+        paddleSize: paddleSize,
+        fieldSize: fieldSize,
+        gameSize: size,
+      ),
     ]);
     await resetBall();
     // await resetBlocks();
@@ -71,7 +78,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
   }
 
   void draggingPaddle(DragUpdateEvent event) {
-    final paddle = children.whereType<Paddle>().first;
+    final paddle = children.whereType<DraggablePaddle>().first;
 
     paddle.position.x += event.delta.x;
 
