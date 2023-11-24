@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:game/components/directional_hit_box.dart';
 import 'package:game/components/paddle.dart';
 
 import 'block.dart' as block;
@@ -68,26 +69,20 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is ScreenHitbox) {
-      final screenHitBoxRect = other.toAbsoluteRect();
-
-      for (final point in intersectionPoints) {
-        if (point.x == screenHitBoxRect.left && !isCollidedScreenHitboxX) {
-          velocity.x = -velocity.x;
-          isCollidedScreenHitboxX = true;
-        }
-        if (point.x == screenHitBoxRect.right && !isCollidedScreenHitboxX) {
-          velocity.x = -velocity.x;
-          isCollidedScreenHitboxX = true;
-        }
-        if (point.y == screenHitBoxRect.top && !isCollidedScreenHitboxY) {
-          velocity.y = -velocity.y;
-          isCollidedScreenHitboxY = true;
-        }
-        if (point.y == screenHitBoxRect.bottom && !isCollidedScreenHitboxY) {
-          velocity.y = -velocity.y;
-          isCollidedScreenHitboxY = true;
-        }
+    if (other is DirectionalHitbox) {
+      switch (other) {
+        case LeftHitbox() || RightHitbox():
+          if (!isCollidedScreenHitboxX) {
+            velocity.x = -velocity.x;
+            isCollidedScreenHitboxX = true;
+          }
+          break;
+        case UpperHitbox() || BottomHitbox():
+          if (!isCollidedScreenHitboxY) {
+            velocity.y = -velocity.y;
+            isCollidedScreenHitboxY = true;
+          }
+          break;
       }
     }
     super.onCollision(intersectionPoints, other);

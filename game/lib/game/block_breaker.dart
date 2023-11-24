@@ -23,7 +23,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       Wall(
           gameSize: size,
           wallSize: wallSize,
-          paint: BasicPalette.white.paint(),
+          paint: BasicPalette.darkBlue.paint(),
           positionInput: Vector2(100, 100)),
       paddle,
     ]);

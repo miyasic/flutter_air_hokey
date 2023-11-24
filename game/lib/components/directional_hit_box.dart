@@ -4,7 +4,8 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 
-class DirectionalHitbox extends RectangleComponent with CollisionCallbacks {
+sealed class DirectionalHitbox extends RectangleComponent
+    with CollisionCallbacks {
   DirectionalHitbox({super.size, super.position})
       : super(paint: BasicPalette.transparent.paint());
 

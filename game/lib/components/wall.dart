@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flame/palette.dart';
 import 'package:flutter/painting.dart';
 import 'package:game/components/directional_hit_box.dart';
 import 'package:game/constants/constants.dart';
@@ -14,7 +13,6 @@ class Wall extends RectangleComponent {
     required this.positionInput,
   }) : super(
           size: wallSize,
-          // position: positionInput,
           position: Vector2(
               (gameSize.x - wallSize.x) / 2, (gameSize.y - wallSize.y) / 2),
           paint: paint,
