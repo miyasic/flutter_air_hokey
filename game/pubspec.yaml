@@ -38,6 +38,9 @@ dependencies:
   flame: ^1.9.1
   web_socket_channel: ^2.4.0
   riverpod: ^2.4.8
+  freezed: ^2.4.5
+  air_hokey:
+    path: ..
 
 dev_dependencies:
   flutter_test:

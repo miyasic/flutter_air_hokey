@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:air_hokey/counter/game_state/game_state.dart';
 import 'package:flame/game.dart';
 import 'package:game/components/paddle/paddle.dart';
 import 'package:game/constants/constants.dart';
@@ -15,15 +18,16 @@ class OpponentPaddle extends Paddle {
                     paddleSize.y +
                     kPaddleStartY)) {
     final webSocketRepository = WebSocketRepository();
-    positionStream = webSocketRepository.getChannel();
-    positionStream.listen((event) {
-      // print(event);
-      final int intEvent = int.parse(event.toString());
-      position += Vector2(intEvent.toDouble(), 0);
+    positionStream = webSocketRepository.getChannel().map((event) {
+      final json = jsonDecode(event);
+      return GameState.fromJson(json);
+    });
+    positionStream.listen((gameState) {
+      position += Vector2(gameState.position.toDouble(), 0);
     });
   }
 
-  late final Stream<dynamic> positionStream;
+  late final Stream<GameState> positionStream;
 
   @override
   void update(double dt) {

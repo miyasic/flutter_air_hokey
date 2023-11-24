@@ -10,8 +10,13 @@ dependencies:
   broadcast_bloc: ^0.1.0-dev.2
   dart_frog: ^1.0.0
   dart_frog_web_socket: ^1.0.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   mocktail: ^1.0.0
   test: ^1.19.2
   very_good_analysis: ^5.1.0
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
+  build_runner: ^2.3.2
