@@ -5,19 +5,19 @@ import 'package:flutter/painting.dart';
 import 'package:game/components/directional_hit_box.dart';
 import 'package:game/constants/constants.dart';
 
-class Wall extends RectangleComponent {
-  Wall({
+class Field extends RectangleComponent {
+  Field({
     required this.gameSize,
-    required this.wallSize,
+    required this.fieldSize,
     required this.paint,
   }) : super(
-          size: wallSize,
+          size: fieldSize,
           position: Vector2(
-              (gameSize.x - wallSize.x) / 2, (gameSize.y - wallSize.y) / 2),
+              (gameSize.x - fieldSize.x) / 2, (gameSize.y - fieldSize.y) / 2),
           paint: paint,
         );
   final Vector2 gameSize;
-  final Vector2 wallSize;
+  final Vector2 fieldSize;
   final Paint paint;
 
   @override
@@ -36,7 +36,7 @@ class Wall extends RectangleComponent {
     add(
       RectangleComponent(
         size: Vector2(wallThickness, size.y),
-        position: Vector2(wallSize.x - wallThickness, 0),
+        position: Vector2(fieldSize.x - wallThickness, 0),
         paint: wallColor.paint(),
         children: [RightHitbox(Vector2(1, size.y))],
       ),
@@ -56,7 +56,7 @@ class Wall extends RectangleComponent {
     add(
       RectangleComponent(
         size: Vector2(size.x, wallThickness),
-        position: Vector2(0, wallSize.y),
+        position: Vector2(0, fieldSize.y),
         paint: wallColor.paint(),
         children: [UpperHitbox(Vector2(size.x, 1))],
       ),
