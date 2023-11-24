@@ -1,6 +1,8 @@
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/collisions.dart';
+import 'package:flame/palette.dart';
+import 'package:game/components/wall.dart';
 
 import '../components/ball.dart';
 import '../components/block.dart';
@@ -15,13 +17,18 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     paddle
       ..position.x = size.x / 2 - paddleSize.x / 2
       ..position.y = size.y - paddleSize.y - kPaddleStartY;
+    final wallSize = Vector2(400, 600);
 
     await addAll([
-      ScreenHitbox(),
+      Wall(
+          gameSize: size,
+          wallSize: wallSize,
+          paint: BasicPalette.white.paint(),
+          positionInput: Vector2(100, 100)),
       paddle,
     ]);
     await resetBall();
-    await resetBlocks();
+    // await resetBlocks();
   }
 
   Future<void> resetBall() async {

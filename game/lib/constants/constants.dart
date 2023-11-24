@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
 //Paddle Settings
@@ -58,3 +59,6 @@ const List<MaterialColor> kBlockColors = [
 const String kBlockPositionX = 'x';
 const String kBlockPositionY = 'y';
 const double kBlockPadding = 5;
+
+const double wallThickness = 10;
+const PaletteEntry wallColor = BasicPalette.lightOrange;
