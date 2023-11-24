@@ -12,20 +12,19 @@ import '../constants/constants.dart';
 class BlockBreaker extends FlameGame with HasCollisionDetection {
   @override
   Future<void>? onLoad() async {
-    final paddle = Paddle(draggingPaddle: draggingPaddle);
-    final paddleSize = paddle.size;
-    paddle
-      ..position.x = size.x / 2 - paddleSize.x / 2
-      ..position.y = size.y - paddleSize.y - kPaddleStartY;
     final wallSize = Vector2(400, 600);
-
+    final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
     await addAll([
       Wall(
-          gameSize: size,
-          wallSize: wallSize,
-          paint: BasicPalette.darkBlue.paint(),
-          positionInput: Vector2(100, 100)),
-      paddle,
+        gameSize: size,
+        wallSize: wallSize,
+        paint: BasicPalette.darkBlue.paint(),
+      ),
+      Paddle(
+          draggingPaddle: draggingPaddle,
+          paddleSize: paddleSize,
+          fieldSize: wallSize,
+          gameSize: size),
     ]);
     await resetBall();
     // await resetBlocks();

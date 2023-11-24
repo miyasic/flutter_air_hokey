@@ -10,7 +10,6 @@ class Wall extends RectangleComponent {
     required this.gameSize,
     required this.wallSize,
     required this.paint,
-    required this.positionInput,
   }) : super(
           size: wallSize,
           position: Vector2(
@@ -20,7 +19,6 @@ class Wall extends RectangleComponent {
   final Vector2 gameSize;
   final Vector2 wallSize;
   final Paint paint;
-  final Vector2 positionInput;
 
   @override
   FutureOr<void> onLoad() {
