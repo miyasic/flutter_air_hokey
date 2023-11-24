@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game/components/directional_hit_box.dart';
-import 'package:game/components/paddle.dart';
+import 'package:game/components/paddle/paddle.dart';
 
 import 'block.dart' as block;
 
