@@ -15,15 +15,15 @@ class OpponentPaddle extends Paddle {
                     paddleSize.y +
                     kPaddleStartY)) {
     final webSocketRepository = WebSocketRepository();
-    positionStream = webSocketRepository
-        .getChannel()
-        .map((event) => int.parse(event.toString()));
+    positionStream = webSocketRepository.getChannel();
     positionStream.listen((event) {
-      position += Vector2(event.toDouble(), 0);
+      // print(event);
+      final int intEvent = int.parse(event.toString());
+      position += Vector2(intEvent.toDouble(), 0);
     });
   }
 
-  late final Stream<int> positionStream;
+  late final Stream<dynamic> positionStream;
 
   @override
   void update(double dt) {
