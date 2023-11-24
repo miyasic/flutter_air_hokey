@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:air_hokey/counter/game_state/game_state.dart';
+import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 
-class CounterCubit extends BroadcastCubit<GameState> {
+class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
-  CounterCubit() : super(const GameState(ids: [], position: 0));
+  GameCubit() : super(const GameState(ids: [], position: 0));
 
   @override
   Object toMessage(GameState state) {

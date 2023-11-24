@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:air_hokey/counter/cubit/counter_cubit.dart';
+import 'package:air_hokey/game/cubit/game_cubit.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
 
@@ -10,7 +10,7 @@ Future<Response> onRequest(RequestContext context) async {
       // A new client has connected to our server.
       // Subscribe the new client to receive notifications
       // whenever the cubit state changes.
-      final cubit = context.read<CounterCubit>()..subscribe(channel);
+      final cubit = context.read<GameCubit>()..subscribe(channel);
 
       // Send the current count to the new client.
       channel.sink.add(jsonEncode(cubit.state.toJson()));
