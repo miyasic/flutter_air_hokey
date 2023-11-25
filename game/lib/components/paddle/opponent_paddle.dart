@@ -34,6 +34,8 @@ class OpponentPaddle extends Paddle {
     if (x == null) {
       return;
     }
+    final relativeX = x + gameSize.x / 2 - paddleSize.x / 2;
+    print("x: $x, relativeX: $relativeX");
     position = Vector2(x + gameSize.x / 2 - paddleSize.x / 2, position.y);
   }
 }
