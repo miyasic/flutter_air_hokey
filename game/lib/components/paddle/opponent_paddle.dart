@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:air_hokey/game/game_state/game_state.dart';
+import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:flame/game.dart';
 import 'package:game/components/paddle/paddle.dart';
 import 'package:game/constants/constants.dart';
@@ -20,7 +21,15 @@ class OpponentPaddle extends Paddle {
     final webSocketRepository = WebSocketRepository();
     positionStream = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
-      return GameState.fromJson(json);
+      switch (json['type']) {
+        case 'gameState':
+          return GameState.fromJson(json['responseDetail']);
+        case 'handshake':
+          final handShake = Handshake.fromJson(json['responseDetail']);
+          return handShake.gameState;
+        default:
+          return GameState(ids: [], position: 1);
+      }
     });
     positionStream.listen((gameState) {
       position += Vector2(gameState.position.toDouble(), 0);
