@@ -15,6 +15,6 @@ class WebSocketRepository {
   }
 
   void message() {
-    channel.sink.add('hello world');
+    channel.sink.add('__increment__');
   }
 }

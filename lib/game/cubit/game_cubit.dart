@@ -44,7 +44,9 @@ class GameCubit extends BroadcastCubit<GameState> {
 
   // Increment the current state.
   void increment() {
-    // emit(state.copyWith(position: state.position + 1));
+    final newMap =
+        state.positionMap.map((key, value) => MapEntry(key, value + 1));
+    emit(state.copyWith(positionMap: newMap));
   }
 
   // Decrement the current state.

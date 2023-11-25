@@ -32,7 +32,7 @@ class OpponentPaddle extends Paddle {
       }
     });
     positionStream.listen((gameState) {
-      // position += Vector2(gameState.position.toDouble(), 0);
+      position += Vector2(gameState.positionMap.values.first.toDouble(), 0);
     });
   }
 
