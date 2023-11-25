@@ -7,7 +7,6 @@ class OverlayWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final webSocketRepository = ref.watch(webSocketRepositoryProvider);
     return Positioned(
       top: 0,
       right: 0,
