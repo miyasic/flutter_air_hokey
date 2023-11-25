@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:air_hokey/game/cubit/game_cubit.dart';
+import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey/game/response/server_response.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
+import 'package:uuid/v4.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final handler = webSocketHandler(
@@ -12,8 +15,16 @@ Future<Response> onRequest(RequestContext context) async {
       // whenever the cubit state changes.
       final cubit = context.read<GameCubit>()..subscribe(channel);
 
+      final uuid = const UuidV4().generate();
+      final userRole = cubit.onNewAccess(uuid);
+      final handshake =
+          Handshake(id: uuid, userRole: userRole, gameState: cubit.state);
       // Send the current count to the new client.
-      channel.sink.add(jsonEncode(cubit.state.toJson()));
+      final serverResponse = ServerResponse(
+          type: ServerResponseType.handshake, responseDetail: handshake);
+      channel.sink.add(jsonEncode(serverResponse.toJson(
+        (handshake) => handshake.toJson(),
+      )));
 
       // Listen for messages from the client.
       channel.stream.listen(
