@@ -13,8 +13,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     return jsonEncode(state.toJson());
   }
 
-  void onNewAccess() {
-    final uuid = const UuidV4().generate();
+  void onNewAccess(String uuid) {
     final newState = state.copyWith(ids: [...state.ids, uuid]);
     emit(newState);
   }

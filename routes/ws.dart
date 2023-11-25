@@ -1,6 +1,7 @@
 import 'package:air_hokey/game/cubit/game_cubit.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
+import 'package:uuid/v4.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final handler = webSocketHandler(
@@ -10,8 +11,10 @@ Future<Response> onRequest(RequestContext context) async {
       // whenever the cubit state changes.
       final cubit = context.read<GameCubit>()..subscribe(channel);
 
+      final uuid = const UuidV4().generate();
       // Send the current count to the new client.
-      cubit.onNewAccess();
+      cubit.onNewAccess(uuid);
+      channel.sink.add(uuid);
 
       // Listen for messages from the client.
       channel.stream.listen(
