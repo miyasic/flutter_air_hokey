@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
-import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:flame/game.dart';
 import 'package:game/components/paddle/paddle.dart';
 import 'package:game/constants/constants.dart';
 import 'package:game/repository/web_socket_repository.dart';
+import 'package:game/state/user.dart';
 
 class OpponentPaddle extends Paddle {
   OpponentPaddle(
@@ -27,6 +27,7 @@ class OpponentPaddle extends Paddle {
           return GameState.fromJson(json['responseDetail']);
         case 'handshake':
           final handShake = Handshake.fromJson(json['responseDetail']);
+          user = User(id: handShake.id, userRole: handShake.userRole);
           return handShake.gameState;
         default:
           throw Exception('Unknown response type');
@@ -38,6 +39,7 @@ class OpponentPaddle extends Paddle {
   }
 
   late final Stream<GameState> positionStream;
+  late final User user;
 
   @override
   void update(double dt) {
