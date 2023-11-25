@@ -5,7 +5,6 @@ import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
-import 'package:uuid/v4.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
@@ -19,7 +18,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     );
     return jsonEncode(serverResponse.toJson(
       (gameState) => gameState.toJson(),
-    ));
+    ),);
   }
 
   UserRole onNewAccess(String uuid) {

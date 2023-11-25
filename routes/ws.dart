@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:air_hokey/game/cubit/game_cubit.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
-import 'package:air_hokey/game/request/client_request.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
@@ -23,10 +22,10 @@ Future<Response> onRequest(RequestContext context) async {
           Handshake(id: uuid, userRole: userRole, gameState: cubit.state);
       // Send the current count to the new client.
       final serverResponse = ServerResponse(
-          type: ServerResponseType.handshake, responseDetail: handshake);
+          type: ServerResponseType.handshake, responseDetail: handshake,);
       channel.sink.add(jsonEncode(serverResponse.toJson(
         (handshake) => handshake.toJson(),
-      )));
+      ),),);
 
       // Listen for messages from the client.
       channel.stream.listen(
@@ -36,7 +35,7 @@ Future<Response> onRequest(RequestContext context) async {
             switch (json['type']) {
               case 'position':
                 cubit.update(PositionState.fromJson(
-                    json['requestDetail'] as Map<String, dynamic>));
+                    json['requestDetail'] as Map<String, dynamic>,),);
               default:
                 throw Exception('Unknown request type');
             }

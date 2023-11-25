@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:game/repository/web_socket_repository.dart';
 
 class OverlayWidget extends ConsumerWidget {
   const OverlayWidget({Key? key}) : super(key: key);
@@ -17,9 +16,9 @@ class OverlayWidget extends ConsumerWidget {
           onPressed: () {
             // webSocketRepository.message();
           },
-          child: Text(
+          child: const Text(
             'Hello world',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 24,
             ),

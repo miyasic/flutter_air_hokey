@@ -1,7 +1,8 @@
-include: package:very_good_analysis/analysis_options.5.1.0.yaml
+include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - build/**
+    - "**/*.g.dart"
 linter:
   rules:
     file_names: false
