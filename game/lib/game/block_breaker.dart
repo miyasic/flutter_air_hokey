@@ -67,7 +67,6 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       }
     });
     s.listen((gameState) {
-      print(gameState);
       // ここでpositionを更新する
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);

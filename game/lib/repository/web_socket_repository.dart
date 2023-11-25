@@ -19,7 +19,6 @@ class WebSocketRepository {
 
   void message(ClientRequest request) {
     final message = jsonEncode(request.toJson((e) => e.toJson()));
-    print(message);
     channel.sink.add(message);
   }
 }
