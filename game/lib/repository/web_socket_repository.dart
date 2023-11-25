@@ -13,4 +13,8 @@ class WebSocketRepository {
   Stream<dynamic> getChannel() {
     return channel.stream;
   }
+
+  void message() {
+    channel.sink.add('hello world');
+  }
 }

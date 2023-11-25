@@ -40,6 +40,7 @@ Future<Response> onRequest(RequestContext context) async {
               break;
             // Ignore any other messages.
             default:
+              print("test $event");
               break;
           }
         },
