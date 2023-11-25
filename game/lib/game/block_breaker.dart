@@ -1,17 +1,25 @@
+import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey/game/position_state/position_state.dart';
+import 'package:air_hokey/game/request/client_request.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
 import 'package:game/components/paddle/opponent_paddle.dart';
+import 'package:game/repository/web_socket_repository.dart';
 
 import '../components/ball.dart';
 import '../components/block.dart';
 import '../components/paddle/paddle.dart';
 import '../constants/constants.dart';
 
+final blockBreakerProvider = Provider((ref) => BlockBreaker());
+
 class BlockBreaker extends FlameGame with HasCollisionDetection {
+  final websocketRepository = WebSocketRepository();
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -88,5 +96,9 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
     }
+    websocketRepository.message(ClientRequest(
+        type: ClientRequestType.position,
+        requestDetail: PositionState(
+            id: '1', userRole: UserRole.challenger, paddlePosition: 10)));
   }
 }

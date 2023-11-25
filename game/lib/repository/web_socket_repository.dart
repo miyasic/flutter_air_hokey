@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:air_hokey/game/request/client_request.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -14,7 +17,9 @@ class WebSocketRepository {
     return channel.stream;
   }
 
-  void message() {
-    channel.sink.add('__increment__');
+  void message(ClientRequest request) {
+    final message = jsonEncode(request.toJson((e) => e.toJson()));
+    print(message);
+    channel.sink.add(message);
   }
 }

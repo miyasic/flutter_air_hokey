@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:flame/game.dart';
 import 'package:game/components/paddle/paddle.dart';
 import 'package:game/constants/constants.dart';

@@ -1,13 +1,13 @@
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'game_request.freezed.dart';
-part 'game_request.g.dart';
+part 'position_state.freezed.dart';
+part 'position_state.g.dart';
 
 @freezed
-class GameRequest with _$GameRequest {
+class PositionState with _$PositionState {
   /// コンストラクタ
-  const factory GameRequest({
+  const factory PositionState({
     /// ユーザーのID
     required String id,
 
@@ -16,10 +16,10 @@ class GameRequest with _$GameRequest {
 
     /// ゲームの状態
     required int paddlePosition,
-  }) = _GameRequest;
-  const GameRequest._();
+  }) = _PositionState;
+  const PositionState._();
 
   /// JSONからインスタンスを生成する
-  factory GameRequest.fromJson(Map<String, dynamic> json) =>
-      _$GameRequestFromJson(json);
+  factory PositionState.fromJson(Map<String, dynamic> json) =>
+      _$PositionStateFromJson(json);
 }
