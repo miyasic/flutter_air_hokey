@@ -22,7 +22,13 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   UserRole onNewAccess(String uuid) {
-    final newState = state.copyWith(ids: [...state.ids, uuid]);
+    final newState = state.copyWith(
+      ids: [...state.ids, uuid],
+      positionMap: {
+        ...state.positionMap,
+        uuid: 0,
+      },
+    );
     emit(newState);
     return switch (state.ids.length) {
       1 => UserRole.roomCreator,
