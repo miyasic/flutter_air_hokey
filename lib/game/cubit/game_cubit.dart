@@ -8,7 +8,7 @@ import 'package:uuid/v4.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
-  GameCubit() : super(const GameState(ids: [], position: 0));
+  GameCubit() : super(const GameState(ids: [], positionMap: {}));
 
   @override
   Object toMessage(GameState state) {
@@ -33,11 +33,11 @@ class GameCubit extends BroadcastCubit<GameState> {
 
   // Increment the current state.
   void increment() {
-    emit(state.copyWith(position: state.position + 1));
+    // emit(state.copyWith(position: state.position + 1));
   }
 
   // Decrement the current state.
-  void decrement() => emit(state.copyWith(
-        position: state.position - 1,
-      ));
+  void decrement() {
+    // emit(state.copyWith(position: state.position - 1));
+  }
 }

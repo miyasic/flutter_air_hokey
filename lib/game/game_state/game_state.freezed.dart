@@ -21,7 +21,7 @@ GameState _$GameStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GameState {
   List<String> get ids => throw _privateConstructorUsedError;
-  int get position => throw _privateConstructorUsedError;
+  Map<String, int> get positionMap => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
-  $Res call({List<String> ids, int position});
+  $Res call({List<String> ids, Map<String, int> positionMap});
 }
 
 /// @nodoc
@@ -51,17 +51,17 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   @override
   $Res call({
     Object? ids = null,
-    Object? position = null,
+    Object? positionMap = null,
   }) {
     return _then(_value.copyWith(
       ids: null == ids
           ? _value.ids
           : ids // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
+      positionMap: null == positionMap
+          ? _value.positionMap
+          : positionMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ) as $Val);
   }
 }
@@ -74,7 +74,7 @@ abstract class _$$GameStateImplCopyWith<$Res>
       __$$GameStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> ids, int position});
+  $Res call({List<String> ids, Map<String, int> positionMap});
 }
 
 /// @nodoc
@@ -89,17 +89,17 @@ class __$$GameStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? ids = null,
-    Object? position = null,
+    Object? positionMap = null,
   }) {
     return _then(_$GameStateImpl(
       ids: null == ids
           ? _value._ids
           : ids // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
+      positionMap: null == positionMap
+          ? _value._positionMap
+          : positionMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ));
   }
 }
@@ -108,8 +108,10 @@ class __$$GameStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GameStateImpl extends _GameState {
   const _$GameStateImpl(
-      {required final List<String> ids, required this.position})
+      {required final List<String> ids,
+      required final Map<String, int> positionMap})
       : _ids = ids,
+        _positionMap = positionMap,
         super._();
 
   factory _$GameStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -123,12 +125,17 @@ class _$GameStateImpl extends _GameState {
     return EqualUnmodifiableListView(_ids);
   }
 
+  final Map<String, int> _positionMap;
   @override
-  final int position;
+  Map<String, int> get positionMap {
+    if (_positionMap is EqualUnmodifiableMapView) return _positionMap;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_positionMap);
+  }
 
   @override
   String toString() {
-    return 'GameState(ids: $ids, position: $position)';
+    return 'GameState(ids: $ids, positionMap: $positionMap)';
   }
 
   @override
@@ -137,14 +144,16 @@ class _$GameStateImpl extends _GameState {
         (other.runtimeType == runtimeType &&
             other is _$GameStateImpl &&
             const DeepCollectionEquality().equals(other._ids, _ids) &&
-            (identical(other.position, position) ||
-                other.position == position));
+            const DeepCollectionEquality()
+                .equals(other._positionMap, _positionMap));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_ids), position);
+      runtimeType,
+      const DeepCollectionEquality().hash(_ids),
+      const DeepCollectionEquality().hash(_positionMap));
 
   @JsonKey(ignore: true)
   @override
@@ -163,7 +172,7 @@ class _$GameStateImpl extends _GameState {
 abstract class _GameState extends GameState {
   const factory _GameState(
       {required final List<String> ids,
-      required final int position}) = _$GameStateImpl;
+      required final Map<String, int> positionMap}) = _$GameStateImpl;
   const _GameState._() : super._();
 
   factory _GameState.fromJson(Map<String, dynamic> json) =
@@ -172,7 +181,7 @@ abstract class _GameState extends GameState {
   @override
   List<String> get ids;
   @override
-  int get position;
+  Map<String, int> get positionMap;
   @override
   @JsonKey(ignore: true)
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>

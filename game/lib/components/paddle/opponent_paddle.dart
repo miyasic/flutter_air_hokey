@@ -28,11 +28,11 @@ class OpponentPaddle extends Paddle {
           final handShake = Handshake.fromJson(json['responseDetail']);
           return handShake.gameState;
         default:
-          return GameState(ids: [], position: 1);
+          throw Exception('Unknown response type');
       }
     });
     positionStream.listen((gameState) {
-      position += Vector2(gameState.position.toDouble(), 0);
+      // position += Vector2(gameState.position.toDouble(), 0);
     });
   }
 
