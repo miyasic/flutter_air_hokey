@@ -18,6 +18,7 @@ class Field extends RectangleComponent {
         );
   final Vector2 gameSize;
   final Vector2 fieldSize;
+  @override
   final Paint paint;
 
   @override

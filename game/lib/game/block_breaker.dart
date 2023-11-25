@@ -6,7 +6,6 @@ import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/collisions.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game/components/field.dart';
@@ -17,7 +16,6 @@ import 'package:game/state/user.dart';
 
 import '../components/ball.dart';
 import '../components/block.dart';
-import '../components/paddle/paddle.dart';
 import '../constants/constants.dart';
 
 final blockBreakerProvider = Provider((ref) => BlockBreaker());
