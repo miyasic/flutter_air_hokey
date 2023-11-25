@@ -22,6 +22,11 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   UserRole onNewAccess(String uuid) {
+    // 最初の2人だけゲームに参加できる。
+    // それ以降の人は観戦者として扱う。
+    if (state.ids.length >= 2) {
+      return UserRole.spectator;
+    }
     final newState = state.copyWith(
       ids: [...state.ids, uuid],
       positionMap: {
