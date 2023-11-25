@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:air_hokey/game/cubit/game_cubit.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey/game/position_state/position_state.dart';
+import 'package:air_hokey/game/request/client_request.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
@@ -29,18 +31,15 @@ Future<Response> onRequest(RequestContext context) async {
       // Listen for messages from the client.
       channel.stream.listen(
         (event) {
-          switch (event) {
-            // Handle an increment message.
-            case '__increment__':
-              cubit.increment();
-              break;
-            // Handle a decrement message.
-            case '__decrement__':
-              cubit.decrement();
-              break;
-            // Ignore any other messages.
-            default:
-              break;
+          if (event is String) {
+            final json = jsonDecode(event) as Map<String, dynamic>;
+            switch (json['type']) {
+              case 'position':
+                cubit.update(PositionState.fromJson(
+                    json['requestDetail'] as Map<String, dynamic>));
+              default:
+                throw Exception('Unknown request type');
+            }
           }
         },
         // The client has disconnected.

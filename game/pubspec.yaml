@@ -37,14 +37,18 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.9.1
   web_socket_channel: ^2.4.0
-  riverpod: ^2.4.8
-  freezed: ^2.4.5
+  flutter_riverpod: ^2.4.8
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
   air_hokey:
     path: ..
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.3.2
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

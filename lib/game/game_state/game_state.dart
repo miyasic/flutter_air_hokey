@@ -8,7 +8,7 @@ class GameState with _$GameState {
   const GameState._();
   const factory GameState({
     required List<String> ids,
-    required int position,
+    required Map<String, int> positionMap,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>

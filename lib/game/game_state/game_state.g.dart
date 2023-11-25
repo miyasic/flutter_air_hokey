@@ -9,11 +9,11 @@ part of 'game_state.dart';
 _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
     _$GameStateImpl(
       ids: (json['ids'] as List<dynamic>).map((e) => e as String).toList(),
-      position: json['position'] as int,
+      positionMap: Map<String, int>.from(json['positionMap'] as Map),
     );
 
 Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
     <String, dynamic>{
       'ids': instance.ids,
-      'position': instance.position,
+      'positionMap': instance.positionMap,
     };
