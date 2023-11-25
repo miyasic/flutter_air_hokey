@@ -32,28 +32,13 @@ Future<Response> onRequest(RequestContext context) async {
       channel.stream.listen(
         (event) {
           if (event is String) {
-            switch (event) {
-              // Handle an increment message.
-              case '__increment__':
-                cubit.increment();
-                break;
-              // Handle a decrement message.
-              case '__decrement__':
-                cubit.decrement();
-                break;
-              // Ignore any other messages.
+            final json = jsonDecode(event) as Map<String, dynamic>;
+            switch (json['type']) {
+              case 'position':
+                cubit.update(PositionState.fromJson(
+                    json['requestDetail'] as Map<String, dynamic>));
               default:
-                print("test $event");
-                final json = jsonDecode(event) as Map<String, dynamic>;
-                print(json);
-                switch (json['type']) {
-                  case 'position':
-                    PositionState.fromJson(
-                        json['requestDetail'] as Map<String, dynamic>);
-                  default:
-                    throw Exception('Unknown request type');
-                }
-                break;
+                throw Exception('Unknown request type');
             }
           }
         },

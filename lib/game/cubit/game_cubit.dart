@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 import 'package:uuid/v4.dart';
@@ -43,14 +44,9 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   // Increment the current state.
-  void increment() {
-    final newMap =
-        state.positionMap.map((key, value) => MapEntry(key, value + 1));
-    emit(state.copyWith(positionMap: newMap));
-  }
-
-  // Decrement the current state.
-  void decrement() {
-    // emit(state.copyWith(position: state.position - 1));
+  void update(PositionState positionState) {
+    final newPositionMap = Map<String, int>.from(state.positionMap);
+    newPositionMap[positionState.id] = positionState.paddlePosition;
+    emit(state.copyWith(positionMap: newPositionMap));
   }
 }

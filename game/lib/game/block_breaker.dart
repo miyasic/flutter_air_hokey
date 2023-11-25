@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
@@ -10,6 +13,7 @@ import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
 import 'package:game/components/paddle/opponent_paddle.dart';
 import 'package:game/repository/web_socket_repository.dart';
+import 'package:game/state/user.dart';
 
 import '../components/ball.dart';
 import '../components/block.dart';
@@ -19,11 +23,18 @@ import '../constants/constants.dart';
 final blockBreakerProvider = Provider((ref) => BlockBreaker());
 
 class BlockBreaker extends FlameGame with HasCollisionDetection {
-  final websocketRepository = WebSocketRepository();
+  final webSocketRepository = WebSocketRepository();
+  User? user;
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
     final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
+    final opponentPaddle = OpponentPaddle(
+      paddleSize: paddleSize,
+      fieldSize: fieldSize,
+      gameSize: size,
+    );
+    startWebSocketConnection(opponentPaddle);
     await addAll([
       Field(
         gameSize: size,
@@ -35,14 +46,33 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
           paddleSize: paddleSize,
           fieldSize: fieldSize,
           gameSize: size),
-      OpponentPaddle(
-        paddleSize: paddleSize,
-        fieldSize: fieldSize,
-        gameSize: size,
-      ),
+      opponentPaddle,
     ]);
     await resetBall();
     // await resetBlocks();
+  }
+
+  void startWebSocketConnection(OpponentPaddle opponentPaddle) {
+    final s = webSocketRepository.getChannel().map((event) {
+      final json = jsonDecode(event);
+      switch (json['type']) {
+        case 'gameState':
+          return GameState.fromJson(json['responseDetail']);
+        case 'handshake':
+          final handShake = Handshake.fromJson(json['responseDetail']);
+          user = User(id: handShake.id, userRole: handShake.userRole);
+          return handShake.gameState;
+        default:
+          throw Exception('Unknown response type');
+      }
+    });
+    s.listen((gameState) {
+      print(gameState);
+      // ここでpositionを更新する
+      if (user != null) {
+        opponentPaddle.updatePosition(gameState, user!);
+      }
+    });
   }
 
   Future<void> resetBall() async {
@@ -96,9 +126,15 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
     }
-    websocketRepository.message(ClientRequest(
-        type: ClientRequestType.position,
-        requestDetail: PositionState(
-            id: '1', userRole: UserRole.challenger, paddlePosition: 10)));
+    if (user != null) {
+      final id = user!.id!;
+      final userRole = user!.userRole!;
+      webSocketRepository.message(ClientRequest(
+          type: ClientRequestType.position,
+          requestDetail: PositionState(
+              id: id,
+              userRole: userRole,
+              paddlePosition: paddle.position.x.toInt())));
+    }
   }
 }
