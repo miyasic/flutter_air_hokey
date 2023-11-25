@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flutter/painting.dart';
 import 'package:game/components/directional_hit_box.dart';
 import 'package:game/constants/constants.dart';
 
@@ -9,17 +8,13 @@ class Field extends RectangleComponent {
   Field({
     required this.gameSize,
     required this.fieldSize,
-    required this.paint,
   }) : super(
           size: fieldSize,
           position: Vector2(
               (gameSize.x - fieldSize.x) / 2, (gameSize.y - fieldSize.y) / 2),
-          paint: paint,
         );
   final Vector2 gameSize;
   final Vector2 fieldSize;
-  @override
-  final Paint paint;
 
   @override
   FutureOr<void> onLoad() {

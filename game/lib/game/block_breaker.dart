@@ -6,7 +6,6 @@ import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/palette.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
@@ -37,7 +36,6 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       Field(
         gameSize: size,
         fieldSize: fieldSize,
-        paint: BasicPalette.darkBlue.paint(),
       ),
       DraggablePaddle(
           draggingPaddle: draggingPaddle,
