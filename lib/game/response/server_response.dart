@@ -3,16 +3,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'server_response.freezed.dart';
 part 'server_response.g.dart';
 
-@freezed
+@Freezed(genericArgumentFactories: true)
 class ServerResponse<T> with _$ServerResponse<T> {
-  @JsonSerializable(genericArgumentFactories: true)
   const factory ServerResponse({
-    required ServerResponseType type, // 'handshake' または 'gameState'
-    required T responseDetail, // Handshake または GameState のインスタンス
+    required ServerResponseType type,
+    required T responseDetail,
   }) = _ServerResponse<T>;
 
-  factory ServerResponse.fromJson(Map<String, dynamic> json) =>
-      _$ServerResponseFromJson(json);
+  factory ServerResponse.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) =>
+      _$ServerResponseFromJson(json, fromJsonT);
 }
 
 enum ServerResponseType {

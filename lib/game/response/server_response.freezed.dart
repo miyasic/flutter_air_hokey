@@ -14,17 +14,18 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ServerResponse<T> _$ServerResponseFromJson<T>(Map<String, dynamic> json) {
-  return _ServerResponse<T>.fromJson(json);
+ServerResponse<T> _$ServerResponseFromJson<T>(
+    Map<String, dynamic> json, T Function(Object?) fromJsonT) {
+  return _ServerResponse<T>.fromJson(json, fromJsonT);
 }
 
 /// @nodoc
 mixin _$ServerResponse<T> {
-  ServerResponseType get type =>
-      throw _privateConstructorUsedError; // 'handshake' または 'gameState'
+  ServerResponseType get type => throw _privateConstructorUsedError;
   T get responseDetail => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
+      throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ServerResponseCopyWith<T, ServerResponse<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -107,18 +108,17 @@ class __$$ServerResponseImplCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-
 @JsonSerializable(genericArgumentFactories: true)
 class _$ServerResponseImpl<T> implements _ServerResponse<T> {
   const _$ServerResponseImpl(
       {required this.type, required this.responseDetail});
 
-  factory _$ServerResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ServerResponseImplFromJson(json);
+  factory _$ServerResponseImpl.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+      _$$ServerResponseImplFromJson(json, fromJsonT);
 
   @override
   final ServerResponseType type;
-// 'handshake' または 'gameState'
   @override
   final T responseDetail;
 
@@ -150,10 +150,8 @@ class _$ServerResponseImpl<T> implements _ServerResponse<T> {
           this, _$identity);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$ServerResponseImplToJson<T>(
-      this,
-    );
+  Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
+    return _$$ServerResponseImplToJson<T>(this, toJsonT);
   }
 }
 
@@ -162,12 +160,13 @@ abstract class _ServerResponse<T> implements ServerResponse<T> {
       {required final ServerResponseType type,
       required final T responseDetail}) = _$ServerResponseImpl<T>;
 
-  factory _ServerResponse.fromJson(Map<String, dynamic> json) =
+  factory _ServerResponse.fromJson(
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =
       _$ServerResponseImpl<T>.fromJson;
 
   @override
   ServerResponseType get type;
-  @override // 'handshake' または 'gameState'
+  @override
   T get responseDetail;
   @override
   @JsonKey(ignore: true)

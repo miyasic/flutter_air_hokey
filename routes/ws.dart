@@ -22,7 +22,9 @@ Future<Response> onRequest(RequestContext context) async {
       // Send the current count to the new client.
       final serverResponse = ServerResponse(
           type: ServerResponseType.handshake, responseDetail: handshake);
-      channel.sink.add(jsonEncode(serverResponse.toJson()));
+      channel.sink.add(jsonEncode(serverResponse.toJson(
+        (handshake) => handshake.toJson(),
+      )));
 
       // Listen for messages from the client.
       channel.stream.listen(
