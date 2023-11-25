@@ -34,6 +34,6 @@ class OpponentPaddle extends Paddle {
     if (x == null) {
       return;
     }
-    position = Vector2(x, position.y);
+    position = Vector2(x + gameSize.x / 2 - paddleSize.x / 2, position.y);
   }
 }
