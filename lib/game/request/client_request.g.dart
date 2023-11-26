@@ -26,4 +26,5 @@ Map<String, dynamic> _$$ClientRequestImplToJson<T>(
 
 const _$ClientRequestTypeEnumMap = {
   ClientRequestType.position: 'position',
+  ClientRequestType.reset: 'reset',
 };

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
+import 'package:air_hokey/game/reset/reset.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
@@ -13,7 +15,23 @@ class WebSocketRepository {
     return channel.stream;
   }
 
-  void message(ClientRequest request) {
+  void sendPosition(PositionState positionState) {
+    final request = ClientRequest(
+      type: ClientRequestType.position,
+      requestDetail: positionState,
+    );
+    _message(request);
+  }
+
+  void sendReset(Reset reset) {
+    final request = ClientRequest(
+      type: ClientRequestType.reset,
+      requestDetail: reset,
+    );
+    _message(request);
+  }
+
+  void _message(ClientRequest request) {
     final message = jsonEncode(request.toJson((e) => e.toJson()));
     channel.sink.add(message);
   }

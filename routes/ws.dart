@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:air_hokey/game/cubit/game_cubit.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
+import 'package:air_hokey/game/reset/reset.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
@@ -22,20 +23,31 @@ Future<Response> onRequest(RequestContext context) async {
           Handshake(id: uuid, userRole: userRole, gameState: cubit.state);
       // Send the current count to the new client.
       final serverResponse = ServerResponse(
-          type: ServerResponseType.handshake, responseDetail: handshake,);
-      channel.sink.add(jsonEncode(serverResponse.toJson(
-        (handshake) => handshake.toJson(),
-      ),),);
+        type: ServerResponseType.handshake,
+        responseDetail: handshake,
+      );
+      channel.sink.add(
+        jsonEncode(
+          serverResponse.toJson(
+            (handshake) => handshake.toJson(),
+          ),
+        ),
+      );
 
       // Listen for messages from the client.
       channel.stream.listen(
         (event) {
           if (event is String) {
-            final json = jsonDecode(event) as Map<String, dynamic>;
+            final json = jsonDecode(event);
             switch (json['type']) {
               case 'position':
-                cubit.update(PositionState.fromJson(
-                    json['requestDetail'] as Map<String, dynamic>,),);
+                cubit.update(
+                  PositionState.fromJson(
+                    json['requestDetail'],
+                  ),
+                );
+              case 'reset':
+                cubit.reset(Reset.fromJson(json['requestDetail']));
               default:
                 throw Exception('Unknown request type');
             }

@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
-import 'package:air_hokey/game/request/client_request.dart';
+import 'package:air_hokey/game/reset/reset.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
@@ -17,7 +19,7 @@ import 'package:game/state/user.dart';
 import '../components/ball.dart';
 import '../constants/constants.dart';
 
-class AirHokey extends FlameGame with HasCollisionDetection {
+class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   final webSocketRepository = WebSocketRepository();
   User? user;
   GameState? gameState;
@@ -47,7 +49,7 @@ class AirHokey extends FlameGame with HasCollisionDetection {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
-      debugText,
+      if (isDebug) debugText,
       ball!, // 直近代入しているのでnullではない
     ]);
   }
@@ -60,6 +62,31 @@ class AirHokey extends FlameGame with HasCollisionDetection {
       gameState?.debugViewText,
       ball?.getDebugViewText(size)
     ]);
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    final isKeyDown = event is RawKeyDownEvent;
+
+    final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
+
+    if (!isDebug) {
+      return KeyEventResult.ignored;
+    }
+    if (isSpace && isKeyDown) {
+      webSocketRepository.sendReset(
+        Reset(
+          id: user!.id!,
+          userRole: user!.userRole!,
+        ),
+      );
+
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
   }
 
   void _startWebSocketConnection(
@@ -103,10 +130,13 @@ class AirHokey extends FlameGame with HasCollisionDetection {
     if (user != null) {
       final id = user!.id!;
       final userRole = user!.userRole!;
-      webSocketRepository.message(ClientRequest(
-          type: ClientRequestType.position,
-          requestDetail: PositionState(
-              id: id, userRole: userRole, paddlePosition: relativeX.toInt())));
+      webSocketRepository.sendPosition(
+        PositionState(
+          id: id,
+          userRole: userRole,
+          paddlePosition: relativeX.toInt(),
+        ),
+      );
     }
   }
 }
