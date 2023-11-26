@@ -38,7 +38,11 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       anchor: Anchor.topLeft,
       position: Vector2(0, 0),
     );
-    startWebSocketConnection(opponentPaddle, debugText);
+    final ball = Ball();
+    ball.position
+      ..x = size.x / 2 - ball.size.x / 2
+      ..y = size.y * kBallStartYRatio;
+    startWebSocketConnection(opponentPaddle, debugText, ball, size);
     await addAll([
       Field(
         gameSize: size,
@@ -52,13 +56,13 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
           gameSize: size),
       opponentPaddle,
       debugText,
+      ball,
     ]);
-    await resetBall();
     // await resetBlocks();
   }
 
-  void startWebSocketConnection(
-      OpponentPaddle opponentPaddle, TextComponent debugText) {
+  void startWebSocketConnection(OpponentPaddle opponentPaddle,
+      TextComponent debugText, Ball ball, Vector2 gameSize) {
     final s = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
       switch (json['type']) {
@@ -76,19 +80,11 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       // ここでpositionを更新する
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);
-        debugText.text = user!.debugViewText + gameState.debugViewText;
+        debugText.text = user!.debugViewText +
+            gameState.debugViewText +
+            ball.getDebugViewText(gameSize);
       }
     });
-  }
-
-  Future<void> resetBall() async {
-    final ball = Ball();
-
-    ball.position
-      ..x = size.x / 2 - ball.size.x / 2
-      ..y = size.y * kBallStartYRatio;
-
-    await add(ball);
   }
 
   Future<void> resetBlocks() async {

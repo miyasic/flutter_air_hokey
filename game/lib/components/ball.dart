@@ -130,3 +130,12 @@ class Ball extends CircleComponent with CollisionCallbacks {
     }
   }
 }
+
+extension BallX on Ball {
+  Vector2 relativePosition(Vector2 gameSize) {
+    return position - gameSize / 2;
+  }
+
+  String getDebugViewText(Vector2 gameSize) =>
+      "Ball: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()}";
+}
