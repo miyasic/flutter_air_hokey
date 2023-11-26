@@ -38,10 +38,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       anchor: Anchor.topLeft,
       position: Vector2(0, 0),
     );
-    final ball = Ball();
-    ball.position
-      ..x = size.x / 2 - ball.size.x / 2
-      ..y = size.y * kBallStartYRatio;
+    final ball = Ball(size);
     startWebSocketConnection(opponentPaddle, debugText, ball, size);
     await addAll([
       Field(
