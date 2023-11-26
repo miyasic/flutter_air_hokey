@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
-import 'package:air_hokey/game/request/client_request.dart';
 import 'package:air_hokey/game/reset/reset.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -78,12 +77,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       return KeyEventResult.ignored;
     }
     if (isSpace && isKeyDown) {
-      webSocketRepository.message(ClientRequest(
-          type: ClientRequestType.reset,
-          requestDetail: Reset(
-            id: user!.id!,
-            userRole: user!.userRole!,
-          )));
+      webSocketRepository.sendReset(
+        Reset(
+          id: user!.id!,
+          userRole: user!.userRole!,
+        ),
+      );
 
       return KeyEventResult.handled;
     }
@@ -131,10 +130,13 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (user != null) {
       final id = user!.id!;
       final userRole = user!.userRole!;
-      webSocketRepository.message(ClientRequest(
-          type: ClientRequestType.position,
-          requestDetail: PositionState(
-              id: id, userRole: userRole, paddlePosition: relativeX.toInt())));
+      webSocketRepository.sendPosition(
+        PositionState(
+          id: id,
+          userRole: userRole,
+          paddlePosition: relativeX.toInt(),
+        ),
+      );
     }
   }
 }
