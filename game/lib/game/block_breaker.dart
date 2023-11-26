@@ -34,7 +34,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       gameSize: size,
     );
     ball = Ball(size);
-    startWebSocketConnection(opponentPaddle);
+    _startWebSocketConnection(opponentPaddle);
     await addAll([
       Field(
         gameSize: size,
@@ -42,7 +42,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
         paint: BasicPalette.darkBlue.paint(),
       ),
       DraggablePaddle(
-          draggingPaddle: draggingPaddle,
+          draggingPaddle: _draggingPaddle,
           paddleSize: paddleSize,
           fieldSize: fieldSize,
           gameSize: size),
@@ -62,7 +62,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     ]);
   }
 
-  void startWebSocketConnection(
+  void _startWebSocketConnection(
     OpponentPaddle opponentPaddle,
   ) {
     final s = webSocketRepository.getChannel().map((event) {
@@ -87,7 +87,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     });
   }
 
-  void draggingPaddle(DragUpdateEvent event) {
+  void _draggingPaddle(DragUpdateEvent event) {
     final paddle = children.whereType<DraggablePaddle>().first;
 
     paddle.position.x += event.delta.x;
