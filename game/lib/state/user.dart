@@ -19,3 +19,10 @@ class User with _$User {
   /// JSONからインスタンスを生成する
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
+extension UserX on User {
+  /// ユーザーのタイプを取得する
+  String get debugViewText {
+    return "id: $id, \nuserRole: $userRole \n";
+  }
+}

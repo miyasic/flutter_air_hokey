@@ -16,9 +16,11 @@ class GameCubit extends BroadcastCubit<GameState> {
       type: ServerResponseType.gameState,
       responseDetail: state,
     );
-    return jsonEncode(serverResponse.toJson(
-      (gameState) => gameState.toJson(),
-    ),);
+    return jsonEncode(
+      serverResponse.toJson(
+        (gameState) => gameState.toJson(),
+      ),
+    );
   }
 
   UserRole onNewAccess(String uuid) {
