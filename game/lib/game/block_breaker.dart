@@ -4,6 +4,7 @@ import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
@@ -15,7 +16,7 @@ import 'package:game/repository/web_socket_repository.dart';
 import 'package:game/state/user.dart';
 
 import '../components/ball.dart';
-import '../components/block.dart';
+import '../components/block.dart' as b;
 import '../constants/constants.dart';
 
 final blockBreakerProvider = Provider((ref) => BlockBreaker());
@@ -32,7 +33,12 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       fieldSize: fieldSize,
       gameSize: size,
     );
-    startWebSocketConnection(opponentPaddle);
+    final debugText = TextComponent(
+      text: '',
+      anchor: Anchor.topLeft,
+      position: Vector2(0, 0),
+    );
+    startWebSocketConnection(opponentPaddle, debugText);
     await addAll([
       Field(
         gameSize: size,
@@ -45,12 +51,14 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
+      debugText,
     ]);
     await resetBall();
     // await resetBlocks();
   }
 
-  void startWebSocketConnection(OpponentPaddle opponentPaddle) {
+  void startWebSocketConnection(
+      OpponentPaddle opponentPaddle, TextComponent debugText) {
     final s = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
       switch (json['type']) {
@@ -68,6 +76,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       // ここでpositionを更新する
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);
+        debugText.text = 'opponentId: ${gameState.positionMap[user!.id]}';
       }
     });
   }
@@ -93,9 +102,9 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
             kBlockPadding * (kBlocksColumnCount - 1)) /
         kBlocksColumnCount;
 
-    final blocks =
-        List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
-      final block = Block(
+    final blocks = List<b.Block>.generate(kBlocksColumnCount * kBlocksRowCount,
+        (int index) {
+      final block = b.Block(
         blockSize: Vector2(sizeX, sizeY),
       );
 
