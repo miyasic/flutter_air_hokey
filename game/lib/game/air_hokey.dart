@@ -50,7 +50,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
-      debugText,
+      if (isDebug) debugText,
       ball!, // 直近代入しているのでnullではない
     ]);
   }
@@ -74,6 +74,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
 
+    if (!isDebug || user?.userRole != UserRole.roomCreator) {
+      return KeyEventResult.ignored;
+    }
     if (isSpace && isKeyDown) {
       if (user?.userRole == UserRole.roomCreator) {
         webSocketRepository.message(ClientRequest(
