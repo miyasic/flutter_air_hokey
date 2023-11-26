@@ -4,11 +4,11 @@ import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
 import 'package:game/components/paddle/opponent_paddle.dart';
@@ -27,11 +27,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
   GameState? gameState;
   Ball? ball;
 
-  final debugText = TextComponent(
-    text: '',
-    anchor: Anchor.topLeft,
-    position: Vector2(0, 0),
-  );
+  final debugText = DebugText();
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -64,16 +60,11 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
   @override
   void update(double dt) {
     super.update(dt);
-    debugText.text = "";
-    if (user != null) {
-      debugText.text += user!.debugViewText;
-    }
-    if (gameState != null) {
-      debugText.text += gameState!.debugViewText;
-    }
-    if (ball != null) {
-      debugText.text += ball!.getDebugViewText(size);
-    }
+    debugText.updateText([
+      user?.debugViewText,
+      gameState?.debugViewText,
+      ball?.getDebugViewText(size)
+    ]);
   }
 
   void startWebSocketConnection(
