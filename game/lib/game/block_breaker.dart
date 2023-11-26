@@ -24,6 +24,14 @@ final blockBreakerProvider = Provider((ref) => BlockBreaker());
 class BlockBreaker extends FlameGame with HasCollisionDetection {
   final webSocketRepository = WebSocketRepository();
   User? user;
+  GameState? gameState;
+  Ball? ball;
+
+  final debugText = TextComponent(
+    text: '',
+    anchor: Anchor.topLeft,
+    position: Vector2(0, 0),
+  );
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -33,13 +41,8 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       fieldSize: fieldSize,
       gameSize: size,
     );
-    final debugText = TextComponent(
-      text: '',
-      anchor: Anchor.topLeft,
-      position: Vector2(0, 0),
-    );
-    final ball = Ball(size);
-    startWebSocketConnection(opponentPaddle, debugText, ball, size);
+    ball = Ball(size);
+    startWebSocketConnection(opponentPaddle);
     await addAll([
       Field(
         gameSize: size,
@@ -53,13 +56,29 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
           gameSize: size),
       opponentPaddle,
       debugText,
-      ball,
+      ball!, // 直近代入しているのでnullではない
     ]);
     // await resetBlocks();
   }
 
-  void startWebSocketConnection(OpponentPaddle opponentPaddle,
-      TextComponent debugText, Ball ball, Vector2 gameSize) {
+  @override
+  void update(double dt) {
+    super.update(dt);
+    debugText.text = "";
+    if (user != null) {
+      debugText.text += user!.debugViewText;
+    }
+    if (gameState != null) {
+      debugText.text += gameState!.debugViewText;
+    }
+    if (ball != null) {
+      debugText.text += ball!.getDebugViewText(size);
+    }
+  }
+
+  void startWebSocketConnection(
+    OpponentPaddle opponentPaddle,
+  ) {
     final s = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
       switch (json['type']) {
@@ -75,11 +94,9 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     });
     s.listen((gameState) {
       // ここでpositionを更新する
+      this.gameState = gameState;
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);
-        debugText.text = user!.debugViewText +
-            gameState.debugViewText +
-            ball.getDebugViewText(gameSize);
       }
     });
   }
