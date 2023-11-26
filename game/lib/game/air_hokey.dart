@@ -17,7 +17,7 @@ import 'package:game/state/user.dart';
 import '../components/ball.dart';
 import '../constants/constants.dart';
 
-class BlockBreaker extends FlameGame with HasCollisionDetection {
+class AirHokey extends FlameGame with HasCollisionDetection {
   final webSocketRepository = WebSocketRepository();
   User? user;
   GameState? gameState;

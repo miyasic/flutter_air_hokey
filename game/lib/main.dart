@@ -1,10 +1,10 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:game/game/block_breaker.dart';
+import 'package:game/game/air_hokey.dart';
 import 'package:game/overlay.dart';
 
 void main() {
-  final game = BlockBreaker();
+  final game = AirHokey();
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
