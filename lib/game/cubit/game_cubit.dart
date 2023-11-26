@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
+import 'package:air_hokey/game/reset/reset.dart';
 import 'package:air_hokey/game/response/server_response.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 
@@ -49,5 +50,11 @@ class GameCubit extends BroadcastCubit<GameState> {
     final newPositionMap = Map<String, int>.from(state.positionMap);
     newPositionMap[positionState.id] = positionState.paddlePosition;
     emit(state.copyWith(positionMap: newPositionMap));
+  }
+
+  void reset(Reset reset) {
+    if (reset.id == state.ids[0] && reset.userRole == UserRole.roomCreator) {
+      emit(GameState(ids: [reset.id], positionMap: {reset.id: 0}));
+    }
   }
 }
