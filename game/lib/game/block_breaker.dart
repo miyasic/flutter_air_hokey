@@ -8,6 +8,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
 import 'package:game/components/paddle/opponent_paddle.dart';
@@ -15,7 +16,7 @@ import 'package:game/repository/web_socket_repository.dart';
 import 'package:game/state/user.dart';
 
 import '../components/ball.dart';
-import '../components/block.dart';
+import '../components/block.dart' as b;
 import '../constants/constants.dart';
 
 final blockBreakerProvider = Provider((ref) => BlockBreaker());
@@ -23,6 +24,10 @@ final blockBreakerProvider = Provider((ref) => BlockBreaker());
 class BlockBreaker extends FlameGame with HasCollisionDetection {
   final webSocketRepository = WebSocketRepository();
   User? user;
+  GameState? gameState;
+  Ball? ball;
+
+  final debugText = DebugText();
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -32,6 +37,7 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
       fieldSize: fieldSize,
       gameSize: size,
     );
+    ball = Ball(size);
     startWebSocketConnection(opponentPaddle);
     await addAll([
       Field(
@@ -45,12 +51,25 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
+      debugText,
+      ball!, // 直近代入しているのでnullではない
     ]);
-    await resetBall();
     // await resetBlocks();
   }
 
-  void startWebSocketConnection(OpponentPaddle opponentPaddle) {
+  @override
+  void update(double dt) {
+    super.update(dt);
+    debugText.updateText([
+      user?.debugViewText,
+      gameState?.debugViewText,
+      ball?.getDebugViewText(size)
+    ]);
+  }
+
+  void startWebSocketConnection(
+    OpponentPaddle opponentPaddle,
+  ) {
     final s = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
       switch (json['type']) {
@@ -66,20 +85,11 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
     });
     s.listen((gameState) {
       // ここでpositionを更新する
+      this.gameState = gameState;
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);
       }
     });
-  }
-
-  Future<void> resetBall() async {
-    final ball = Ball();
-
-    ball.position
-      ..x = size.x / 2 - ball.size.x / 2
-      ..y = size.y * kBallStartYRatio;
-
-    await add(ball);
   }
 
   Future<void> resetBlocks() async {
@@ -93,9 +103,9 @@ class BlockBreaker extends FlameGame with HasCollisionDetection {
             kBlockPadding * (kBlocksColumnCount - 1)) /
         kBlocksColumnCount;
 
-    final blocks =
-        List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
-      final block = Block(
+    final blocks = List<b.Block>.generate(kBlocksColumnCount * kBlocksRowCount,
+        (int index) {
+      final block = b.Block(
         blockSize: Vector2(sizeX, sizeY),
       );
 

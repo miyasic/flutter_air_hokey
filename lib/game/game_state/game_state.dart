@@ -14,3 +14,14 @@ class GameState with _$GameState {
   factory GameState.fromJson(Map<String, dynamic> json) =>
       _$GameStateFromJson(json);
 }
+
+extension GameStateX on GameState {
+  String get debugViewText {
+    if (ids.isEmpty) return "No player \n";
+    if (ids.length == 1) return "player 1: ${positionMap[ids[0]]} \n";
+    if (ids.length == 2) {
+      return "player 1: ${positionMap[ids[0]]}\nplayer 2: ${positionMap[ids[1]]} \n";
+    }
+    return "player more than 2 \n";
+  }
+}

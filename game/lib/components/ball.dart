@@ -10,9 +10,11 @@ import 'block.dart' as block;
 import '../../constants/constants.dart';
 
 class Ball extends CircleComponent with CollisionCallbacks {
-  Ball() {
+  Ball(Vector2 gameSize) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
+    position =
+        Vector2((gameSize.x - size.x) / 2, gameSize.y * kBallStartYRatio);
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
@@ -129,4 +131,14 @@ class Ball extends CircleComponent with CollisionCallbacks {
       }
     }
   }
+}
+
+extension BallX on Ball {
+  Vector2 relativePosition(Vector2 gameSize) {
+    return position - gameSize / 2;
+  }
+
+  String getDebugViewText(Vector2 gameSize) =>
+      "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n"
+      "Ball Velocity: ${velocity.x.toInt()}, ${velocity.y.toInt()}\n";
 }
