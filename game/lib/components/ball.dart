@@ -139,6 +139,6 @@ extension BallX on Ball {
   }
 
   String getDebugViewText(Vector2 gameSize) =>
-      "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n" +
+      "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n"
       "Ball Velocity: ${velocity.x.toInt()}, ${velocity.y.toInt()}\n";
 }
