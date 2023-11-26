@@ -7,7 +7,6 @@ import 'package:air_hokey/game/request/client_request.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
@@ -17,8 +16,6 @@ import 'package:game/state/user.dart';
 
 import '../components/ball.dart';
 import '../constants/constants.dart';
-
-final blockBreakerProvider = Provider((ref) => BlockBreaker());
 
 class BlockBreaker extends FlameGame with HasCollisionDetection {
   final webSocketRepository = WebSocketRepository();

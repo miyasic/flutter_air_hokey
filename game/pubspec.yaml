@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.9.1
   web_socket_channel: ^2.4.0
-  flutter_riverpod: ^2.4.8
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   air_hokey:
