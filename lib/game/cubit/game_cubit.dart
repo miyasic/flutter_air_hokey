@@ -5,6 +5,7 @@ import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/reset/reset.dart';
 import 'package:air_hokey/game/response/server_response.dart';
+import 'package:air_hokey/game/start/start.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
@@ -60,5 +61,10 @@ class GameCubit extends BroadcastCubit<GameState> {
     }
     // それ以外の場合は完全にリセット
     emit(const GameState(ids: [], positionMap: {}));
+  }
+
+  void start(Start start) {
+    if (state.ballState != null) return; // 既にゲームが始まっている場合は何もしない
+    emit(state.copyWith(ballState: start.ballState));
   }
 }

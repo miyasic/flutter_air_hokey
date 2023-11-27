@@ -5,6 +5,7 @@ import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/reset/reset.dart';
 import 'package:air_hokey/game/response/server_response.dart';
+import 'package:air_hokey/game/start/start.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
 import 'package:uuid/v4.dart';
@@ -48,6 +49,8 @@ Future<Response> onRequest(RequestContext context) async {
                 );
               case 'reset':
                 cubit.reset(Reset.fromJson(json['requestDetail']));
+              case 'start':
+                cubit.start(Start.fromJson(json['requestDetail']));
               default:
                 throw Exception('Unknown request type');
             }

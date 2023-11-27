@@ -24,4 +24,5 @@ class ClientRequest<T> with _$ClientRequest<T> {
 enum ClientRequestType {
   position,
   reset,
+  start,
 }
