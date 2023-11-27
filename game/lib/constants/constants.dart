@@ -29,6 +29,7 @@ const double kButtonWidth = 200;
 const double kButtonHeight = 50;
 const Color kButtonColor = Colors.blue;
 const Color kGameOverButtonColor = Colors.red;
+const Color kDisabledColor = Colors.black38;
 
 //Countdown Settings
 const double kCountdownSize = 200;

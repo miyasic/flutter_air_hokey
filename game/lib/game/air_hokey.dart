@@ -9,6 +9,8 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game/components/button/start_button.dart';
+import 'package:game/components/countdown_text.dart';
 import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
@@ -26,6 +28,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Ball? ball;
 
   final debugText = DebugText();
+  StartButton? startButton;
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -35,6 +38,11 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       fieldSize: fieldSize,
       gameSize: size,
     );
+    startButton = StartButton(
+      onTap: _onTapStartButton,
+      gameSize: size,
+    );
+
     ball = Ball(size);
     _startWebSocketConnection(opponentPaddle);
     await addAll([
@@ -49,8 +57,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
+      startButton!,
       if (isDebug) debugText,
-      ball!, // 直近代入しているのでnullではない
     ]);
   }
 
@@ -62,6 +70,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       gameState?.debugViewText,
       ball?.getDebugViewText(size)
     ]);
+    if (gameState?.ids.length == 2) {
+      startButton?.setEnable();
+    }
   }
 
   @override
@@ -138,5 +149,20 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         ),
       );
     }
+  }
+
+  Future<void> _onTapStartButton() async {
+    await _countdown();
+    add(ball!);
+  }
+
+  Future<void> _countdown() async {
+    final countdownText = CountdownText(gameSize: size);
+    await add(countdownText);
+    for (var i = kCountdownDuration; i > 0; i--) {
+      countdownText.updateCount(i);
+      await Future<void>.delayed(const Duration(seconds: 1));
+    }
+    countdownText.removeFromParent();
   }
 }
