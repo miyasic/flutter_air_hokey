@@ -37,6 +37,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       fieldSize: fieldSize,
       gameSize: size,
     );
+
     ball = Ball(size);
     _startWebSocketConnection(opponentPaddle);
     await addAll([
@@ -51,9 +52,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
+      StartButton(
+        onTap: _onTapStartButton,
+        gameSize: size,
+      ),
       if (isDebug) debugText,
     ]);
-    await addStartButton();
   }
 
   @override
@@ -142,24 +146,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     }
   }
 
-  Future<void> addStartButton() async {
-    final myTextButton = StartButton(
-      onTapDownMyTextButton: onTapDownStartButton,
-      gameSize: size,
-    );
-
-    await add(myTextButton);
-  }
-
-  Future<void> onTapDownStartButton() async {
-    children.whereType<StartButton>().forEach((button) {
-      button.removeFromParent();
-    });
-    await countdown();
+  Future<void> _onTapStartButton() async {
+    await _countdown();
     add(ball!);
   }
 
-  Future<void> countdown() async {
+  Future<void> _countdown() async {
     for (var i = kCountdownDuration; i > 0; i--) {
       final countdownText = CountdownText(count: i);
 

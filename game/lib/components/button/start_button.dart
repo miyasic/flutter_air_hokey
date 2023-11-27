@@ -6,7 +6,7 @@ import 'package:game/constants/constants.dart';
 
 class StartButton extends TextBoxComponent with TapCallbacks {
   StartButton({
-    required this.onTapDownMyTextButton,
+    required this.onTap,
     required this.gameSize,
   }) : super(
           text: 'Start',
@@ -16,13 +16,14 @@ class StartButton extends TextBoxComponent with TapCallbacks {
           align: Anchor.center,
         );
 
-  final Future<void> Function() onTapDownMyTextButton;
+  final Future<void> Function() onTap;
   final Vector2 gameSize;
 
   @override
   bool onTapDown(TapDownEvent event) {
-    print('StartButton: onTapDown');
-    onTapDownMyTextButton();
+    // ボタンはタップされたら削除
+    removeFromParent();
+    onTap();
     return true;
   }
 
