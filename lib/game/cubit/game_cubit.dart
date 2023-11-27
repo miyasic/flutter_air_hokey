@@ -56,11 +56,12 @@ class GameCubit extends BroadcastCubit<GameState> {
   void reset(Reset reset) {
     // ゲームオーナーからのリセットの場合は、オーナーを保持
     if (reset.id == state.ids[0]) {
-      emit(GameState(ids: [reset.id], positionMap: {reset.id: 0}));
+      emit(GameState(
+          ids: [reset.id], positionMap: {reset.id: 0}, ballState: null));
       return;
     }
     // それ以外の場合は完全にリセット
-    emit(const GameState(ids: [], positionMap: {}));
+    emit(const GameState(ids: [], positionMap: {}, ballState: null));
   }
 
   void start(Start start) {
