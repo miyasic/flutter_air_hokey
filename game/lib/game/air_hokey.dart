@@ -145,7 +145,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Future<void> addStartButton() async {
     final myTextButton = StartButton(
       onTapDownMyTextButton: onTapDownStartButton,
-      renderMyTextButton: renderMyTextButton,
       gameSize: size,
     );
 
@@ -158,18 +157,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     });
     await countdown();
     add(ball!);
-  }
-
-  void renderMyTextButton(Canvas canvas) {
-    final myTextButton = children.whereType<StartButton>().first;
-    final rect = Rect.fromLTWH(
-      0,
-      0,
-      myTextButton.size.x,
-      myTextButton.size.y,
-    );
-    final bgPaint = Paint()..color = kButtonColor;
-    canvas.drawRect(rect, bgPaint);
   }
 
   Future<void> countdown() async {

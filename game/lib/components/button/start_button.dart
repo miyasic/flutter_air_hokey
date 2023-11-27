@@ -7,7 +7,6 @@ import 'package:game/constants/constants.dart';
 class StartButton extends TextBoxComponent with TapCallbacks {
   StartButton({
     required this.onTapDownMyTextButton,
-    required this.renderMyTextButton,
     required this.gameSize,
   }) : super(
           text: 'Start',
@@ -18,7 +17,6 @@ class StartButton extends TextBoxComponent with TapCallbacks {
         );
 
   final Future<void> Function() onTapDownMyTextButton;
-  final void Function(Canvas canvas) renderMyTextButton;
   final Vector2 gameSize;
 
   @override
@@ -30,7 +28,14 @@ class StartButton extends TextBoxComponent with TapCallbacks {
 
   @override
   void render(Canvas canvas) {
-    renderMyTextButton(canvas);
+    final rect = Rect.fromLTWH(
+      0,
+      0,
+      size.x,
+      size.y,
+    );
+    final bgPaint = Paint()..color = kButtonColor;
+    canvas.drawRect(rect, bgPaint);
     super.render(canvas);
   }
 }
