@@ -9,6 +9,8 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game/components/button/start_button.dart';
+import 'package:game/components/countdown_text.dart';
 import 'package:game/components/debug_text.dart';
 import 'package:game/components/field.dart';
 import 'package:game/components/paddle/draggable_paddle.dart';
@@ -50,8 +52,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           gameSize: size),
       opponentPaddle,
       if (isDebug) debugText,
-      ball!, // 直近代入しているのでnullではない
     ]);
+    await addStartButton();
   }
 
   @override
@@ -137,6 +139,50 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           paddlePosition: relativeX.toInt(),
         ),
       );
+    }
+  }
+
+  Future<void> addStartButton() async {
+    final myTextButton = StartButton(
+      onTapDownMyTextButton: onTapDownStartButton,
+      renderMyTextButton: renderMyTextButton,
+      gameSize: size,
+    );
+
+    await add(myTextButton);
+  }
+
+  Future<void> onTapDownStartButton() async {
+    children.whereType<StartButton>().forEach((button) {
+      button.removeFromParent();
+    });
+    await countdown();
+    add(ball!);
+  }
+
+  void renderMyTextButton(Canvas canvas) {
+    final myTextButton = children.whereType<StartButton>().first;
+    final rect = Rect.fromLTWH(
+      0,
+      0,
+      myTextButton.size.x,
+      myTextButton.size.y,
+    );
+    final bgPaint = Paint()..color = kButtonColor;
+    canvas.drawRect(rect, bgPaint);
+  }
+
+  Future<void> countdown() async {
+    for (var i = kCountdownDuration; i > 0; i--) {
+      final countdownText = CountdownText(count: i);
+
+      countdownText.position
+        ..x = size.x / 2 - countdownText.size.x / 2
+        ..y = size.y / 2 - countdownText.size.y / 2;
+
+      await add(countdownText);
+
+      await Future<void>.delayed(const Duration(seconds: 1));
     }
   }
 }
