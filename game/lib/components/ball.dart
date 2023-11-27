@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:air_hokey/game/ball_state/ball_state.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game/components/directional_hit_box.dart';
@@ -133,4 +134,13 @@ extension BallX on Ball {
   String getDebugViewText(Vector2 gameSize) =>
       "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n"
       "Ball Velocity: ${velocity.x.toInt()}, ${velocity.y.toInt()}\n";
+
+  BallState getBallState(Vector2 gameSize) {
+    final relativePosition = this.relativePosition(gameSize);
+    return BallState(
+        x: relativePosition.x,
+        y: relativePosition.y,
+        vx: velocity.x,
+        vy: velocity.y);
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/request/client_request.dart';
 import 'package:air_hokey/game/reset/reset.dart';
+import 'package:air_hokey/game/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
@@ -27,6 +28,14 @@ class WebSocketRepository {
     final request = ClientRequest(
       type: ClientRequestType.reset,
       requestDetail: reset,
+    );
+    _message(request);
+  }
+
+  void sendStart(Start start) {
+    final request = ClientRequest(
+      type: ClientRequestType.start,
+      requestDetail: start,
     );
     _message(request);
   }
