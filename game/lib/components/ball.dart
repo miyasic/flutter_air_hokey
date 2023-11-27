@@ -47,14 +47,18 @@ class Ball extends CircleComponent with CollisionCallbacks {
     return super.onLoad();
   }
 
-  void reload(BallState? ballState, User? user) {
+  void reload(BallState? ballState, User? user, Vector2 gameSize) {
     if (ballState == null) return; // 基本的にnullで入ってくることはない
     if (user == null) return; // 基本的にnullで入ってくることはない
     switch (user.userRole!) {
       case UserRole.roomCreator:
+        x = ballState.relativeX + gameSize.x / 2;
+        y = ballState.relativeY + gameSize.y / 2;
         velocity.x = ballState.vx;
         velocity.y = ballState.vy;
       case UserRole.challenger:
+        x = -1 * ballState.relativeX + gameSize.x / 2;
+        y = -1 * ballState.relativeY + gameSize.y / 2;
         velocity.x = ballState.vx;
         velocity.y = ballState.vy;
         velocity *= -1;
@@ -155,8 +159,8 @@ extension BallX on Ball {
   BallState getBallState(Vector2 gameSize) {
     final relativePosition = this.relativePosition(gameSize);
     return BallState(
-        x: relativePosition.x,
-        y: relativePosition.y,
+        relativeX: relativePosition.x,
+        relativeY: relativePosition.y,
         vx: velocity.x,
         vy: velocity.y);
   }

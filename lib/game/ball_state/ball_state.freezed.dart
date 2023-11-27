@@ -20,8 +20,8 @@ BallState _$BallStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BallState {
-  double get x => throw _privateConstructorUsedError;
-  double get y => throw _privateConstructorUsedError;
+  double get relativeX => throw _privateConstructorUsedError;
+  double get relativeY => throw _privateConstructorUsedError;
   double get vx => throw _privateConstructorUsedError;
   double get vy => throw _privateConstructorUsedError;
 
@@ -36,7 +36,7 @@ abstract class $BallStateCopyWith<$Res> {
   factory $BallStateCopyWith(BallState value, $Res Function(BallState) then) =
       _$BallStateCopyWithImpl<$Res, BallState>;
   @useResult
-  $Res call({double x, double y, double vx, double vy});
+  $Res call({double relativeX, double relativeY, double vx, double vy});
 }
 
 /// @nodoc
@@ -52,19 +52,19 @@ class _$BallStateCopyWithImpl<$Res, $Val extends BallState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? x = null,
-    Object? y = null,
+    Object? relativeX = null,
+    Object? relativeY = null,
     Object? vx = null,
     Object? vy = null,
   }) {
     return _then(_value.copyWith(
-      x: null == x
-          ? _value.x
-          : x // ignore: cast_nullable_to_non_nullable
+      relativeX: null == relativeX
+          ? _value.relativeX
+          : relativeX // ignore: cast_nullable_to_non_nullable
               as double,
-      y: null == y
-          ? _value.y
-          : y // ignore: cast_nullable_to_non_nullable
+      relativeY: null == relativeY
+          ? _value.relativeY
+          : relativeY // ignore: cast_nullable_to_non_nullable
               as double,
       vx: null == vx
           ? _value.vx
@@ -86,7 +86,7 @@ abstract class _$$BallStateImplCopyWith<$Res>
       __$$BallStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double x, double y, double vx, double vy});
+  $Res call({double relativeX, double relativeY, double vx, double vy});
 }
 
 /// @nodoc
@@ -100,19 +100,19 @@ class __$$BallStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? x = null,
-    Object? y = null,
+    Object? relativeX = null,
+    Object? relativeY = null,
     Object? vx = null,
     Object? vy = null,
   }) {
     return _then(_$BallStateImpl(
-      x: null == x
-          ? _value.x
-          : x // ignore: cast_nullable_to_non_nullable
+      relativeX: null == relativeX
+          ? _value.relativeX
+          : relativeX // ignore: cast_nullable_to_non_nullable
               as double,
-      y: null == y
-          ? _value.y
-          : y // ignore: cast_nullable_to_non_nullable
+      relativeY: null == relativeY
+          ? _value.relativeY
+          : relativeY // ignore: cast_nullable_to_non_nullable
               as double,
       vx: null == vx
           ? _value.vx
@@ -130,16 +130,19 @@ class __$$BallStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BallStateImpl extends _BallState {
   const _$BallStateImpl(
-      {required this.x, required this.y, required this.vx, required this.vy})
+      {required this.relativeX,
+      required this.relativeY,
+      required this.vx,
+      required this.vy})
       : super._();
 
   factory _$BallStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$BallStateImplFromJson(json);
 
   @override
-  final double x;
+  final double relativeX;
   @override
-  final double y;
+  final double relativeY;
   @override
   final double vx;
   @override
@@ -147,7 +150,7 @@ class _$BallStateImpl extends _BallState {
 
   @override
   String toString() {
-    return 'BallState(x: $x, y: $y, vx: $vx, vy: $vy)';
+    return 'BallState(relativeX: $relativeX, relativeY: $relativeY, vx: $vx, vy: $vy)';
   }
 
   @override
@@ -155,15 +158,17 @@ class _$BallStateImpl extends _BallState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BallStateImpl &&
-            (identical(other.x, x) || other.x == x) &&
-            (identical(other.y, y) || other.y == y) &&
+            (identical(other.relativeX, relativeX) ||
+                other.relativeX == relativeX) &&
+            (identical(other.relativeY, relativeY) ||
+                other.relativeY == relativeY) &&
             (identical(other.vx, vx) || other.vx == vx) &&
             (identical(other.vy, vy) || other.vy == vy));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, x, y, vx, vy);
+  int get hashCode => Object.hash(runtimeType, relativeX, relativeY, vx, vy);
 
   @JsonKey(ignore: true)
   @override
@@ -181,8 +186,8 @@ class _$BallStateImpl extends _BallState {
 
 abstract class _BallState extends BallState {
   const factory _BallState(
-      {required final double x,
-      required final double y,
+      {required final double relativeX,
+      required final double relativeY,
       required final double vx,
       required final double vy}) = _$BallStateImpl;
   const _BallState._() : super._();
@@ -191,9 +196,9 @@ abstract class _BallState extends BallState {
       _$BallStateImpl.fromJson;
 
   @override
-  double get x;
+  double get relativeX;
   @override
-  double get y;
+  double get relativeY;
   @override
   double get vx;
   @override

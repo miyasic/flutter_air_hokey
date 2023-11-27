@@ -8,16 +8,16 @@ part of 'ball_state.dart';
 
 _$BallStateImpl _$$BallStateImplFromJson(Map<String, dynamic> json) =>
     _$BallStateImpl(
-      x: (json['x'] as num).toDouble(),
-      y: (json['y'] as num).toDouble(),
+      relativeX: (json['relativeX'] as num).toDouble(),
+      relativeY: (json['relativeY'] as num).toDouble(),
       vx: (json['vx'] as num).toDouble(),
       vy: (json['vy'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$BallStateImplToJson(_$BallStateImpl instance) =>
     <String, dynamic>{
-      'x': instance.x,
-      'y': instance.y,
+      'relativeX': instance.relativeX,
+      'relativeY': instance.relativeY,
       'vx': instance.vx,
       'vy': instance.vy,
     };

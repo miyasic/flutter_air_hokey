@@ -7,8 +7,8 @@ part 'ball_state.g.dart';
 class BallState with _$BallState {
   /// コンストラクタ
   const factory BallState({
-    required double x,
-    required double y,
+    required double relativeX,
+    required double relativeY,
     required double vx,
     required double vy,
   }) = _BallState;
