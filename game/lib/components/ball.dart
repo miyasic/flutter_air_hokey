@@ -46,6 +46,12 @@ class Ball extends CircleComponent with CollisionCallbacks {
     return super.onLoad();
   }
 
+  void reload(BallState? ballState) {
+    if (ballState == null) return; // 基本的にnullで入ってくることはない
+    velocity.x = ballState.vx;
+    velocity.y = ballState.vy;
+  }
+
   @override
   void onCollisionStart(
     Set<Vector2> intersectionPoints,
