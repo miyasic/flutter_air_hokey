@@ -152,16 +152,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> _countdown() async {
+    final countdownText = CountdownText(gameSize: size);
+    await add(countdownText);
     for (var i = kCountdownDuration; i > 0; i--) {
-      final countdownText = CountdownText(count: i);
-
-      countdownText.position
-        ..x = size.x / 2 - countdownText.size.x / 2
-        ..y = size.y / 2 - countdownText.size.y / 2;
-
-      await add(countdownText);
-
+      countdownText.updateCount(i);
       await Future<void>.delayed(const Duration(seconds: 1));
     }
+    countdownText.removeFromParent();
   }
 }

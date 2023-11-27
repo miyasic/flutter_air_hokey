@@ -4,20 +4,24 @@ import 'package:flame/components.dart';
 import 'package:game/constants/constants.dart';
 
 class CountdownText extends TextComponent {
-  CountdownText({required this.count})
+  CountdownText({required this.gameSize})
       : super(
           size: Vector2.all(kCountdownSize),
           textRenderer: TextPaint(
             style: kCountdownTextStyle,
           ),
-          text: '$count',
+          position: gameSize / 2,
+          anchor: Anchor.center,
         );
-  final int count;
+  final Vector2 gameSize;
 
   @override
   Future<void> render(Canvas canvas) async {
     super.render(canvas);
     await Future<void>.delayed(const Duration(seconds: 1));
-    removeFromParent();
+  }
+
+  void updateCount(int count) {
+    text = '$count';
   }
 }
