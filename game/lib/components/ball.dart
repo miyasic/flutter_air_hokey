@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:air_hokey/game/ball_state/ball_state.dart';
+import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game/components/directional_hit_box.dart';
 import 'package:game/components/paddle/paddle.dart';
+import 'package:game/state/user.dart';
 
 import '../../constants/constants.dart';
 
@@ -12,8 +14,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   Ball(Vector2 gameSize) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
-    position =
-        Vector2((gameSize.x - size.x) / 2, gameSize.y * kBallStartYRatio);
+    position = Vector2((gameSize.x - size.x) / 2, gameSize.y / 2);
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
@@ -46,10 +47,20 @@ class Ball extends CircleComponent with CollisionCallbacks {
     return super.onLoad();
   }
 
-  void reload(BallState? ballState) {
+  void reload(BallState? ballState, User? user) {
     if (ballState == null) return; // 基本的にnullで入ってくることはない
-    velocity.x = ballState.vx;
-    velocity.y = ballState.vy;
+    if (user == null) return; // 基本的にnullで入ってくることはない
+    switch (user.userRole!) {
+      case UserRole.roomCreator:
+        velocity.x = ballState.vx;
+        velocity.y = ballState.vy;
+      case UserRole.challenger:
+        velocity.x = ballState.vx;
+        velocity.y = ballState.vy;
+        velocity *= -1;
+      case UserRole.spectator:
+      // todo: 観戦者用の処理を実装
+    }
   }
 
   @override
