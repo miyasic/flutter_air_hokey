@@ -1,9 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:air_hokey/game/ball_state/ball_state.dart';
+import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game/components/directional_hit_box.dart';
 import 'package:game/components/paddle/paddle.dart';
+import 'package:game/state/user.dart';
 
 import '../../constants/constants.dart';
 
@@ -11,8 +14,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   Ball(Vector2 gameSize) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
-    position =
-        Vector2((gameSize.x - size.x) / 2, gameSize.y * kBallStartYRatio);
+    position = Vector2((gameSize.x - size.x) / 2, gameSize.y / 2);
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
@@ -43,6 +45,26 @@ class Ball extends CircleComponent with CollisionCallbacks {
     await add(hitbox);
 
     return super.onLoad();
+  }
+
+  void reload(BallState? ballState, User? user, Vector2 gameSize) {
+    if (ballState == null) return; // 基本的にnullで入ってくることはない
+    if (user == null) return; // 基本的にnullで入ってくることはない
+    switch (user.userRole!) {
+      case UserRole.roomCreator:
+        x = ballState.relativeX + gameSize.x / 2;
+        y = ballState.relativeY + gameSize.y / 2;
+        velocity.x = ballState.vx;
+        velocity.y = ballState.vy;
+      case UserRole.challenger:
+        x = -1 * ballState.relativeX + gameSize.x / 2;
+        y = -1 * ballState.relativeY + gameSize.y / 2;
+        velocity.x = ballState.vx;
+        velocity.y = ballState.vy;
+        velocity *= -1;
+      case UserRole.spectator:
+      // todo: 観戦者用の処理を実装
+    }
   }
 
   @override
@@ -133,4 +155,13 @@ extension BallX on Ball {
   String getDebugViewText(Vector2 gameSize) =>
       "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n"
       "Ball Velocity: ${velocity.x.toInt()}, ${velocity.y.toInt()}\n";
+
+  BallState getBallState(Vector2 gameSize) {
+    final relativePosition = this.relativePosition(gameSize);
+    return BallState(
+        relativeX: relativePosition.x,
+        relativeY: relativePosition.y,
+        vx: velocity.x,
+        vy: velocity.y);
+  }
 }

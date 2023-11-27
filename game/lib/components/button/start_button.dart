@@ -23,8 +23,6 @@ class StartButton extends TextBoxComponent with TapCallbacks {
 
   @override
   bool onTapDown(TapDownEvent event) {
-    // ボタンはタップされたら削除
-    removeFromParent();
     onTap();
     return true;
   }

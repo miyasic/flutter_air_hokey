@@ -4,6 +4,7 @@ import 'package:air_hokey/game/game_state/game_state.dart';
 import 'package:air_hokey/game/handshake/handshake.dart';
 import 'package:air_hokey/game/position_state/position_state.dart';
 import 'package:air_hokey/game/reset/reset.dart';
+import 'package:air_hokey/game/start/start.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
@@ -116,11 +117,21 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           throw Exception('Unknown response type');
       }
     });
-    s.listen((gameState) {
+    s.listen((gameState) async {
+      final isStart =
+          this.gameState?.ballState == null && gameState.ballState != null;
       // ここでpositionを更新する
       this.gameState = gameState;
       if (user != null) {
         opponentPaddle.updatePosition(gameState, user!);
+      }
+      // ローカルではballStateがnullかつサーバー側のballStateがnullではない場合(1回のみ)
+      if (isStart) {
+        // ボタンはタップされたら削除
+        startButton?.removeFromParent();
+        ball?.reload(gameState.ballState, user, size);
+        await _countdown();
+        add(ball!);
       }
     });
   }
@@ -152,8 +163,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> _onTapStartButton() async {
-    await _countdown();
-    add(ball!);
+    final start = Start(id: user!.id!, ballState: ball!.getBallState(size));
+    webSocketRepository.sendStart(start);
   }
 
   Future<void> _countdown() async {

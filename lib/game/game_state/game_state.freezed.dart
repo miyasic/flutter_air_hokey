@@ -22,6 +22,7 @@ GameState _$GameStateFromJson(Map<String, dynamic> json) {
 mixin _$GameState {
   List<String> get ids => throw _privateConstructorUsedError;
   Map<String, int> get positionMap => throw _privateConstructorUsedError;
+  BallState? get ballState => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,10 @@ abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
-  $Res call({List<String> ids, Map<String, int> positionMap});
+  $Res call(
+      {List<String> ids, Map<String, int> positionMap, BallState? ballState});
+
+  $BallStateCopyWith<$Res>? get ballState;
 }
 
 /// @nodoc
@@ -52,6 +56,7 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   $Res call({
     Object? ids = null,
     Object? positionMap = null,
+    Object? ballState = freezed,
   }) {
     return _then(_value.copyWith(
       ids: null == ids
@@ -62,7 +67,23 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
           ? _value.positionMap
           : positionMap // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
+      ballState: freezed == ballState
+          ? _value.ballState
+          : ballState // ignore: cast_nullable_to_non_nullable
+              as BallState?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $BallStateCopyWith<$Res>? get ballState {
+    if (_value.ballState == null) {
+      return null;
+    }
+
+    return $BallStateCopyWith<$Res>(_value.ballState!, (value) {
+      return _then(_value.copyWith(ballState: value) as $Val);
+    });
   }
 }
 
@@ -74,7 +95,11 @@ abstract class _$$GameStateImplCopyWith<$Res>
       __$$GameStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> ids, Map<String, int> positionMap});
+  $Res call(
+      {List<String> ids, Map<String, int> positionMap, BallState? ballState});
+
+  @override
+  $BallStateCopyWith<$Res>? get ballState;
 }
 
 /// @nodoc
@@ -90,6 +115,7 @@ class __$$GameStateImplCopyWithImpl<$Res>
   $Res call({
     Object? ids = null,
     Object? positionMap = null,
+    Object? ballState = freezed,
   }) {
     return _then(_$GameStateImpl(
       ids: null == ids
@@ -100,6 +126,10 @@ class __$$GameStateImplCopyWithImpl<$Res>
           ? _value._positionMap
           : positionMap // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
+      ballState: freezed == ballState
+          ? _value.ballState
+          : ballState // ignore: cast_nullable_to_non_nullable
+              as BallState?,
     ));
   }
 }
@@ -109,7 +139,8 @@ class __$$GameStateImplCopyWithImpl<$Res>
 class _$GameStateImpl extends _GameState {
   const _$GameStateImpl(
       {required final List<String> ids,
-      required final Map<String, int> positionMap})
+      required final Map<String, int> positionMap,
+      this.ballState})
       : _ids = ids,
         _positionMap = positionMap,
         super._();
@@ -134,8 +165,11 @@ class _$GameStateImpl extends _GameState {
   }
 
   @override
+  final BallState? ballState;
+
+  @override
   String toString() {
-    return 'GameState(ids: $ids, positionMap: $positionMap)';
+    return 'GameState(ids: $ids, positionMap: $positionMap, ballState: $ballState)';
   }
 
   @override
@@ -145,7 +179,9 @@ class _$GameStateImpl extends _GameState {
             other is _$GameStateImpl &&
             const DeepCollectionEquality().equals(other._ids, _ids) &&
             const DeepCollectionEquality()
-                .equals(other._positionMap, _positionMap));
+                .equals(other._positionMap, _positionMap) &&
+            (identical(other.ballState, ballState) ||
+                other.ballState == ballState));
   }
 
   @JsonKey(ignore: true)
@@ -153,7 +189,8 @@ class _$GameStateImpl extends _GameState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_ids),
-      const DeepCollectionEquality().hash(_positionMap));
+      const DeepCollectionEquality().hash(_positionMap),
+      ballState);
 
   @JsonKey(ignore: true)
   @override
@@ -172,7 +209,8 @@ class _$GameStateImpl extends _GameState {
 abstract class _GameState extends GameState {
   const factory _GameState(
       {required final List<String> ids,
-      required final Map<String, int> positionMap}) = _$GameStateImpl;
+      required final Map<String, int> positionMap,
+      final BallState? ballState}) = _$GameStateImpl;
   const _GameState._() : super._();
 
   factory _GameState.fromJson(Map<String, dynamic> json) =
@@ -182,6 +220,8 @@ abstract class _GameState extends GameState {
   List<String> get ids;
   @override
   Map<String, int> get positionMap;
+  @override
+  BallState? get ballState;
   @override
   @JsonKey(ignore: true)
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>

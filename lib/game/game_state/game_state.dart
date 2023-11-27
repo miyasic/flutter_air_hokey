@@ -1,3 +1,4 @@
+import 'package:air_hokey/game/ball_state/ball_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'game_state.freezed.dart';
@@ -8,6 +9,7 @@ class GameState with _$GameState {
   const factory GameState({
     required List<String> ids,
     required Map<String, int> positionMap,
+    BallState? ballState,
   }) = _GameState;
   const GameState._();
 
