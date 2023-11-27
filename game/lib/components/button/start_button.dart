@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flutter/material.dart';
 import 'package:game/constants/constants.dart';
 
 class StartButton extends TextBoxComponent with TapCallbacks {
@@ -9,7 +10,7 @@ class StartButton extends TextBoxComponent with TapCallbacks {
     required this.onTap,
     required this.gameSize,
   }) : super(
-          text: 'Start',
+          text: 'Waiting ...',
           size: Vector2(kButtonWidth, kButtonHeight),
           position: gameSize / 2,
           anchor: Anchor.center,
@@ -18,6 +19,7 @@ class StartButton extends TextBoxComponent with TapCallbacks {
 
   final Future<void> Function() onTap;
   final Vector2 gameSize;
+  bool isEnabled = false;
 
   @override
   bool onTapDown(TapDownEvent event) {
@@ -35,8 +37,13 @@ class StartButton extends TextBoxComponent with TapCallbacks {
       size.x,
       size.y,
     );
-    final bgPaint = Paint()..color = kButtonColor;
+    final bgPaint = Paint()..color = isEnabled ? kButtonColor : kDisabledColor;
     canvas.drawRect(rect, bgPaint);
     super.render(canvas);
+  }
+
+  void setEnable({bool isEnabled = true}) {
+    this.isEnabled = isEnabled;
+    text = 'Start';
   }
 }

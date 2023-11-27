@@ -28,6 +28,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Ball? ball;
 
   final debugText = DebugText();
+  StartButton? startButton;
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -35,6 +36,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
+      gameSize: size,
+    );
+    startButton = StartButton(
+      onTap: _onTapStartButton,
       gameSize: size,
     );
 
@@ -52,10 +57,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
           fieldSize: fieldSize,
           gameSize: size),
       opponentPaddle,
-      StartButton(
-        onTap: _onTapStartButton,
-        gameSize: size,
-      ),
+      startButton!,
       if (isDebug) debugText,
     ]);
   }
@@ -68,6 +70,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       gameState?.debugViewText,
       ball?.getDebugViewText(size)
     ]);
+    if (gameState?.ids.length == 2) {
+      startButton?.setEnable();
+    }
   }
 
   @override
