@@ -1,4 +1,0 @@
-# melos_managed_dependency_overrides: air_hokey_server
-dependency_overrides:
-  air_hokey_server:
-    path: ../server
