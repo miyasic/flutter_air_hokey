@@ -1,0 +1,6 @@
+name: air_hokey
+
+packages:
+  - packages/*
+
+sdkPath: .fvm/flutter_sdk
