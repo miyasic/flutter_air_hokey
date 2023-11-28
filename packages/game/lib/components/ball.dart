@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:air_hokey/game/ball_state/ball_state.dart';
-import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey_server/game/ball_state/ball_state.dart';
+import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game/components/directional_hit_box.dart';

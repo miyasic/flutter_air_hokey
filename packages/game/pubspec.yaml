@@ -39,7 +39,7 @@ dependencies:
   web_socket_channel: ^2.4.0
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
-  air_hokey:
+  air_hokey_server:
     path: ../server
 
 dev_dependencies:

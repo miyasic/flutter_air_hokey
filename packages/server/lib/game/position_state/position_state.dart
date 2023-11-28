@@ -1,4 +1,4 @@
-import 'package:air_hokey/game/handshake/handshake.dart';
+import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'position_state.freezed.dart';

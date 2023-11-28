@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:air_hokey/game/position_state/position_state.dart';
-import 'package:air_hokey/game/request/client_request.dart';
-import 'package:air_hokey/game/reset/reset.dart';
-import 'package:air_hokey/game/start/start.dart';
+import 'package:air_hokey_server/game/position_state/position_state.dart';
+import 'package:air_hokey_server/game/request/client_request.dart';
+import 'package:air_hokey_server/game/reset/reset.dart';
+import 'package:air_hokey_server/game/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
