@@ -1,7 +1,7 @@
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:game/components/paddle/paddle.dart';
-import 'package:game/constants/constants.dart';
+import 'package:air_hokey_client/components/paddle/paddle.dart';
+import 'package:air_hokey_client/constants/constants.dart';
 
 class DraggablePaddle extends Paddle with DragCallbacks {
   DraggablePaddle(

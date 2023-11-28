@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:game/constants/constants.dart';
+import 'package:air_hokey_client/constants/constants.dart';
 
 class StartButton extends TextBoxComponent with TapCallbacks {
   StartButton({

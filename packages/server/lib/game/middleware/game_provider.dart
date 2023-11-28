@@ -3,5 +3,5 @@ import 'package:dart_frog/dart_frog.dart';
 
 final _game = GameCubit();
 
-// Provide the game instance via `RequestContext`.
+// Provide the client instance via `RequestContext`.
 final gameProvider = provider<GameCubit>((_) => _game);

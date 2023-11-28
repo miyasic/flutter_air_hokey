@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:game/constants/constants.dart';
+import 'package:air_hokey_client/constants/constants.dart';
 
 class CountdownText extends TextComponent {
   CountdownText({required this.gameSize})

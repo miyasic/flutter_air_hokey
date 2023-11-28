@@ -4,9 +4,9 @@ import 'package:air_hokey_server/game/ball_state/ball_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:game/components/directional_hit_box.dart';
-import 'package:game/components/paddle/paddle.dart';
-import 'package:game/state/user.dart';
+import 'package:air_hokey_client/components/directional_hit_box.dart';
+import 'package:air_hokey_client/components/paddle/paddle.dart';
+import 'package:air_hokey_client/state/user.dart';
 
 import '../../constants/constants.dart';
 

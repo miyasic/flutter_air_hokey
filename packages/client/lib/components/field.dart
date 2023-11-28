@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart';
-import 'package:game/components/directional_hit_box.dart';
-import 'package:game/constants/constants.dart';
+import 'package:air_hokey_client/components/directional_hit_box.dart';
+import 'package:air_hokey_client/constants/constants.dart';
 
 class Field extends RectangleComponent {
   Field({
