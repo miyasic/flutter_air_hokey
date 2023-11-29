@@ -124,25 +124,13 @@ class Ball extends CircleComponent with CollisionCallbacks {
     final isTopOrBottomHit = isTopHit || isBottomHit;
 
     if (isLeftOrRightHit) {
-      if (isRightHit && velocity.x > 0) {
-        velocity.x += kBallNudgeSpeed;
-        return;
-      }
-
-      if (isLeftHit && velocity.x < 0) {
-        velocity.x -= kBallNudgeSpeed;
-        return;
-      }
-
       velocity.x = -velocity.x;
       return;
     }
 
     if (isTopOrBottomHit) {
       velocity.y = -velocity.y;
-      if (Random().nextInt(kBallRandomNumber) % kBallRandomNumber == 0) {
-        velocity.x += kBallNudgeSpeed;
-      }
+      return;
     }
   }
 }
