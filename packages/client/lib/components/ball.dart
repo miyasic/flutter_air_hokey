@@ -15,6 +15,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
     position = Vector2((gameSize.x - size.x) / 2, gameSize.y / 2);
+    anchor = Anchor.center;
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
@@ -34,7 +35,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void update(double dt) {
-    position += velocity * dt;
+    position += velocity * minFlameTime;
     super.update(dt);
   }
 

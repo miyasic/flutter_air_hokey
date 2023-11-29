@@ -65,3 +65,4 @@ const double wallThickness = 10;
 const PaletteEntry wallColor = BasicPalette.lightOrange;
 
 const isDebug = true;
+const double minFlameTime = 1 / 60;
