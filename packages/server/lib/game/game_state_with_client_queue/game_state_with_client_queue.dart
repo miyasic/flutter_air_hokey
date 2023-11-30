@@ -15,4 +15,9 @@ class GameStateWithClientQueue with _$GameStateWithClientQueue {
 
   factory GameStateWithClientQueue.fromJson(Map<String, dynamic> json) =>
       _$GameStateWithClientQueueFromJson(json);
+
+  factory GameStateWithClientQueue.initial() => const GameStateWithClientQueue(
+        clientGameStateQueue: {},
+        gameState: GameState(ids: [], positionMap: {}, ballState: null),
+      );
 }

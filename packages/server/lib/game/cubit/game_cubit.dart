@@ -11,10 +11,7 @@ import 'package:broadcast_bloc/broadcast_bloc.dart';
 
 class GameCubit extends BroadcastCubit<GameStateWithClientQueue> {
   // Create an instance with an initial state of 0.
-  GameCubit()
-      : super(const GameStateWithClientQueue(
-            clientGameStateQueue: {},
-            gameState: GameState(ids: [], positionMap: {}, ballState: null)));
+  GameCubit() : super(GameStateWithClientQueue.initial());
 
   @override
   Object toMessage(GameStateWithClientQueue state) {
@@ -61,9 +58,7 @@ class GameCubit extends BroadcastCubit<GameStateWithClientQueue> {
   }
 
   void reset(Reset reset) {
-    emit(const GameStateWithClientQueue(
-        clientGameStateQueue: {},
-        gameState: GameState(ids: [], positionMap: {}, ballState: null)));
+    emit(GameStateWithClientQueue.initial());
   }
 
   void start(Start start) {
