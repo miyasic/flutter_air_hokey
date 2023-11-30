@@ -20,8 +20,8 @@ Future<Response> onRequest(RequestContext context) async {
 
       final uuid = const UuidV4().generate();
       final userRole = cubit.onNewAccess(uuid);
-      final handshake =
-          Handshake(id: uuid, userRole: userRole, gameState: cubit.state);
+      final handshake = Handshake(
+          id: uuid, userRole: userRole, gameState: cubit.state.gameState);
       // Send the current count to the new client.
       final serverResponse = ServerResponse(
         type: ServerResponseType.handshake,
