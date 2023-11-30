@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
 import 'package:air_hokey_server/game/game_state/game_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:air_hokey_server/game/position_state/position_state.dart';
@@ -152,11 +153,13 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (user != null) {
       final id = user!.id!;
       final userRole = user!.userRole!;
-      webSocketRepository.sendPosition(
-        PositionState(
+      webSocketRepository.sendClientGameState(
+        ClientGameState(
           id: id,
           userRole: userRole,
           paddlePosition: relativeX.toInt(),
+          ballState: null,
+          serverLoopCount: null,
         ),
       );
     }
