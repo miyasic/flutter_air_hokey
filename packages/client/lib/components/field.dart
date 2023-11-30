@@ -12,8 +12,8 @@ class Field extends RectangleComponent {
     required this.paint,
   }) : super(
           size: fieldSize,
-          position: Vector2(
-              (gameSize.x - fieldSize.x) / 2, (gameSize.y - fieldSize.y) / 2),
+          anchor: Anchor.center,
+          position: gameSize / 2,
           paint: paint,
         );
   final Vector2 gameSize;
@@ -25,42 +25,22 @@ class Field extends RectangleComponent {
   FutureOr<void> onLoad() {
     // wall on the left side
     add(
-      RectangleComponent(
-        size: Vector2(wallThickness, size.y),
-        position: Vector2(0, 0),
-        paint: wallColor.paint(),
-        children: [LeftHitbox(Vector2(10, size.y))],
-      ),
+      LeftHitbox(size: Vector2(wallThickness, size.y), parentSize: size),
     );
 
     // wall on the right side
     add(
-      RectangleComponent(
-        size: Vector2(wallThickness, size.y),
-        position: Vector2(fieldSize.x - wallThickness, 0),
-        paint: wallColor.paint(),
-        children: [RightHitbox(Vector2(1, size.y))],
-      ),
+      RightHitbox(size: Vector2(wallThickness, size.y), parentSize: size),
     );
 
     // wall on the top
     add(
-      RectangleComponent(
-        size: Vector2(size.x, wallThickness),
-        position: Vector2(0, 0),
-        paint: wallColor.paint(),
-        children: [BottomHitbox(Vector2(size.x, 1))],
-      ),
+      UpperHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
 
     // wall on the bottom
     add(
-      RectangleComponent(
-        size: Vector2(size.x, wallThickness),
-        position: Vector2(0, fieldSize.y),
-        paint: wallColor.paint(),
-        children: [UpperHitbox(Vector2(size.x, 1))],
-      ),
+      BottomHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
   }
 }

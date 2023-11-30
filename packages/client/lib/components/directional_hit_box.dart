@@ -1,13 +1,15 @@
 import 'dart:async';
 
+import 'package:air_hokey_client/constants/constants.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/palette.dart';
 
 sealed class DirectionalHitbox extends RectangleComponent
     with CollisionCallbacks {
   DirectionalHitbox({super.size, super.position})
-      : super(paint: BasicPalette.transparent.paint());
+      : super(
+          paint: wallColor.paint(),
+        );
 
   @override
   FutureOr<void> onLoad() {
@@ -25,33 +27,33 @@ sealed class DirectionalHitbox extends RectangleComponent
 }
 
 class UpperHitbox extends DirectionalHitbox {
-  UpperHitbox(Vector2 parentSize)
+  UpperHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: Vector2(parentSize.x, 1),
+          size: size,
           position: Vector2(0, 0),
         );
 }
 
 class BottomHitbox extends DirectionalHitbox {
-  BottomHitbox(Vector2 parentSize)
+  BottomHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: Vector2(parentSize.x, 1),
-          position: Vector2(0, parentSize.y),
+          size: size,
+          position: Vector2(0, parentSize.y - size.y),
         );
 }
 
 class LeftHitbox extends DirectionalHitbox {
-  LeftHitbox(Vector2 parentSize)
+  LeftHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: Vector2(1, parentSize.y),
+          size: size,
           position: Vector2(0, 0),
         );
 }
 
 class RightHitbox extends DirectionalHitbox {
-  RightHitbox(Vector2 parentSize)
+  RightHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: Vector2(1, parentSize.y),
-          position: Vector2(parentSize.x, 0),
+          size: size,
+          position: Vector2(parentSize.x - size.x, 0),
         );
 }
