@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:air_hokey_client/extension/vector2_extension.dart';
 import 'package:air_hokey_server/game/ball_state/ball_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
@@ -19,7 +20,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
-    velocity = Vector2(vx.toInt().toDouble(), vy.toInt().toDouble());
+    velocity = Vector2(vx, vy).roundToInteger();
   }
   late Vector2 velocity;
   late final Vector2 gameSize;
@@ -37,8 +38,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void update(double dt) {
-    final dp = velocity * minFlameTime;
-    position += Vector2(dp.x.toInt().toDouble(), dp.y.toInt().toDouble());
+    position += (velocity * minFlameTime).roundToInteger();
     super.update(dt);
   }
 
