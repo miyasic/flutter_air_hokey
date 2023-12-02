@@ -11,7 +11,7 @@ class OpponentPaddle extends Paddle {
       required super.gameSize})
       : super(
             position: Vector2((gameSize.x - paddleSize.x) / 2,
-                (gameSize.y - fieldSize.y) / 2 + paddleSize.y + kPaddleStartY));
+                (gameSize.y - fieldSize.y) / 2 + kPaddleStartY));
 
   @override
   void update(double dt) {
