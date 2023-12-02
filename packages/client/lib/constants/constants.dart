@@ -65,4 +65,4 @@ const double wallThickness = 10;
 const PaletteEntry wallColor = BasicPalette.lightOrange;
 
 const isDebug = true;
-const double minFlameTime = 0.01;
+const double minFlameTime = 0.016; // 60fps
