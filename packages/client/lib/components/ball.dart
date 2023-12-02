@@ -11,7 +11,7 @@ import 'package:air_hokey_client/state/user.dart';
 import '../../constants/constants.dart';
 
 class Ball extends CircleComponent with CollisionCallbacks {
-  Ball(Vector2 gameSize) {
+  Ball(this.gameSize) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
     position = Vector2(gameSize.x / 2, gameSize.y / 2);
@@ -19,10 +19,12 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
     final vx = kBallSpeed * cos(spawnAngle * kRad);
     final vy = kBallSpeed * sin(spawnAngle * kRad);
-    velocity = Vector2(vx, vy);
+    velocity = Vector2(vx.toInt().toDouble(), vy.toInt().toDouble());
   }
   late Vector2 velocity;
+  late final Vector2 gameSize;
 
+  String collisionText = '';
   bool isCollidedScreenHitboxX = false;
   bool isCollidedScreenHitboxY = false;
 
@@ -35,7 +37,8 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void update(double dt) {
-    position += velocity * minFlameTime;
+    final dp = velocity * minFlameTime;
+    position += Vector2(dp.x.toInt().toDouble(), dp.y.toInt().toDouble());
     super.update(dt);
   }
 
@@ -78,7 +81,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     if (other is Paddle) {
       final paddleRect = other.toAbsoluteRect();
 
-      updateBallTrajectory(collisionPoint, paddleRect);
+      updateBallTrajectory(collisionPoint, paddleRect, other);
     }
 
     super.onCollisionStart(intersectionPoints, other);
@@ -115,24 +118,41 @@ class Ball extends CircleComponent with CollisionCallbacks {
   void updateBallTrajectory(
     Vector2 collisionPoint,
     Rect rect,
+    Paddle paddle,
   ) {
     final isLeftHit = collisionPoint.x == rect.left;
     final isRightHit = collisionPoint.x == rect.right;
     final isTopHit = collisionPoint.y == rect.top;
     final isBottomHit = collisionPoint.y == rect.bottom;
 
-    final isLeftOrRightHit = isLeftHit || isRightHit;
-    final isTopOrBottomHit = isTopHit || isBottomHit;
-
-    if (isLeftOrRightHit) {
-      velocity.x = -velocity.x;
-      return;
+    String text = "Hit\n";
+    if (isLeftHit) {
+      if (velocity.x > 0) {
+        velocity.x = -velocity.x;
+      }
+      text += "Left ";
     }
-
-    if (isTopOrBottomHit) {
-      velocity.y = -velocity.y;
-      return;
+    if (isRightHit) {
+      if (velocity.x < 0) {
+        velocity.x = -velocity.x;
+      }
+      text += "Right ";
     }
+    if (isTopHit) {
+      if (velocity.y > 0) {
+        velocity.y = -velocity.y;
+      }
+      text += "Top ";
+    }
+    if (isBottomHit) {
+      if (velocity.y < 0) {
+        velocity.y = -velocity.y;
+      }
+      text += "Bottom ";
+    }
+    text +=
+        "x ${relativePosition(gameSize).x}, y ${relativePosition(gameSize).y} \n $collisionPoint";
+    collisionText = text;
   }
 }
 
@@ -142,8 +162,9 @@ extension BallX on Ball {
   }
 
   String getDebugViewText(Vector2 gameSize) =>
-      "Ball Position: ${relativePosition(gameSize).x.toInt()}, ${relativePosition(gameSize).y.toInt()} \n"
-      "Ball Velocity: ${velocity.x.toInt()}, ${velocity.y.toInt()}\n";
+      "Ball Position: ${relativePosition(gameSize).x}, ${relativePosition(gameSize).y} \n"
+      "Ball Velocity: ${velocity.x}, ${velocity.y}\n"
+      "Collision: $collisionText\n";
 
   BallState getBallState(Vector2 gameSize) {
     final relativePosition = this.relativePosition(gameSize);
