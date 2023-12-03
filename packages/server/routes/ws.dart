@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
 import 'package:air_hokey_server/game/cubit/game_cubit.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/position_state/position_state.dart';
 import 'package:air_hokey_server/game/reset/reset.dart';
 import 'package:air_hokey_server/game/response/server_response.dart';
 import 'package:air_hokey_server/game/start/start.dart';
@@ -42,12 +41,6 @@ Future<Response> onRequest(RequestContext context) async {
           if (event is String) {
             final json = jsonDecode(event);
             switch (json['type']) {
-              case 'position':
-                cubit.update(
-                  PositionState.fromJson(
-                    json['requestDetail'],
-                  ),
-                );
               case 'clientGameState':
                 await cubit.updateState(
                   ClientGameState.fromJson(

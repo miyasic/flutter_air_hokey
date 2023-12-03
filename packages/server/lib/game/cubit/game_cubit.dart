@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:air_hokey_server/game/ball_state/ball_state.dart';
 import 'package:air_hokey_server/game/game_state/game_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/position_state/position_state.dart';
 import 'package:air_hokey_server/game/reset/reset.dart';
 import 'package:air_hokey_server/game/response/server_response.dart';
 import 'package:air_hokey_server/game/start/start.dart';
@@ -49,13 +48,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       2 => UserRole.challenger,
       _ => UserRole.spectator,
     };
-  }
-
-  // Increment the current state.
-  void update(PositionState positionState) {
-    final newPositionMap = Map<String, int>.from(state.positionMap);
-    newPositionMap[positionState.id] = positionState.paddlePosition;
-    emit(state.copyWith(positionMap: newPositionMap));
   }
 
   Future<void> updateState(ClientGameState clientGameState) async {

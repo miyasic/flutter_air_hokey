@@ -22,7 +22,6 @@ class ClientRequest<T> with _$ClientRequest<T> {
 }
 
 enum ClientRequestType {
-  position,
   clientGameState,
   reset,
   start,

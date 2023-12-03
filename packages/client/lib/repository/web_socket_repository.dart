@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
-import 'package:air_hokey_server/game/position_state/position_state.dart';
 import 'package:air_hokey_server/game/request/client_request.dart';
 import 'package:air_hokey_server/game/reset/reset.dart';
 import 'package:air_hokey_server/game/start/start.dart';
@@ -15,14 +14,6 @@ class WebSocketRepository {
 
   Stream<dynamic> getChannel() {
     return channel.stream;
-  }
-
-  void sendPosition(PositionState positionState) {
-    final request = ClientRequest(
-      type: ClientRequestType.position,
-      requestDetail: positionState,
-    );
-    _message(request);
   }
 
   void sendClientGameState(ClientGameState clientGameState) {
