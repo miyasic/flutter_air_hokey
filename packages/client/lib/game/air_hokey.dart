@@ -150,8 +150,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       // ボールの位置を描画
       ball?.draw(gameState.ballState, user, size);
 
-      await Future.delayed(Duration(milliseconds: 100));
-      // collisionDetection.run();
+      collisionDetection.run();
       calcPositionAndSendState(gameState);
     });
   }
