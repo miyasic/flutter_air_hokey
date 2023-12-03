@@ -186,19 +186,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
     }
-    // final relativeX =
-    //     -1 * (paddle.position.x - (size.x / 2 - paddle.size.x / 2));
-    // if (user != null) {
-    //   final id = user!.id;
-    //   final userRole = user!.userRole;
-    //   webSocketRepository.sendPosition(
-    //     PositionState(
-    //       id: id,
-    //       userRole: userRole,
-    //       paddlePosition: relativeX.toInt(),
-    //     ),
-    //   );
-    // }
   }
 
   Future<void> _onTapStartButton() async {
