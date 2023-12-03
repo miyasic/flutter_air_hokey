@@ -50,9 +50,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     };
   }
 
-  Future<void> updateState(ClientGameState clientGameState) async {
-    // print("10秒待ってね");
-    // await Future.delayed(Duration(seconds: 3));
+  void updateState(ClientGameState clientGameState) {
     if (state.ballStateMap.keys.contains(clientGameState.id)) {
       return;
     }
