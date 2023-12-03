@@ -32,6 +32,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   final debugText = DebugText();
   StartButton? startButton;
+  bool shouldCalc = false;
 
   @override
   Future<void>? onLoad() async {
@@ -80,6 +81,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ]);
     if (gameState?.ids.length == 2) {
       startButton?.setEnable();
+    }
+    if (shouldCalc) {
+      calcPositionAndSendState(gameState!);
+      shouldCalc = false;
     }
   }
 
@@ -150,8 +155,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       // ボールの位置を描画
       ball?.draw(gameState.ballState, user, size);
 
-      collisionDetection.run();
-      calcPositionAndSendState(gameState);
+      shouldCalc = true;
     });
   }
 
