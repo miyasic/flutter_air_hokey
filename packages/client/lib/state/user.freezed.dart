@@ -21,10 +21,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   /// ユーザーのID
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
 
   /// ユーザーのタイプ
-  UserRole? get userRole => throw _privateConstructorUsedError;
+  UserRole get userRole => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String? id, UserRole? userRole});
+  $Res call({String id, UserRole userRole});
 }
 
 /// @nodoc
@@ -52,18 +52,18 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? userRole = freezed,
+    Object? id = null,
+    Object? userRole = null,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userRole: freezed == userRole
+              as String,
+      userRole: null == userRole
           ? _value.userRole
           : userRole // ignore: cast_nullable_to_non_nullable
-              as UserRole?,
+              as UserRole,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, UserRole? userRole});
+  $Res call({String id, UserRole userRole});
 }
 
 /// @nodoc
@@ -88,18 +88,18 @@ class __$$UserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? userRole = freezed,
+    Object? id = null,
+    Object? userRole = null,
   }) {
     return _then(_$UserImpl(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userRole: freezed == userRole
+              as String,
+      userRole: null == userRole
           ? _value.userRole
           : userRole // ignore: cast_nullable_to_non_nullable
-              as UserRole?,
+              as UserRole,
     ));
   }
 }
@@ -107,18 +107,18 @@ class __$$UserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl extends _User {
-  const _$UserImpl({this.id, this.userRole}) : super._();
+  const _$UserImpl({required this.id, required this.userRole}) : super._();
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
 
   /// ユーザーのID
   @override
-  final String? id;
+  final String id;
 
   /// ユーザーのタイプ
   @override
-  final UserRole? userRole;
+  final UserRole userRole;
 
   @override
   String toString() {
@@ -154,8 +154,9 @@ class _$UserImpl extends _User {
 }
 
 abstract class _User extends User {
-  const factory _User({final String? id, final UserRole? userRole}) =
-      _$UserImpl;
+  const factory _User(
+      {required final String id,
+      required final UserRole userRole}) = _$UserImpl;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -163,11 +164,11 @@ abstract class _User extends User {
   @override
 
   /// ユーザーのID
-  String? get id;
+  String get id;
   @override
 
   /// ユーザーのタイプ
-  UserRole? get userRole;
+  UserRole get userRole;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

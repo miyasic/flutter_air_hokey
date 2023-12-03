@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
 import 'package:air_hokey_server/game/game_state/game_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/position_state/position_state.dart';
 import 'package:air_hokey_server/game/reset/reset.dart';
 import 'package:air_hokey_server/game/start/start.dart';
 import 'package:flame/events.dart';
@@ -27,9 +27,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   User? user;
   GameState? gameState;
   Ball? ball;
+  DraggablePaddle? _draggablePaddle;
 
   final debugText = DebugText();
   StartButton? startButton;
+  bool shouldCalc = false;
+
   @override
   Future<void>? onLoad() async {
     final fieldSize = Vector2(400, 600);
@@ -44,6 +47,12 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       gameSize: size,
     );
 
+    _draggablePaddle = DraggablePaddle(
+        draggingPaddle: _draggingPaddle,
+        paddleSize: paddleSize,
+        fieldSize: fieldSize,
+        gameSize: size);
+
     ball = Ball(size);
     _startWebSocketConnection(opponentPaddle);
     await addAll([
@@ -52,17 +61,14 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         fieldSize: fieldSize,
         paint: BasicPalette.darkBlue.paint(),
       ),
-      DraggablePaddle(
-          draggingPaddle: _draggingPaddle,
-          paddleSize: paddleSize,
-          fieldSize: fieldSize,
-          gameSize: size),
+      _draggablePaddle!,
       opponentPaddle,
       startButton!,
       if (isDebug) debugText,
     ]);
   }
 
+  // ループごとの衝突判定を消している。
   @override
   void update(double dt) {
     super.update(dt);
@@ -73,6 +79,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ]);
     if (gameState?.ids.length == 2) {
       startButton?.setEnable();
+    }
+    if (shouldCalc) {
+      _calcPositionAndSendState(gameState!);
+      shouldCalc = false;
     }
   }
 
@@ -91,8 +101,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (isSpace && isKeyDown) {
       webSocketRepository.sendReset(
         Reset(
-          id: user!.id!,
-          userRole: user!.userRole!,
+          id: user!.id,
+          userRole: user!.userRole,
         ),
       );
 
@@ -118,22 +128,48 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       }
     });
     s.listen((gameState) async {
+      if (user == null) return;
       final isStart =
           this.gameState?.ballState == null && gameState.ballState != null;
       // ここでpositionを更新する
       this.gameState = gameState;
-      if (user != null) {
-        opponentPaddle.updatePosition(gameState, user!);
-      }
+      opponentPaddle.updatePosition(gameState, user!);
       // ローカルではballStateがnullかつサーバー側のballStateがnullではない場合(1回のみ)
       if (isStart) {
         // ボタンはタップされたら削除
         startButton?.removeFromParent();
-        ball?.reload(gameState.ballState, user, size);
+        ball?.draw(gameState.ballState, user, size);
         await _countdown();
         add(ball!);
+        _calcPositionAndSendState(gameState);
+        return;
       }
+
+      if (gameState.ballStateMap.isNotEmpty) {
+        // 情報が出揃っていないということなので無視
+        return;
+      }
+      // ボールの位置を描画
+      ball?.draw(gameState.ballState, user, size);
+
+      shouldCalc = true;
     });
+  }
+
+  void _calcPositionAndSendState(GameState gameState) {
+    // ボールの位置を計算
+    ball?.calcPositionForRequest(user, size);
+    // 新しいボールの位置を送信する
+    final relativeX = -1 *
+        (_draggablePaddle!.position.x -
+            (size.x / 2 - _draggablePaddle!.size.x / 2));
+    final clientGameState = ClientGameState(
+      id: user!.id,
+      paddlePosition: relativeX.toInt(),
+      ballState: ball!.getBallState(size, user!),
+      serverLoopCount: gameState.serverLoop,
+    );
+    webSocketRepository.sendClientGameState(clientGameState);
   }
 
   void _draggingPaddle(DragUpdateEvent event) {
@@ -147,23 +183,11 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
     }
-    final relativeX =
-        -1 * (paddle.position.x - (size.x / 2 - paddle.size.x / 2));
-    if (user != null) {
-      final id = user!.id!;
-      final userRole = user!.userRole!;
-      webSocketRepository.sendPosition(
-        PositionState(
-          id: id,
-          userRole: userRole,
-          paddlePosition: relativeX.toInt(),
-        ),
-      );
-    }
   }
 
   Future<void> _onTapStartButton() async {
-    final start = Start(id: user!.id!, ballState: ball!.getBallState(size));
+    final start =
+        Start(id: user!.id, ballState: ball!.getBallState(size, user!));
     webSocketRepository.sendStart(start);
   }
 
