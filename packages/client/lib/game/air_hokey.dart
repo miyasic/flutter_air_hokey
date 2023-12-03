@@ -35,6 +35,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   @override
   Future<void>? onLoad() async {
+    collisionDetection.run();
     final fieldSize = Vector2(400, 600);
     final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
     final opponentPaddle = OpponentPaddle(
@@ -68,6 +69,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ]);
   }
 
+  // ループごとの衝突判定を消している。
   @override
   void update(double dt) {
     super.update(dt);
@@ -147,6 +149,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       }
       // ボールの位置を描画
       ball?.draw(gameState.ballState, user, size);
+
+      await Future.delayed(Duration(milliseconds: 100));
+      // collisionDetection.run();
       calcPositionAndSendState(gameState);
     });
   }

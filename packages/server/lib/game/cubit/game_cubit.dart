@@ -83,6 +83,9 @@ class GameCubit extends BroadcastCubit<GameState> {
           ballStateMap: {},
           serverLoop: newServerLoop,
           isFixed: false));
+      print(aBallState);
+      print(bBallState);
+      print(newServerLoop);
       return;
     }
     print("A");

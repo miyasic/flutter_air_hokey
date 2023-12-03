@@ -22,7 +22,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     // final vx = kBallSpeed * cos(spawnAngle * kRad);
     // final vy = kBallSpeed * sin(spawnAngle * kRad);
     final vx = 0.0;
-    final vy = 100.0;
+    final vy = 300.0;
     velocity = Vector2(vx, vy).roundToInteger();
     velocityForRequest = velocity.clone();
   }
@@ -32,6 +32,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   String collisionText = '';
   bool isCollidedScreenHitboxX = false;
   bool isCollidedScreenHitboxY = false;
+  bool isCollidedPaddleHitbox = false;
   Vector2 positionForRequest = Vector2.zero();
   Vector2 velocityForRequest = Vector2.zero();
 
@@ -85,19 +86,13 @@ class Ball extends CircleComponent with CollisionCallbacks {
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
-    final collisionPoint = intersectionPoints.first;
-
-    if (other is Paddle) {
-      final paddleRect = other.toAbsoluteRect();
-
-      updateBallTrajectory(collisionPoint, paddleRect, other);
-    }
-
     super.onCollisionStart(intersectionPoints, other);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    print("Collision");
+    final collisionPoint = intersectionPoints.first;
     if (other is DirectionalHitbox) {
       switch (other) {
         case LeftHitbox() || RightHitbox():
@@ -114,6 +109,11 @@ class Ball extends CircleComponent with CollisionCallbacks {
           break;
       }
     }
+    if (other is Paddle) {
+      final paddleRect = other.toAbsoluteRect();
+      updateBallTrajectory(collisionPoint, paddleRect, other);
+      isCollidedPaddleHitbox = true;
+    }
     super.onCollision(intersectionPoints, other);
   }
 
@@ -121,6 +121,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   void onCollisionEnd(PositionComponent other) {
     isCollidedScreenHitboxX = false;
     isCollidedScreenHitboxY = false;
+    isCollidedPaddleHitbox = false;
     super.onCollisionEnd(other);
   }
 
@@ -138,24 +139,28 @@ class Ball extends CircleComponent with CollisionCallbacks {
     if (isLeftHit) {
       if (velocityForRequest.x > 0) {
         velocityForRequest.x = -velocityForRequest.x;
+        velocity.x = -velocity.x;
       }
       text += "Left ";
     }
     if (isRightHit) {
       if (velocityForRequest.x < 0) {
         velocityForRequest.x = -velocityForRequest.x;
+        velocity.x = -velocity.x;
       }
       text += "Right ";
     }
     if (isTopHit) {
       if (velocityForRequest.y > 0) {
         velocityForRequest.y = -velocityForRequest.y;
+        velocity.y = -velocity.y;
       }
       text += "Top ";
     }
     if (isBottomHit) {
       if (velocityForRequest.y < 0) {
         velocityForRequest.y = -velocityForRequest.y;
+        velocity.y = -velocity.y;
       }
       text += "Bottom ";
     }
