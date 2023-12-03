@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:air_hokey_server/game/ball_state/ball_state.dart';
-import 'package:air_hokey_server/game/game_state/game_state.dart';
-import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/reset/reset.dart';
-import 'package:air_hokey_server/game/response/server_response.dart';
-import 'package:air_hokey_server/game/start/start.dart';
+import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/game_state/game_state.dart';
+import 'package:model/ball_state/ball_state.dart';
+import 'package:model/handshake/handshake.dart';
+import 'package:model/reset/reset.dart';
+import 'package:model/response/server_response.dart';
+import 'package:model/start/start.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
-
-import '../client_game_state/client_game_state.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.

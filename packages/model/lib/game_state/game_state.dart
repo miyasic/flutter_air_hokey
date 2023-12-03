@@ -1,5 +1,5 @@
-import 'package:air_hokey_server/game/ball_state/ball_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:model/ball_state/ball_state.dart';
 
 part 'game_state.freezed.dart';
 part 'game_state.g.dart';

@@ -1,4 +1,4 @@
-import 'package:air_hokey_server/game/game_state/game_state.dart';
+import 'package:model/game_state/game_state.dart';
 import 'package:flame/game.dart';
 import 'package:air_hokey_client/components/paddle/paddle.dart';
 import 'package:air_hokey_client/constants/constants.dart';
