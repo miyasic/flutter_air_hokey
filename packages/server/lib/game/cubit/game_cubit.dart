@@ -65,11 +65,16 @@ class GameCubit extends BroadcastCubit<GameState> {
       print("同じIDのボールが存在します。");
       return;
     }
+    final newPositionMap = Map<String, int>.from(state.positionMap);
+    newPositionMap[clientGameState.id] = clientGameState.paddlePosition;
     if (state.ballStateMap.isEmpty) {
       // ボールの情報を追加する。
       final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
       newBallStateMap[clientGameState.id] = clientGameState.ballState;
-      emit(state.copyWith(ballStateMap: newBallStateMap, isFixed: false));
+      emit(state.copyWith(
+          positionMap: newPositionMap,
+          ballStateMap: newBallStateMap,
+          isFixed: false));
       print("C");
       return;
     }
@@ -79,6 +84,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     if (aBallState == bBallState) {
       print("B");
       emit(state.copyWith(
+          positionMap: newPositionMap,
           ballState: aBallState,
           ballStateMap: {},
           serverLoop: newServerLoop,
@@ -99,6 +105,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     final newBallState = aBallState;
 
     emit(state.copyWith(
+        positionMap: newPositionMap,
         ballState: newBallState,
         ballStateMap: {},
         serverLoop: newServerLoop,
