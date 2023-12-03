@@ -9,10 +9,10 @@ class User with _$User {
   /// コンストラクタ
   const factory User({
     /// ユーザーのID
-    String? id,
+    required String id,
 
     /// ユーザーのタイプ
-    UserRole? userRole,
+    required UserRole userRole,
   }) = _User;
   const User._();
 

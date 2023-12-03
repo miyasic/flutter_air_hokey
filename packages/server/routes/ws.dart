@@ -38,7 +38,7 @@ Future<Response> onRequest(RequestContext context) async {
 
       // Listen for messages from the client.
       channel.stream.listen(
-        (event) {
+        (event) async {
           if (event is String) {
             final json = jsonDecode(event);
             switch (json['type']) {
@@ -49,7 +49,7 @@ Future<Response> onRequest(RequestContext context) async {
                   ),
                 );
               case 'clientGameState':
-                cubit.updateState(
+                await cubit.updateState(
                   ClientGameState.fromJson(
                     json['requestDetail'],
                   ),

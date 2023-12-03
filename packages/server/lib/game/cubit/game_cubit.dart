@@ -58,7 +58,9 @@ class GameCubit extends BroadcastCubit<GameState> {
     emit(state.copyWith(positionMap: newPositionMap));
   }
 
-  void updateState(ClientGameState clientGameState) {
+  Future<void> updateState(ClientGameState clientGameState) async {
+    // print("10秒待ってね");
+    // await Future.delayed(Duration(seconds: 3));
     if (state.ballStateMap.keys.contains(clientGameState.id)) {
       print("同じIDのボールが存在します。");
       return;
@@ -67,23 +69,37 @@ class GameCubit extends BroadcastCubit<GameState> {
       // ボールの情報を追加する。
       final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
       newBallStateMap[clientGameState.id] = clientGameState.ballState;
-      emit(state.copyWith(ballStateMap: newBallStateMap));
+      emit(state.copyWith(ballStateMap: newBallStateMap, isFixed: false));
+      print("C");
       return;
     }
     final newServerLoop = state.serverLoop + 1;
     final aBallState = state.ballStateMap.values.first;
     final bBallState = clientGameState.ballState;
     if (aBallState == bBallState) {
+      print("B");
       emit(state.copyWith(
-          ballState: aBallState, ballStateMap: {}, serverLoop: newServerLoop));
+          ballState: aBallState,
+          ballStateMap: {},
+          serverLoop: newServerLoop,
+          isFixed: false));
+      return;
     }
+    print("A");
+
+    print(aBallState);
+    print(bBallState);
     // ボールの状態が違う場合、中心に近いボールを採用する。
-    final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
-        ? aBallState
-        : bBallState;
+    // final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
+    //     ? aBallState
+    //     : bBallState;
+    final newBallState = aBallState;
 
     emit(state.copyWith(
-        ballState: newBallState, ballStateMap: {}, serverLoop: newServerLoop));
+        ballState: newBallState,
+        ballStateMap: {},
+        serverLoop: newServerLoop,
+        isFixed: true));
   }
 
   void reset(Reset reset) {

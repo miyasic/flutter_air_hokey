@@ -12,6 +12,7 @@ class GameState with _$GameState {
     BallState? ballState,
     required Map<String, BallState> ballStateMap,
     required int serverLoop,
+    @Default(false) bool isFixed,
   }) = _GameState;
   const GameState._();
 
