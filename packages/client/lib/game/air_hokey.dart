@@ -35,7 +35,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   @override
   Future<void>? onLoad() async {
-    collisionDetection.run();
     final fieldSize = Vector2(400, 600);
     final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
     final opponentPaddle = OpponentPaddle(
