@@ -98,12 +98,14 @@ class Ball extends CircleComponent with CollisionCallbacks {
         case LeftHitbox() || RightHitbox():
           if (!isCollidedScreenHitboxX) {
             velocityForRequest.x = -velocityForRequest.x;
+            velocity.x = -velocity.x;
             isCollidedScreenHitboxX = true;
           }
           break;
         case UpperHitbox() || BottomHitbox():
           if (!isCollidedScreenHitboxY) {
             velocityForRequest.y = -velocityForRequest.y;
+            velocity.y = -velocity.y;
             isCollidedScreenHitboxY = true;
           }
           break;
