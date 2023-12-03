@@ -1,5 +1,5 @@
-import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:model/handshake/handshake.dart';
 
 part 'reset.freezed.dart';
 part 'reset.g.dart';
