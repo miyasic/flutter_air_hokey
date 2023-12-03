@@ -19,10 +19,8 @@ class Ball extends CircleComponent with CollisionCallbacks {
     anchor = Anchor.center;
     positionForRequest = position.clone();
 
-    // final vx = kBallSpeed * cos(spawnAngle * kRad);
-    // final vy = kBallSpeed * sin(spawnAngle * kRad);
-    final vx = 0.0;
-    final vy = 300.0;
+    final vx = kBallSpeed * cos(spawnAngle * kRad);
+    final vy = kBallSpeed * sin(spawnAngle * kRad);
     velocity = Vector2(vx, vy).roundToInteger();
     velocityForRequest = velocity.clone();
   }
