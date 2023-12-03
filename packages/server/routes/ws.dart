@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
 import 'package:air_hokey_server/game/cubit/game_cubit.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:air_hokey_server/game/position_state/position_state.dart';
@@ -44,6 +45,12 @@ Future<Response> onRequest(RequestContext context) async {
               case 'position':
                 cubit.update(
                   PositionState.fromJson(
+                    json['requestDetail'],
+                  ),
+                );
+              case 'clientGameState':
+                cubit.updateState(
+                  ClientGameState.fromJson(
                     json['requestDetail'],
                   ),
                 );

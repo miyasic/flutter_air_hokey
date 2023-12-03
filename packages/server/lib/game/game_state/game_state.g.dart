@@ -13,6 +13,10 @@ _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
       ballState: json['ballState'] == null
           ? null
           : BallState.fromJson(json['ballState'] as Map<String, dynamic>),
+      ballStateMap: (json['ballStateMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(k, BallState.fromJson(e as Map<String, dynamic>)),
+      ),
+      serverLoop: json['serverLoop'] as int,
     );
 
 Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
@@ -20,4 +24,6 @@ Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
       'ids': instance.ids,
       'positionMap': instance.positionMap,
       'ballState': instance.ballState,
+      'ballStateMap': instance.ballStateMap,
+      'serverLoop': instance.serverLoop,
     };

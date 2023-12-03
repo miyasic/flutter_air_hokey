@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:air_hokey_server/game/ball_state/ball_state.dart';
 import 'package:air_hokey_server/game/game_state/game_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
 import 'package:air_hokey_server/game/position_state/position_state.dart';
@@ -8,9 +9,13 @@ import 'package:air_hokey_server/game/response/server_response.dart';
 import 'package:air_hokey_server/game/start/start.dart';
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 
+import '../client_game_state/client_game_state.dart';
+
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
-  GameCubit() : super(const GameState(ids: [], positionMap: {}));
+  GameCubit()
+      : super(const GameState(
+            ids: [], positionMap: {}, serverLoop: 0, ballStateMap: {}));
 
   @override
   Object toMessage(GameState state) {
@@ -53,15 +58,52 @@ class GameCubit extends BroadcastCubit<GameState> {
     emit(state.copyWith(positionMap: newPositionMap));
   }
 
+  void updateState(ClientGameState clientGameState) {
+    if (state.ballStateMap.keys.contains(clientGameState.id)) {
+      print("同じIDのボールが存在します。");
+      return;
+    }
+    if (state.ballStateMap.isEmpty) {
+      // ボールの情報を追加する。
+      final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
+      newBallStateMap[clientGameState.id] = clientGameState.ballState;
+      emit(state.copyWith(ballStateMap: newBallStateMap));
+      return;
+    }
+    final newServerLoop = state.serverLoop + 1;
+    final aBallState = state.ballStateMap.values.first;
+    final bBallState = clientGameState.ballState;
+    if (aBallState == bBallState) {
+      emit(state.copyWith(
+          ballState: aBallState, ballStateMap: {}, serverLoop: newServerLoop));
+    }
+    // ボールの状態が違う場合、中心に近いボールを採用する。
+    final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
+        ? aBallState
+        : bBallState;
+
+    emit(state.copyWith(
+        ballState: newBallState, ballStateMap: {}, serverLoop: newServerLoop));
+  }
+
   void reset(Reset reset) {
     // ゲームオーナーからのリセットの場合は、オーナーを保持
     if (reset.id == state.ids[0]) {
       emit(GameState(
-          ids: [reset.id], positionMap: {reset.id: 0}, ballState: null));
+          ids: [reset.id],
+          positionMap: {reset.id: 0},
+          ballState: null,
+          ballStateMap: {},
+          serverLoop: 0));
       return;
     }
     // それ以外の場合は完全にリセット
-    emit(const GameState(ids: [], positionMap: {}, ballState: null));
+    emit(const GameState(
+        ids: [],
+        positionMap: {},
+        ballState: null,
+        ballStateMap: {},
+        serverLoop: 0));
   }
 
   void start(Start start) {

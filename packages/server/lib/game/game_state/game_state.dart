@@ -10,6 +10,8 @@ class GameState with _$GameState {
     required List<String> ids,
     required Map<String, int> positionMap,
     BallState? ballState,
+    required Map<String, BallState> ballStateMap,
+    required int serverLoop,
   }) = _GameState;
   const GameState._();
 
