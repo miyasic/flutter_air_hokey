@@ -90,10 +90,9 @@ class GameCubit extends BroadcastCubit<GameState> {
     }
 
     // ボールの状態が違う場合、中心に近いボールを採用する。
-    // final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
-    //     ? aBallState
-    //     : bBallState;
-    final newBallState = aBallState;
+    final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
+        ? aBallState
+        : bBallState;
 
     emit(state.copyWith(
         positionMap: newPositionMap,
