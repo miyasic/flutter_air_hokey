@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
 import 'package:air_hokey_server/game/game_state/game_state.dart';
 import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/position_state/position_state.dart';
 import 'package:air_hokey_server/game/reset/reset.dart';
 import 'package:air_hokey_server/game/start/start.dart';
 import 'package:flame/events.dart';
@@ -118,7 +117,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   ) {
     final s = webSocketRepository.getChannel().map((event) {
       final json = jsonDecode(event);
-      print(json['type']);
       switch (json['type']) {
         case 'gameState':
           return GameState.fromJson(json['responseDetail']);

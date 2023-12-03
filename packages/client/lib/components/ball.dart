@@ -57,7 +57,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   void draw(BallState? ballState, User? user, Vector2 gameSize) {
     if (ballState == null) return; // 基本的にnullで入ってくることはない
     if (user == null) return; // 基本的にnullで入ってくることはない
-    switch (user.userRole!) {
+    switch (user.userRole) {
       case UserRole.roomCreator:
         x = ballState.relativeX + gameSize.x / 2;
         y = ballState.relativeY + gameSize.y / 2;
@@ -80,16 +80,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   }
 
   @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
-  @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    print("Collision");
     final collisionPoint = intersectionPoints.first;
     if (other is DirectionalHitbox) {
       switch (other) {

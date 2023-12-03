@@ -62,7 +62,6 @@ class GameCubit extends BroadcastCubit<GameState> {
     // print("10秒待ってね");
     // await Future.delayed(Duration(seconds: 3));
     if (state.ballStateMap.keys.contains(clientGameState.id)) {
-      print("同じIDのボールが存在します。");
       return;
     }
     final newPositionMap = Map<String, int>.from(state.positionMap);
@@ -75,29 +74,21 @@ class GameCubit extends BroadcastCubit<GameState> {
           positionMap: newPositionMap,
           ballStateMap: newBallStateMap,
           isFixed: false));
-      print("C");
       return;
     }
     final newServerLoop = state.serverLoop + 1;
     final aBallState = state.ballStateMap.values.first;
     final bBallState = clientGameState.ballState;
     if (aBallState == bBallState) {
-      print("B");
       emit(state.copyWith(
           positionMap: newPositionMap,
           ballState: aBallState,
           ballStateMap: {},
           serverLoop: newServerLoop,
           isFixed: false));
-      print(aBallState);
-      print(bBallState);
-      print(newServerLoop);
       return;
     }
-    print("A");
 
-    print(aBallState);
-    print(bBallState);
     // ボールの状態が違う場合、中心に近いボールを採用する。
     // final newBallState = aBallState.relativeY.abs() < bBallState.relativeY.abs()
     //     ? aBallState
