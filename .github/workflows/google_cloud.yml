@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/flutter_air_hokey:latest packages/server
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/flutter_air_hokey:latest packages/server/build
 
       - name: Deploy to Google Cloud Run
         run: |
