@@ -2,7 +2,7 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: ["chore/cd-client"]  # chore/cd-clientブランチへのpushでトリガー
+    branches: ["main"]  # mainブランチへのpushでトリガー
   workflow_dispatch:
 
 jobs:
