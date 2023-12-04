@@ -2,7 +2,7 @@ name: Deploy to Google Cloud Run
 
 on:
   push:
-    branches: ["chore/server-cd"]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -17,6 +17,21 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
+
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          cache: true
+
+      - name: pub activate dart_frog
+        run: dart pub global activate dart_frog_cli
+
+      - name: build
+        run: |
+          dart_frog build
+        working-directory: packages/server
 
       - name: Build and push Docker image
         run: |
