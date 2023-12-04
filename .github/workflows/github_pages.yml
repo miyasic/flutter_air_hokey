@@ -26,7 +26,6 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: ${{ env.FLUTTER_CHANNEL }}
           cache: true
-        working-directory: packages/client # Flutterプロジェクトのディレクトリ指定
 
       - run: flutter --version
         working-directory: packages/client
