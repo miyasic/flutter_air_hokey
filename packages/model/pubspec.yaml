@@ -1,11 +1,11 @@
 name: model
-description: A sample command-line application.
-version: 1.0.0
+description: Model package for air hokey project.
+publish_to: 'none'
+version: 1.0.0+1
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
-# Add regular dependencies here.
 dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
