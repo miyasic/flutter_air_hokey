@@ -2,7 +2,7 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: ["chore/cd-client"]  # mainブランチへのpushでトリガー
+    branches: ["chore/cd-client"]  # chore/cd-clientブランチへのpushでトリガー
   workflow_dispatch:
 
 jobs:
@@ -26,11 +26,14 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: ${{ env.FLUTTER_CHANNEL }}
           cache: true
-          # Flutterコマンドを実行してビルド
-          - run: flutter --version
-          - run: flutter pub get
-          - run: flutter build web --web-renderer html --base-href /${{ steps.repo.outputs.repository }}/
         working-directory: packages/client # Flutterプロジェクトのディレクトリ指定
+
+      - run: flutter --version
+        working-directory: packages/client
+      - run: flutter pub get
+        working-directory: packages/client
+      - run: flutter build web --web-renderer html --base-href /${{ steps.repo.outputs.repository }}/
+        working-directory: packages/client
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
