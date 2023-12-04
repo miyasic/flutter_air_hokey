@@ -23,8 +23,8 @@ jobs:
       - name: Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0' # リポジトリに合わせたFlutterのバージョン
-          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
           cache: true
           # Flutterコマンドを実行してビルド
           - run: flutter --version
