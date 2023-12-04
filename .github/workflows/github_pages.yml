@@ -1,0 +1,39 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches: ["chore/cd-client"]  # mainブランチへのpushでトリガー
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Repository
+        id: repo
+        run: |
+          REPOSITORY=$(echo ${{ github.repository }} | sed -e "s#.*/##")
+          echo ::set-output name=repository::$REPOSITORY
+
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0' # リポジトリに合わせたFlutterのバージョン
+          channel: 'stable'
+          cache: true
+          # Flutterコマンドを実行してビルド
+          - run: flutter --version
+          - run: flutter pub get
+          - run: flutter build web --web-renderer html --base-href /${{ steps.repo.outputs.repository }}/
+        working-directory: packages/client # Flutterプロジェクトのディレクトリ指定
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/client/build/web
