@@ -13,7 +13,11 @@ class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
   GameCubit()
       : super(const GameState(
-            ids: [], positionMap: {}, serverLoop: 0, ballStateMap: {}));
+          ids: [],
+          positionMap: {},
+          serverLoop: 0,
+          ballStateMap: {},
+        ));
 
   @override
   Object toMessage(GameState state) {
@@ -40,6 +44,7 @@ class GameCubit extends BroadcastCubit<GameState> {
         ...state.positionMap,
         uuid: 0,
       },
+      isReset: false,
     );
     emit(newState);
     return switch (state.ids.length) {
@@ -97,7 +102,9 @@ class GameCubit extends BroadcastCubit<GameState> {
         positionMap: {},
         ballState: null,
         ballStateMap: {},
-        serverLoop: 0));
+        serverLoop: 0,
+        isFixed: false,
+        isReset: true));
   }
 
   void start(Start start) {

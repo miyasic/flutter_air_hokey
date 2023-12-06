@@ -18,6 +18,7 @@ _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
       ),
       serverLoop: json['serverLoop'] as int,
       isFixed: json['isFixed'] as bool? ?? false,
+      isReset: json['isReset'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
       'ballStateMap': instance.ballStateMap,
       'serverLoop': instance.serverLoop,
       'isFixed': instance.isFixed,
+      'isReset': instance.isReset,
     };
