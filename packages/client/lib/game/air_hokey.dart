@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flame/components.dart';
 import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/handshake/handshake.dart';
 import 'package:model/reset/reset.dart';
@@ -34,7 +35,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   StartButton? startButton;
   bool shouldCalc = false;
 
-  final fieldSize = Vector2(400, 600);
+  final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
