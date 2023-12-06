@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flame/components.dart';
 import 'package:model/client_game_state/client_game_state.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/handshake/handshake.dart';
@@ -33,10 +34,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   StartButton? startButton;
   bool shouldCalc = false;
 
+  final fieldSize = Vector2(400, 600);
+  final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
-    final fieldSize = Vector2(400, 600);
-    final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
@@ -129,6 +130,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     });
     s.listen((gameState) async {
       if (user == null) return;
+      if (gameState.isReset) {
+        _onReset();
+        return;
+      }
       final isStart =
           this.gameState?.ballState == null && gameState.ballState != null;
       // ここでpositionを更新する
@@ -199,5 +204,17 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       await Future<void>.delayed(const Duration(seconds: 1));
     }
     countdownText.removeFromParent();
+  }
+
+  void _onReset() {
+    webSocketRepository.close();
+    ball?.removeFromParent();
+    ball = Ball(size);
+    startButton?.setEnable();
+    _draggablePaddle = DraggablePaddle(
+        draggingPaddle: _draggingPaddle,
+        paddleSize: paddleSize,
+        fieldSize: fieldSize,
+        gameSize: size);
   }
 }
