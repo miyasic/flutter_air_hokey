@@ -148,6 +148,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       if (isStart) {
         // ボタンはタップされたら削除
         startButton?.removeFromParent();
+        ball = Ball(size);
         ball?.draw(gameState.ballState, user, size);
         await _countdown();
         add(ball!);
@@ -196,6 +197,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> _onTapStartButton() async {
+    ball = Ball(size);
     final start =
         Start(id: user!.id, ballState: ball!.getBallState(size, user!));
     webSocketRepository.sendStart(start);
@@ -225,5 +227,11 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   void _onGoal() {
     ball?.removeFromParent();
+    if (startButton == null) {
+      return;
+    }
+    // 本当は他の方法でisStartを検知したい。
+    gameState = null;
+    add(startButton!);
   }
 }

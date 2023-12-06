@@ -28,7 +28,7 @@ extension GameStateX on GameState {
     if (ids.isEmpty) return "No player \n";
     if (ids.length == 1) return "player 1: ${positionMap[ids[0]]} \n";
     if (ids.length == 2) {
-      return "player 1: ${positionMap[ids[0]]}\nplayer 2: ${positionMap[ids[1]]} \n";
+      return "player 1: ${positionMap[ids[0]]}\nplayer 2: ${positionMap[ids[1]]} \nPoint: ${pointMap[ids[0]]} : ${pointMap[ids[1]]} \n";
     }
     return "player more than 2 \n";
   }
