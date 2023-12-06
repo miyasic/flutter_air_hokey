@@ -111,7 +111,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.roomCreatorId] = (newPointMap[state.ids[0]] ?? 0) + 1;
       emit(state.copyWith(
-        positionMap: {},
         ballState: null,
         pointMap: newPointMap,
         ballStateMap: {},
@@ -124,7 +123,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.challengerId] = (newPointMap[state.ids[1]] ?? 0) + 1;
       emit(state.copyWith(
-        positionMap: {},
         ballState: null,
         pointMap: newPointMap,
         ballStateMap: {},
