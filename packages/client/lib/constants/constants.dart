@@ -40,5 +40,6 @@ const int kCountdownDuration = 3;
 const double wallThickness = 10;
 const PaletteEntry wallColor = BasicPalette.lightOrange;
 
-const isDebug = true;
 const double minFlameTime = 0.016; // 60fps
+const kLocalUrl = 'ws://localhost:8080/ws';
+const kRemoteUrl = 'wss://gamesample-ibiwnvw3aa-an.a.run.app/ws';

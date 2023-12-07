@@ -24,7 +24,12 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  final webSocketRepository = WebSocketRepository();
+  AirHokey({required this.isDebug}){
+   webSocketRepository = WebSocketRepository(isDebug: isDebug);
+  }
+
+  final bool isDebug;
+  late final WebSocketRepository webSocketRepository;
   User? user;
   GameState? gameState;
   Ball? ball;
@@ -96,9 +101,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
 
-    if (!isDebug) {
-      return KeyEventResult.ignored;
-    }
     if (isSpace && isKeyDown) {
       webSocketRepository.sendReset(
         Reset(
