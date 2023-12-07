@@ -30,7 +30,7 @@ sealed class DirectionalHitbox extends RectangleComponent
 class UpperLeftHitbox extends DirectionalHitbox {
   UpperLeftHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size.onlyXCalc((x) => x / 3),
+          size: size.onlyXCalc((x) => x / 4),
           position: Vector2(0, 0),
         );
 }
@@ -38,15 +38,15 @@ class UpperLeftHitbox extends DirectionalHitbox {
 class UpperRightHitbox extends DirectionalHitbox {
   UpperRightHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size.onlyXCalc((x) => x / 3),
-          position: Vector2(size.x * 2 / 3, 0),
+          size: size.onlyXCalc((x) => x / 4),
+          position: Vector2(size.x * 3 / 4, 0),
         );
 }
 
 class BottomLeftHitbox extends DirectionalHitbox {
   BottomLeftHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size.onlyXCalc((x) => x / 3),
+          size: size.onlyXCalc((x) => x / 4),
           position: Vector2(0, parentSize.y - size.y),
         );
 }
@@ -54,8 +54,8 @@ class BottomLeftHitbox extends DirectionalHitbox {
 class BottomRightHitbox extends DirectionalHitbox {
   BottomRightHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size.onlyXCalc((x) => x / 3),
-          position: Vector2(size.x * 2 / 3, parentSize.y - size.y),
+          size: size.onlyXCalc((x) => x / 4),
+          position: Vector2(size.x * 3 / 4, parentSize.y - size.y),
         );
 }
 
