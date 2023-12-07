@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:air_hokey_client/constants/constants.dart';
 import 'package:model/client_game_state/client_game_state.dart';
 import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';
@@ -7,8 +8,12 @@ import 'package:model/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
-  WebSocketRepository();
-  final channel = WebSocketChannel.connect(Uri.parse('ws://localhost:8080/ws'));
+  WebSocketRepository({required this.isDebug}) {
+    final url = isDebug ? kLocalUrl : kRemoteUrl;
+    channel = WebSocketChannel.connect(Uri.parse(url));
+  }
+  final bool isDebug;
+  late final WebSocketChannel channel;
   // final channel = WebSocketChannel.connect(
   //     Uri.parse('wss://gamesample-ibiwnvw3aa-an.a.run.app/ws'));
 

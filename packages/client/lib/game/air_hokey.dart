@@ -24,10 +24,12 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug});
+  AirHokey({required this.isDebug}){
+   webSocketRepository = WebSocketRepository(isDebug: isDebug);
+  }
 
   final bool isDebug;
-  final webSocketRepository = WebSocketRepository();
+  late final WebSocketRepository webSocketRepository;
   User? user;
   GameState? gameState;
   Ball? ball;
