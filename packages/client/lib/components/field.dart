@@ -35,12 +35,19 @@ class Field extends RectangleComponent {
 
     // wall on the top
     add(
-      UpperHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
+      UpperLeftHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
+    );
+
+    add(
+      UpperRightHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
 
     // wall on the bottom
     add(
-      BottomHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
+      BottomLeftHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
+    );
+    add(
+      BottomRightHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
   }
 }

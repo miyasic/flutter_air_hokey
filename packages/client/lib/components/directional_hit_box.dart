@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:air_hokey_client/constants/constants.dart';
+import 'package:air_hokey_client/extension/vector2_extension.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -26,19 +27,35 @@ sealed class DirectionalHitbox extends RectangleComponent
   }
 }
 
-class UpperHitbox extends DirectionalHitbox {
-  UpperHitbox({required Vector2 size, required Vector2 parentSize})
+class UpperLeftHitbox extends DirectionalHitbox {
+  UpperLeftHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size,
+          size: size.onlyXCalc((x) => x / 4),
           position: Vector2(0, 0),
         );
 }
 
-class BottomHitbox extends DirectionalHitbox {
-  BottomHitbox({required Vector2 size, required Vector2 parentSize})
+class UpperRightHitbox extends DirectionalHitbox {
+  UpperRightHitbox({required Vector2 size, required Vector2 parentSize})
       : super(
-          size: size,
+          size: size.onlyXCalc((x) => x / 4),
+          position: Vector2(size.x * 3 / 4, 0),
+        );
+}
+
+class BottomLeftHitbox extends DirectionalHitbox {
+  BottomLeftHitbox({required Vector2 size, required Vector2 parentSize})
+      : super(
+          size: size.onlyXCalc((x) => x / 4),
           position: Vector2(0, parentSize.y - size.y),
+        );
+}
+
+class BottomRightHitbox extends DirectionalHitbox {
+  BottomRightHitbox({required Vector2 size, required Vector2 parentSize})
+      : super(
+          size: size.onlyXCalc((x) => x / 4),
+          position: Vector2(size.x * 3 / 4, parentSize.y - size.y),
         );
 }
 
