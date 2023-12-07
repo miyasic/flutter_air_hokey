@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:air_hokey_client/state/user.dart';
 import 'package:flame/components.dart';
 import 'package:air_hokey_client/constants/constants.dart';
+import 'package:model/game_state/game_state.dart';
 
 class CountdownText extends TextComponent {
   CountdownText({required this.gameSize})
@@ -23,5 +25,12 @@ class CountdownText extends TextComponent {
 
   void updateCount(int count) {
     text = '$count';
+  }
+
+  void pointText(GameState gameState, User user) {
+    final pointMap = gameState.pointMap;
+    final myId = user.id;
+    final opponentId = user.getOpponentUserId(gameState);
+    text = "${pointMap[myId]} : ${pointMap[opponentId]}";
   }
 }

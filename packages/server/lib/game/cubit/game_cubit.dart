@@ -107,7 +107,7 @@ class GameCubit extends BroadcastCubit<GameState> {
 
   bool _checkGoal(BallState ballState) {
     // relativeYが正方向だとgameMasterのゴール
-    if (ballState.relativeY > kFieldSizeY / 2) {
+    if (ballState.relativeY < -kFieldSizeY / 2) {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.roomCreatorId] = (newPointMap[state.ids[0]] ?? 0) + 1;
       emit(state.copyWith(
@@ -119,7 +119,7 @@ class GameCubit extends BroadcastCubit<GameState> {
       ));
       return true;
     }
-    if (ballState.relativeY < -kFieldSizeY / 2) {
+    if (ballState.relativeY > kFieldSizeY / 2) {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.challengerId] = (newPointMap[state.ids[1]] ?? 0) + 1;
       emit(state.copyWith(

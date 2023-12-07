@@ -1,3 +1,4 @@
+import 'package:model/game_state/game_state.dart';
 import 'package:model/handshake/handshake.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -24,5 +25,10 @@ extension UserX on User {
   /// ユーザーのタイプを取得する
   String get debugViewText {
     return "id: $id, \nuserRole: $userRole \n";
+  }
+
+  String getOpponentUserId(GameState gameState) {
+    final ids = gameState.ids;
+    return ids[0] == id ? ids[1] : ids[0];
   }
 }

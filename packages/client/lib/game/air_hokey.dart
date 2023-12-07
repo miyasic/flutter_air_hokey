@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flame/components.dart';
 import 'package:model/client_game_state/client_game_state.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
@@ -206,6 +205,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Future<void> _countdown() async {
     final countdownText = CountdownText(gameSize: size);
     await add(countdownText);
+
+    countdownText.pointText(gameState!, user!);
+    await Future<void>.delayed(const Duration(seconds: 1));
     for (var i = kCountdownDuration; i > 0; i--) {
       countdownText.updateCount(i);
       await Future<void>.delayed(const Duration(seconds: 1));
