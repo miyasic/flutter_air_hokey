@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
-import 'package:air_hokey_server/game/request/client_request.dart';
-import 'package:air_hokey_server/game/reset/reset.dart';
-import 'package:air_hokey_server/game/start/start.dart';
+import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/request/client_request.dart';
+import 'package:model/reset/reset.dart';
+import 'package:model/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
@@ -43,5 +43,9 @@ class WebSocketRepository {
   void _message(ClientRequest request) {
     final message = jsonEncode(request.toJson((e) => e.toJson()));
     channel.sink.add(message);
+  }
+
+  void close() {
+    channel.sink.close();
   }
 }

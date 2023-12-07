@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
-import 'package:air_hokey_server/game/game_state/game_state.dart';
-import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/reset/reset.dart';
-import 'package:air_hokey_server/game/start/start.dart';
+import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/game_config/constants.dart';
+import 'package:model/game_state/game_state.dart';
+import 'package:model/handshake/handshake.dart';
+import 'package:model/reset/reset.dart';
+import 'package:model/start/start.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
@@ -33,10 +34,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   StartButton? startButton;
   bool shouldCalc = false;
 
+  final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
+  final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
-    final fieldSize = Vector2(400, 600);
-    final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
@@ -129,6 +130,14 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     });
     s.listen((gameState) async {
       if (user == null) return;
+      if (gameState.isReset) {
+        _onReset();
+        return;
+      }
+      if (gameState.isGoal) {
+        _onGoal(gameState);
+        return;
+      }
       final isStart =
           this.gameState?.ballState == null && gameState.ballState != null;
       // ここでpositionを更新する
@@ -138,6 +147,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       if (isStart) {
         // ボタンはタップされたら削除
         startButton?.removeFromParent();
+        ball = Ball(size);
         ball?.draw(gameState.ballState, user, size);
         await _countdown();
         add(ball!);
@@ -186,6 +196,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   Future<void> _onTapStartButton() async {
+    ball = Ball(size);
     final start =
         Start(id: user!.id, ballState: ball!.getBallState(size, user!));
     webSocketRepository.sendStart(start);
@@ -194,10 +205,34 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   Future<void> _countdown() async {
     final countdownText = CountdownText(gameSize: size);
     await add(countdownText);
+
+    countdownText.pointText(gameState!, user!);
+    await Future<void>.delayed(const Duration(seconds: 1));
     for (var i = kCountdownDuration; i > 0; i--) {
       countdownText.updateCount(i);
       await Future<void>.delayed(const Duration(seconds: 1));
     }
     countdownText.removeFromParent();
+  }
+
+  void _onReset() {
+    webSocketRepository.close();
+    ball?.removeFromParent();
+    ball = Ball(size);
+    startButton?.setEnable();
+    _draggablePaddle = DraggablePaddle(
+        draggingPaddle: _draggingPaddle,
+        paddleSize: paddleSize,
+        fieldSize: fieldSize,
+        gameSize: size);
+  }
+
+  void _onGoal(GameState gameState) {
+    ball?.removeFromParent();
+    if (startButton == null) {
+      return;
+    }
+    this.gameState = gameState;
+    add(startButton!);
   }
 }

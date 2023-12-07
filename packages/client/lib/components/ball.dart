@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:air_hokey_client/extension/vector2_extension.dart';
-import 'package:air_hokey_server/game/ball_state/ball_state.dart';
-import 'package:air_hokey_server/game/handshake/handshake.dart';
+import 'package:model/ball_state/ball_state.dart';
+import 'package:model/handshake/handshake.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:air_hokey_client/components/directional_hit_box.dart';
@@ -91,7 +91,10 @@ class Ball extends CircleComponent with CollisionCallbacks {
             isCollidedScreenHitboxX = true;
           }
           break;
-        case UpperHitbox() || BottomHitbox():
+        case UpperLeftHitbox() ||
+              UpperRightHitbox() ||
+              BottomLeftHitbox() ||
+              BottomRightHitbox():
           if (!isCollidedScreenHitboxY) {
             velocityForRequest.y = -velocityForRequest.y;
             velocity.y = -velocity.y;

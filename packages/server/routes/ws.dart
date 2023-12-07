@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:air_hokey_server/game/client_game_state/client_game_state.dart';
-import 'package:air_hokey_server/game/cubit/game_cubit.dart';
-import 'package:air_hokey_server/game/handshake/handshake.dart';
-import 'package:air_hokey_server/game/reset/reset.dart';
-import 'package:air_hokey_server/game/response/server_response.dart';
-import 'package:air_hokey_server/game/start/start.dart';
+import 'package:air_hokey_server/game/game.dart';
+import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/handshake/handshake.dart';
+import 'package:model/reset/reset.dart';
+import 'package:model/response/server_response.dart';
+import 'package:model/start/start.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
 import 'package:uuid/v4.dart';
