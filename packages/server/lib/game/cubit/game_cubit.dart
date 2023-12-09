@@ -18,7 +18,6 @@ class GameCubit extends BroadcastCubit<GameState> {
           ids: [],
           serverLoop: 0,
           ballStateMap: {},
-          pointMap: {},
           clientStateMap: {},
           isGoal: false,
         ));
@@ -53,10 +52,6 @@ class GameCubit extends BroadcastCubit<GameState> {
           declaredBallState:
               const BallState(relativeX: 0, relativeY: 0, vx: 0, vy: 0),
         ),
-      },
-      pointMap: {
-        ...state.pointMap,
-        uuid: 0,
       },
       isReset: false,
     );
@@ -118,8 +113,6 @@ class GameCubit extends BroadcastCubit<GameState> {
   bool _checkGoal(BallState ballState) {
     // relativeYが正方向だとgameMasterのゴール
     if (ballState.relativeY < -kFieldSizeY / 2) {
-      final newPointMap = Map<String, int>.from(state.pointMap);
-      newPointMap[state.roomCreatorId] = (newPointMap[state.ids[0]] ?? 0) + 1;
       final newClientStateMap =
           Map<String, ClientState>.from(state.clientStateMap);
       newClientStateMap[state.roomCreatorId] =
@@ -133,7 +126,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       emit(state.copyWith(
         ballState: null,
         clientStateMap: newClientStateMap,
-        pointMap: newPointMap,
         ballStateMap: {},
         serverLoop: 0,
         isGoal: true,
@@ -141,8 +133,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       return true;
     }
     if (ballState.relativeY > kFieldSizeY / 2) {
-      final newPointMap = Map<String, int>.from(state.pointMap);
-      newPointMap[state.challengerId] = (newPointMap[state.ids[1]] ?? 0) + 1;
       final newClientStateMap =
           Map<String, ClientState>.from(state.clientStateMap);
       newClientStateMap[state.challengerId] =
@@ -156,7 +146,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       emit(state.copyWith(
         ballState: null,
         clientStateMap: newClientStateMap,
-        pointMap: newPointMap,
         ballStateMap: {},
         serverLoop: 0,
         isGoal: true,
@@ -167,7 +156,8 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   void reset(Reset reset) {
-    emit(const GameState(
+    emit(
+      const GameState(
         ids: [],
         ballState: null,
         ballStateMap: {},
@@ -176,7 +166,8 @@ class GameCubit extends BroadcastCubit<GameState> {
         isFixed: false,
         isReset: true,
         isGoal: false,
-        pointMap: {}));
+      ),
+    );
   }
 
   void start(Start start) {

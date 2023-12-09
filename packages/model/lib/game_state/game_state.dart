@@ -11,7 +11,6 @@ class GameState with _$GameState {
     required List<String> ids,
     BallState? ballState,
     required Map<String, BallState> ballStateMap,
-    required Map<String, int> pointMap,
     required Map<String, ClientState> clientStateMap,
     required int serverLoop,
     @Default(false) bool isFixed,
@@ -31,7 +30,7 @@ extension GameStateX on GameState {
       return "player 1: ${clientStateMap[ids[0]]!.paddlePosition} \n";
     }
     if (ids.length == 2) {
-      return "player 1: ${clientStateMap[ids[0]]!.paddlePosition}\nplayer 2: ${clientStateMap[ids[0]]!.paddlePosition} \nPoint: ${pointMap[ids[0]]} : ${pointMap[ids[1]]} \n";
+      return "player 1: ${clientStateMap[ids[0]]!.paddlePosition}\nplayer 2: ${clientStateMap[ids[0]]!.paddlePosition} \nPoint: ${clientStateMap[ids[0]]?.point} : ${clientStateMap[ids[1]]?.point} \n";
     }
     return "player more than 2 \n";
   }
