@@ -157,7 +157,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         return;
       }
 
-      if (gameState.ballStateMap.isNotEmpty) {
+      if (gameState.clientStateMap[gameState.ids[0]]!.declaredBallState !=
+              null ||
+          gameState.clientStateMap[gameState.ids[1]]!.declaredBallState !=
+              null) {
         // 情報が出揃っていないということなので無視
         return;
       }

@@ -10,7 +10,6 @@ class GameState with _$GameState {
   const factory GameState({
     required List<String> ids,
     BallState? ballState,
-    required Map<String, BallState> ballStateMap,
     required Map<String, ClientState> clientStateMap,
     required int serverLoop,
     @Default(false) bool isFixed,
@@ -43,5 +42,25 @@ extension GameStateX on GameState {
   String get challengerId {
     if (ids.length < 2) throw Exception("No challenger");
     return ids[1];
+  }
+
+  // 既にもう片方がボールStateをリクエスト済みかどうか
+  bool get isRequestedBallStateFromOtherClient {
+    if (clientStateMap[ids[0]]!.declaredBallState != null) return true;
+    if (clientStateMap[ids[1]]!.declaredBallState != null) return true;
+    return false;
+  }
+
+  GameState get withoutDeclaredBallStates {
+    final newClientStateMap = {
+      roomCreatorId: clientStateMap[roomCreatorId]!.copyWith(
+        declaredBallState: null,
+      ),
+      challengerId: clientStateMap[challengerId]!.copyWith(
+        declaredBallState: null,
+      ),
+    };
+
+    return copyWith(clientStateMap: newClientStateMap);
   }
 }
