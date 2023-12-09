@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/client_game_state/client_declaration.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/handshake/handshake.dart';
@@ -24,8 +24,8 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug}){
-   webSocketRepository = WebSocketRepository(isDebug: isDebug);
+  AirHokey({required this.isDebug}) {
+    webSocketRepository = WebSocketRepository(isDebug: isDebug);
   }
 
   final bool isDebug;
@@ -175,13 +175,13 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     final relativeX = -1 *
         (_draggablePaddle!.position.x -
             (size.x / 2 - _draggablePaddle!.size.x / 2));
-    final clientGameState = ClientGameState(
+    final clientDeclaration = ClientDeclaration(
       id: user!.id,
       paddlePosition: relativeX.toInt(),
       ballState: ball!.getBallState(size, user!),
       serverLoopCount: gameState.serverLoop,
     );
-    webSocketRepository.sendClientGameState(clientGameState);
+    webSocketRepository.sendClientDeclaration(clientDeclaration);
   }
 
   void _draggingPaddle(DragUpdateEvent event) {

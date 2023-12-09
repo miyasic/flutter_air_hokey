@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:air_hokey_server/game/game.dart';
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/client_game_state/client_declaration.dart';
 import 'package:model/handshake/handshake.dart';
 import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';
@@ -38,9 +38,9 @@ Future<Response> onRequest(RequestContext context) async {
             final type = ClientRequestType.fromString(json['type']);
             final requestDetail = json['requestDetail'];
             switch (type) {
-              case ClientRequestType.clientGameState:
+              case ClientRequestType.clientDeclaration:
                 cubit.updateState(
-                  ClientGameState.fromJson(
+                  ClientDeclaration.fromJson(
                     requestDetail,
                   ),
                 );

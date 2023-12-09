@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/client_game_state/client_declaration.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/ball_state/ball_state.dart';
@@ -61,16 +61,16 @@ class GameCubit extends BroadcastCubit<GameState> {
     };
   }
 
-  void updateState(ClientGameState clientGameState) {
-    if (state.ballStateMap.keys.contains(clientGameState.id)) {
+  void updateState(ClientDeclaration clientDeclaration) {
+    if (state.ballStateMap.keys.contains(clientDeclaration.id)) {
       return;
     }
     final newPositionMap = Map<String, int>.from(state.positionMap);
-    newPositionMap[clientGameState.id] = clientGameState.paddlePosition;
+    newPositionMap[clientDeclaration.id] = clientDeclaration.paddlePosition;
     if (state.ballStateMap.isEmpty) {
       // ボールの情報を追加する。
       final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
-      newBallStateMap[clientGameState.id] = clientGameState.ballState;
+      newBallStateMap[clientDeclaration.id] = clientDeclaration.ballState;
       emit(state.copyWith(
           positionMap: newPositionMap,
           ballStateMap: newBallStateMap,
@@ -79,7 +79,7 @@ class GameCubit extends BroadcastCubit<GameState> {
     }
     final newServerLoop = state.serverLoop + 1;
     final aBallState = state.ballStateMap.values.first;
-    final bBallState = clientGameState.ballState;
+    final bBallState = clientDeclaration.ballState;
     if (aBallState == bBallState) {
       final newBallState = aBallState;
       if (_checkGoal(newBallState)) return;

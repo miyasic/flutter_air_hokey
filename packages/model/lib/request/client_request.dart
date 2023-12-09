@@ -22,7 +22,7 @@ class ClientRequest<T> with _$ClientRequest<T> {
 }
 
 enum ClientRequestType {
-  clientGameState,
+  clientDeclaration,
   reset,
   start;
 
