@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:air_hokey_server/game/game.dart';
 import 'package:model/client_game_state/client_game_state.dart';
 import 'package:model/handshake/handshake.dart';
+import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';
 import 'package:model/response/server_response.dart';
 import 'package:model/start/start.dart';
@@ -34,19 +35,27 @@ Future<Response> onRequest(RequestContext context) async {
         (event) {
           if (event is String) {
             final json = jsonDecode(event);
-            switch (json['type']) {
-              case 'clientGameState':
+            final type = ClientRequestType.fromString(json['type']);
+            final requestDetail = json['requestDetail'];
+            switch (type) {
+              case ClientRequestType.clientGameState:
                 cubit.updateState(
                   ClientGameState.fromJson(
-                    json['requestDetail'],
+                    requestDetail,
                   ),
                 );
-              case 'reset':
-                cubit.reset(Reset.fromJson(json['requestDetail']));
-              case 'start':
-                cubit.start(Start.fromJson(json['requestDetail']));
-              default:
-                throw Exception('Unknown request type');
+              case ClientRequestType.reset:
+                cubit.reset(
+                  Reset.fromJson(
+                    requestDetail,
+                  ),
+                );
+              case ClientRequestType.start:
+                cubit.start(
+                  Start.fromJson(
+                    requestDetail,
+                  ),
+                );
             }
           }
         },
