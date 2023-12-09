@@ -9,7 +9,6 @@ part 'game_state.g.dart';
 class GameState with _$GameState {
   const factory GameState({
     required List<String> ids,
-    required Map<String, int> positionMap,
     BallState? ballState,
     required Map<String, BallState> ballStateMap,
     required Map<String, int> pointMap,
@@ -28,9 +27,11 @@ class GameState with _$GameState {
 extension GameStateX on GameState {
   String get debugViewText {
     if (ids.isEmpty) return "No player \n";
-    if (ids.length == 1) return "player 1: ${positionMap[ids[0]]} \n";
+    if (ids.length == 1) {
+      return "player 1: ${clientStateMap[ids[0]]!.paddlePosition} \n";
+    }
     if (ids.length == 2) {
-      return "player 1: ${positionMap[ids[0]]}\nplayer 2: ${positionMap[ids[1]]} \nPoint: ${pointMap[ids[0]]} : ${pointMap[ids[1]]} \n";
+      return "player 1: ${clientStateMap[ids[0]]!.paddlePosition}\nplayer 2: ${clientStateMap[ids[0]]!.paddlePosition} \nPoint: ${pointMap[ids[0]]} : ${pointMap[ids[1]]} \n";
     }
     return "player more than 2 \n";
   }

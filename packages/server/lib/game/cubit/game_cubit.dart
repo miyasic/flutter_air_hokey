@@ -16,7 +16,6 @@ class GameCubit extends BroadcastCubit<GameState> {
   GameCubit()
       : super(const GameState(
           ids: [],
-          positionMap: {},
           serverLoop: 0,
           ballStateMap: {},
           pointMap: {},
@@ -55,10 +54,6 @@ class GameCubit extends BroadcastCubit<GameState> {
               const BallState(relativeX: 0, relativeY: 0, vx: 0, vy: 0),
         ),
       },
-      positionMap: {
-        ...state.positionMap,
-        uuid: 0,
-      },
       pointMap: {
         ...state.pointMap,
         uuid: 0,
@@ -82,15 +77,12 @@ class GameCubit extends BroadcastCubit<GameState> {
     newClientStateMap[clientDeclaration.id] =
         newClientStateMap[clientDeclaration.id]!
             .copyWithClientDeclaration(clientDeclaration);
-    final newPositionMap = Map<String, int>.from(state.positionMap);
-    newPositionMap[clientDeclaration.id] = clientDeclaration.paddlePosition;
     if (state.ballStateMap.isEmpty) {
       // ボールの情報を追加する。
       final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
       newBallStateMap[clientDeclaration.id] = clientDeclaration.ballState;
       emit(state.copyWith(
           clientStateMap: newClientStateMap,
-          positionMap: newPositionMap,
           ballStateMap: newBallStateMap,
           isFixed: false));
       return;
@@ -103,7 +95,6 @@ class GameCubit extends BroadcastCubit<GameState> {
       if (_checkGoal(newBallState)) return;
       emit(state.copyWith(
           clientStateMap: newClientStateMap,
-          positionMap: newPositionMap,
           ballState: newBallState,
           ballStateMap: {},
           serverLoop: newServerLoop,
@@ -118,7 +109,6 @@ class GameCubit extends BroadcastCubit<GameState> {
     if (_checkGoal(newBallState)) return;
     emit(state.copyWith(
         clientStateMap: newClientStateMap,
-        positionMap: newPositionMap,
         ballState: newBallState,
         ballStateMap: {},
         serverLoop: newServerLoop,
@@ -179,7 +169,6 @@ class GameCubit extends BroadcastCubit<GameState> {
   void reset(Reset reset) {
     emit(const GameState(
         ids: [],
-        positionMap: {},
         ballState: null,
         ballStateMap: {},
         clientStateMap: {},
