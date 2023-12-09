@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:model/client_game_state/client_declaration.dart';
+import 'package:model/client_state/client_state.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/ball_state/ball_state.dart';
@@ -19,6 +20,7 @@ class GameCubit extends BroadcastCubit<GameState> {
           serverLoop: 0,
           ballStateMap: {},
           pointMap: {},
+          clientStateMap: {},
           isGoal: false,
         ));
 
@@ -43,6 +45,16 @@ class GameCubit extends BroadcastCubit<GameState> {
     }
     final newState = state.copyWith(
       ids: [...state.ids, uuid],
+      clientStateMap: {
+        ...state.clientStateMap,
+        uuid: ClientState(
+          id: uuid,
+          paddlePosition: 0,
+          point: 0,
+          declaredBallState:
+              const BallState(relativeX: 0, relativeY: 0, vx: 0, vy: 0),
+        ),
+      },
       positionMap: {
         ...state.positionMap,
         uuid: 0,
@@ -65,6 +77,11 @@ class GameCubit extends BroadcastCubit<GameState> {
     if (state.ballStateMap.keys.contains(clientDeclaration.id)) {
       return;
     }
+    final newClientStateMap =
+        Map<String, ClientState>.from(state.clientStateMap);
+    newClientStateMap[clientDeclaration.id] =
+        newClientStateMap[clientDeclaration.id]!
+            .copyWithClientDeclaration(clientDeclaration);
     final newPositionMap = Map<String, int>.from(state.positionMap);
     newPositionMap[clientDeclaration.id] = clientDeclaration.paddlePosition;
     if (state.ballStateMap.isEmpty) {
@@ -72,6 +89,7 @@ class GameCubit extends BroadcastCubit<GameState> {
       final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
       newBallStateMap[clientDeclaration.id] = clientDeclaration.ballState;
       emit(state.copyWith(
+          clientStateMap: newClientStateMap,
           positionMap: newPositionMap,
           ballStateMap: newBallStateMap,
           isFixed: false));
@@ -84,6 +102,7 @@ class GameCubit extends BroadcastCubit<GameState> {
       final newBallState = aBallState;
       if (_checkGoal(newBallState)) return;
       emit(state.copyWith(
+          clientStateMap: newClientStateMap,
           positionMap: newPositionMap,
           ballState: newBallState,
           ballStateMap: {},
@@ -98,6 +117,7 @@ class GameCubit extends BroadcastCubit<GameState> {
         : bBallState;
     if (_checkGoal(newBallState)) return;
     emit(state.copyWith(
+        clientStateMap: newClientStateMap,
         positionMap: newPositionMap,
         ballState: newBallState,
         ballStateMap: {},
@@ -110,8 +130,19 @@ class GameCubit extends BroadcastCubit<GameState> {
     if (ballState.relativeY < -kFieldSizeY / 2) {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.roomCreatorId] = (newPointMap[state.ids[0]] ?? 0) + 1;
+      final newClientStateMap =
+          Map<String, ClientState>.from(state.clientStateMap);
+      newClientStateMap[state.roomCreatorId] =
+          newClientStateMap[state.roomCreatorId]!.copyWith(
+              declaredBallState: null,
+              point: newClientStateMap[state.roomCreatorId]!.point + 1);
+      newClientStateMap[state.challengerId] =
+          newClientStateMap[state.challengerId]!.copyWith(
+        declaredBallState: null,
+      );
       emit(state.copyWith(
         ballState: null,
+        clientStateMap: newClientStateMap,
         pointMap: newPointMap,
         ballStateMap: {},
         serverLoop: 0,
@@ -122,8 +153,19 @@ class GameCubit extends BroadcastCubit<GameState> {
     if (ballState.relativeY > kFieldSizeY / 2) {
       final newPointMap = Map<String, int>.from(state.pointMap);
       newPointMap[state.challengerId] = (newPointMap[state.ids[1]] ?? 0) + 1;
+      final newClientStateMap =
+          Map<String, ClientState>.from(state.clientStateMap);
+      newClientStateMap[state.challengerId] =
+          newClientStateMap[state.challengerId]!.copyWith(
+              declaredBallState: null,
+              point: newClientStateMap[state.challengerId]!.point + 1);
+      newClientStateMap[state.roomCreatorId] =
+          newClientStateMap[state.roomCreatorId]!.copyWith(
+        declaredBallState: null,
+      );
       emit(state.copyWith(
         ballState: null,
+        clientStateMap: newClientStateMap,
         pointMap: newPointMap,
         ballStateMap: {},
         serverLoop: 0,
@@ -140,6 +182,7 @@ class GameCubit extends BroadcastCubit<GameState> {
         positionMap: {},
         ballState: null,
         ballStateMap: {},
+        clientStateMap: {},
         serverLoop: 0,
         isFixed: false,
         isReset: true,

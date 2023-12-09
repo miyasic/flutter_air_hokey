@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:model/ball_state/ball_state.dart';
+import 'package:model/client_state/client_state.dart';
 
 part 'game_state.freezed.dart';
 part 'game_state.g.dart';
@@ -12,6 +13,7 @@ class GameState with _$GameState {
     BallState? ballState,
     required Map<String, BallState> ballStateMap,
     required Map<String, int> pointMap,
+    required Map<String, ClientState> clientStateMap,
     required int serverLoop,
     @Default(false) bool isFixed,
     @Default(false) bool isReset,
