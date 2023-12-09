@@ -14,8 +14,6 @@ class WebSocketRepository {
   }
   final bool isDebug;
   late final WebSocketChannel channel;
-  // final channel = WebSocketChannel.connect(
-  //     Uri.parse('wss://gamesample-ibiwnvw3aa-an.a.run.app/ws'));
 
   Stream<dynamic> getChannel() {
     return channel.stream;
