@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:model/ball_state/ball_state.dart';
-import 'package:model/client_game_state/client_declaration.dart';
+import 'package:model/client_declaration/client_declaration.dart';
 
 part 'client_state.freezed.dart';
 part 'client_state.g.dart';

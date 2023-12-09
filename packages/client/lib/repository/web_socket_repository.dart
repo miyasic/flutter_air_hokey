@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:air_hokey_client/constants/constants.dart';
-import 'package:model/client_game_state/client_declaration.dart';
+import 'package:model/client_declaration/client_declaration.dart';
 
 import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';

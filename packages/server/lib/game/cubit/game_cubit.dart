@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:model/client_game_state/client_declaration.dart';
+import 'package:model/client_declaration/client_declaration.dart';
 import 'package:model/client_state/client_state.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
