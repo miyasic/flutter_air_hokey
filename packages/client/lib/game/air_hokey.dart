@@ -142,6 +142,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       }
       final isStart =
           this.gameState?.ballState == null && gameState.ballState != null;
+      final notStarted =
+          this.gameState?.ballState == null && gameState.ballState == null;
+      final isStarted =
+          this.gameState?.ballState != null && gameState.ballState != null;
       // ここでpositionを更新する
       this.gameState = gameState;
       opponentPaddle.updatePosition(gameState, user!);
@@ -154,6 +158,15 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         await _countdown();
         add(ball!);
         _calcPositionAndSendState(gameState);
+        return;
+      }
+
+      if (notStarted) {
+        return;
+      }
+
+      // 2人揃っていない場合は早期リターン
+      if (gameState.ids.length < 2) {
         return;
       }
 
