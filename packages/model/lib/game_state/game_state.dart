@@ -46,6 +46,7 @@ extension GameStateX on GameState {
 
   // 既にもう片方がボールStateをリクエスト済みかどうか
   bool get isRequestedBallStateFromOtherClient {
+    if (ids.length < 2) return false;
     if (clientStateMap[ids[0]]!.declaredBallState != null) return true;
     if (clientStateMap[ids[1]]!.declaredBallState != null) return true;
     return false;
