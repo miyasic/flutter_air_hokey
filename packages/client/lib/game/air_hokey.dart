@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:air_hokey_client/game/geme_start_status.dart';
+import 'package:model/client_declaration/client_declaration.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/handshake/handshake.dart';
@@ -24,8 +25,8 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug}){
-   webSocketRepository = WebSocketRepository(isDebug: isDebug);
+  AirHokey({required this.isDebug}) {
+    webSocketRepository = WebSocketRepository(isDebug: isDebug);
   }
 
   final bool isDebug;
@@ -140,32 +141,45 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         _onGoal(gameState);
         return;
       }
-      final isStart =
-          this.gameState?.ballState == null && gameState.ballState != null;
+      final localGameState = this.gameState;
+      opponentPaddle.updatePosition(gameState, user!);
       // ここでpositionを更新する
       this.gameState = gameState;
-      opponentPaddle.updatePosition(gameState, user!);
-      // ローカルではballStateがnullかつサーバー側のballStateがnullではない場合(1回のみ)
-      if (isStart) {
-        // ボタンはタップされたら削除
-        startButton?.removeFromParent();
-        ball = Ball(size);
-        ball?.draw(gameState.ballState, user, size);
-        await _countdown();
-        add(ball!);
-        _calcPositionAndSendState(gameState);
+      // 2人揃っていない場合は早期リターン
+      if (gameState.ids.length < 2) {
         return;
       }
-
-      if (gameState.ballStateMap.isNotEmpty) {
-        // 情報が出揃っていないということなので無視
-        return;
+      switch (GameStartStatus.fromGameState(localGameState, gameState)) {
+        case GameStartStatus.atStart:
+          _onStart(gameState);
+          return;
+        case GameStartStatus.afterStart:
+          _onAfterStart(gameState);
+          return;
+        case GameStartStatus.atReset || GameStartStatus.beforeStart:
+          return;
       }
-      // ボールの位置を描画
-      ball?.draw(gameState.ballState, user, size);
-
-      shouldCalc = true;
     });
+  }
+
+  void _onStart(GameState gameState) async {
+    startButton?.removeFromParent();
+    ball = Ball(size);
+    ball?.draw(gameState.ballState, user, size);
+    await _countdown();
+    add(ball!);
+    _calcPositionAndSendState(gameState);
+  }
+
+  void _onAfterStart(GameState gameState) {
+    // 両方のクライアントからのボール宣言がnullの場合のみ描画する。
+    // ここでは片方のボール宣言がnon-nullの場合は早期リターン
+    if (gameState.isRequestedBallStateFromOtherClient) {
+      return;
+    }
+    // ボールの位置を描画
+    ball?.draw(gameState.ballState, user, size);
+    shouldCalc = true;
   }
 
   void _calcPositionAndSendState(GameState gameState) {
@@ -175,13 +189,13 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     final relativeX = -1 *
         (_draggablePaddle!.position.x -
             (size.x / 2 - _draggablePaddle!.size.x / 2));
-    final clientGameState = ClientGameState(
+    final clientDeclaration = ClientDeclaration(
       id: user!.id,
       paddlePosition: relativeX.toInt(),
       ballState: ball!.getBallState(size, user!),
       serverLoopCount: gameState.serverLoop,
     );
-    webSocketRepository.sendClientGameState(clientGameState);
+    webSocketRepository.sendClientDeclaration(clientDeclaration);
   }
 
   void _draggingPaddle(DragUpdateEvent event) {

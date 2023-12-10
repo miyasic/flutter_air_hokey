@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:air_hokey_client/constants/constants.dart';
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/client_declaration/client_declaration.dart';
+
 import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';
 import 'package:model/start/start.dart';
@@ -19,10 +20,10 @@ class WebSocketRepository {
     return channel.stream;
   }
 
-  void sendClientGameState(ClientGameState clientGameState) {
+  void sendClientDeclaration(ClientDeclaration clientDeclaration) {
     final request = ClientRequest(
-      type: ClientRequestType.clientGameState,
-      requestDetail: clientGameState,
+      type: ClientRequestType.clientDeclaration,
+      requestDetail: clientDeclaration,
     );
     _message(request);
   }

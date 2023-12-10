@@ -23,14 +23,14 @@ class OpponentPaddle extends Paddle {
     GameState gameState,
     User user,
   ) {
-    if (gameState.positionMap.keys.length < 2) {
+    if (gameState.clientStateMap.keys.length < 2) {
       return;
     }
     // 対戦相手のIDを取得するため、positionMapからユーザー自身のIDを除外
-    final opponentId = gameState.positionMap.keys.firstWhere(
+    final opponentId = gameState.clientStateMap.keys.firstWhere(
       (id) => id != user.id,
     );
-    final x = gameState.positionMap[opponentId]?.toDouble();
+    final x = gameState.clientStateMap[opponentId]?.paddlePosition.toDouble();
     if (x == null) {
       return;
     }

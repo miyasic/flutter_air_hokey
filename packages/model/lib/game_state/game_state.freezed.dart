@@ -21,10 +21,9 @@ GameState _$GameStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GameState {
   List<String> get ids => throw _privateConstructorUsedError;
-  Map<String, int> get positionMap => throw _privateConstructorUsedError;
   BallState? get ballState => throw _privateConstructorUsedError;
-  Map<String, BallState> get ballStateMap => throw _privateConstructorUsedError;
-  Map<String, int> get pointMap => throw _privateConstructorUsedError;
+  Map<String, ClientState> get clientStateMap =>
+      throw _privateConstructorUsedError;
   int get serverLoop => throw _privateConstructorUsedError;
   bool get isFixed => throw _privateConstructorUsedError;
   bool get isReset => throw _privateConstructorUsedError;
@@ -43,10 +42,8 @@ abstract class $GameStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<String> ids,
-      Map<String, int> positionMap,
       BallState? ballState,
-      Map<String, BallState> ballStateMap,
-      Map<String, int> pointMap,
+      Map<String, ClientState> clientStateMap,
       int serverLoop,
       bool isFixed,
       bool isReset,
@@ -69,10 +66,8 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   @override
   $Res call({
     Object? ids = null,
-    Object? positionMap = null,
     Object? ballState = freezed,
-    Object? ballStateMap = null,
-    Object? pointMap = null,
+    Object? clientStateMap = null,
     Object? serverLoop = null,
     Object? isFixed = null,
     Object? isReset = null,
@@ -83,22 +78,14 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
           ? _value.ids
           : ids // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      positionMap: null == positionMap
-          ? _value.positionMap
-          : positionMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
       ballState: freezed == ballState
           ? _value.ballState
           : ballState // ignore: cast_nullable_to_non_nullable
               as BallState?,
-      ballStateMap: null == ballStateMap
-          ? _value.ballStateMap
-          : ballStateMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, BallState>,
-      pointMap: null == pointMap
-          ? _value.pointMap
-          : pointMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      clientStateMap: null == clientStateMap
+          ? _value.clientStateMap
+          : clientStateMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, ClientState>,
       serverLoop: null == serverLoop
           ? _value.serverLoop
           : serverLoop // ignore: cast_nullable_to_non_nullable
@@ -141,10 +128,8 @@ abstract class _$$GameStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<String> ids,
-      Map<String, int> positionMap,
       BallState? ballState,
-      Map<String, BallState> ballStateMap,
-      Map<String, int> pointMap,
+      Map<String, ClientState> clientStateMap,
       int serverLoop,
       bool isFixed,
       bool isReset,
@@ -166,10 +151,8 @@ class __$$GameStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? ids = null,
-    Object? positionMap = null,
     Object? ballState = freezed,
-    Object? ballStateMap = null,
-    Object? pointMap = null,
+    Object? clientStateMap = null,
     Object? serverLoop = null,
     Object? isFixed = null,
     Object? isReset = null,
@@ -180,22 +163,14 @@ class __$$GameStateImplCopyWithImpl<$Res>
           ? _value._ids
           : ids // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      positionMap: null == positionMap
-          ? _value._positionMap
-          : positionMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
       ballState: freezed == ballState
           ? _value.ballState
           : ballState // ignore: cast_nullable_to_non_nullable
               as BallState?,
-      ballStateMap: null == ballStateMap
-          ? _value._ballStateMap
-          : ballStateMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, BallState>,
-      pointMap: null == pointMap
-          ? _value._pointMap
-          : pointMap // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      clientStateMap: null == clientStateMap
+          ? _value._clientStateMap
+          : clientStateMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, ClientState>,
       serverLoop: null == serverLoop
           ? _value.serverLoop
           : serverLoop // ignore: cast_nullable_to_non_nullable
@@ -221,18 +196,14 @@ class __$$GameStateImplCopyWithImpl<$Res>
 class _$GameStateImpl extends _GameState {
   const _$GameStateImpl(
       {required final List<String> ids,
-      required final Map<String, int> positionMap,
       this.ballState,
-      required final Map<String, BallState> ballStateMap,
-      required final Map<String, int> pointMap,
+      required final Map<String, ClientState> clientStateMap,
       required this.serverLoop,
       this.isFixed = false,
       this.isReset = false,
       this.isGoal = false})
       : _ids = ids,
-        _positionMap = positionMap,
-        _ballStateMap = ballStateMap,
-        _pointMap = pointMap,
+        _clientStateMap = clientStateMap,
         super._();
 
   factory _$GameStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -246,30 +217,14 @@ class _$GameStateImpl extends _GameState {
     return EqualUnmodifiableListView(_ids);
   }
 
-  final Map<String, int> _positionMap;
-  @override
-  Map<String, int> get positionMap {
-    if (_positionMap is EqualUnmodifiableMapView) return _positionMap;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_positionMap);
-  }
-
   @override
   final BallState? ballState;
-  final Map<String, BallState> _ballStateMap;
+  final Map<String, ClientState> _clientStateMap;
   @override
-  Map<String, BallState> get ballStateMap {
-    if (_ballStateMap is EqualUnmodifiableMapView) return _ballStateMap;
+  Map<String, ClientState> get clientStateMap {
+    if (_clientStateMap is EqualUnmodifiableMapView) return _clientStateMap;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_ballStateMap);
-  }
-
-  final Map<String, int> _pointMap;
-  @override
-  Map<String, int> get pointMap {
-    if (_pointMap is EqualUnmodifiableMapView) return _pointMap;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_pointMap);
+    return EqualUnmodifiableMapView(_clientStateMap);
   }
 
   @override
@@ -286,7 +241,7 @@ class _$GameStateImpl extends _GameState {
 
   @override
   String toString() {
-    return 'GameState(ids: $ids, positionMap: $positionMap, ballState: $ballState, ballStateMap: $ballStateMap, pointMap: $pointMap, serverLoop: $serverLoop, isFixed: $isFixed, isReset: $isReset, isGoal: $isGoal)';
+    return 'GameState(ids: $ids, ballState: $ballState, clientStateMap: $clientStateMap, serverLoop: $serverLoop, isFixed: $isFixed, isReset: $isReset, isGoal: $isGoal)';
   }
 
   @override
@@ -295,13 +250,10 @@ class _$GameStateImpl extends _GameState {
         (other.runtimeType == runtimeType &&
             other is _$GameStateImpl &&
             const DeepCollectionEquality().equals(other._ids, _ids) &&
-            const DeepCollectionEquality()
-                .equals(other._positionMap, _positionMap) &&
             (identical(other.ballState, ballState) ||
                 other.ballState == ballState) &&
             const DeepCollectionEquality()
-                .equals(other._ballStateMap, _ballStateMap) &&
-            const DeepCollectionEquality().equals(other._pointMap, _pointMap) &&
+                .equals(other._clientStateMap, _clientStateMap) &&
             (identical(other.serverLoop, serverLoop) ||
                 other.serverLoop == serverLoop) &&
             (identical(other.isFixed, isFixed) || other.isFixed == isFixed) &&
@@ -314,10 +266,8 @@ class _$GameStateImpl extends _GameState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_ids),
-      const DeepCollectionEquality().hash(_positionMap),
       ballState,
-      const DeepCollectionEquality().hash(_ballStateMap),
-      const DeepCollectionEquality().hash(_pointMap),
+      const DeepCollectionEquality().hash(_clientStateMap),
       serverLoop,
       isFixed,
       isReset,
@@ -340,10 +290,8 @@ class _$GameStateImpl extends _GameState {
 abstract class _GameState extends GameState {
   const factory _GameState(
       {required final List<String> ids,
-      required final Map<String, int> positionMap,
       final BallState? ballState,
-      required final Map<String, BallState> ballStateMap,
-      required final Map<String, int> pointMap,
+      required final Map<String, ClientState> clientStateMap,
       required final int serverLoop,
       final bool isFixed,
       final bool isReset,
@@ -356,13 +304,9 @@ abstract class _GameState extends GameState {
   @override
   List<String> get ids;
   @override
-  Map<String, int> get positionMap;
-  @override
   BallState? get ballState;
   @override
-  Map<String, BallState> get ballStateMap;
-  @override
-  Map<String, int> get pointMap;
+  Map<String, ClientState> get clientStateMap;
   @override
   int get serverLoop;
   @override
