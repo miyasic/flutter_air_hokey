@@ -13,13 +13,14 @@ import 'package:broadcast_bloc/broadcast_bloc.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
-  GameCubit()
+  GameCubit({required this.gameId})
       : super(const GameState(
           ids: [],
           serverLoop: 0,
           clientStateMap: {},
           isGoal: false,
         ));
+  final String gameId;
 
   @override
   Object toMessage(GameState state) {

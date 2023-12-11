@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:air_hokey_client/constants/constants.dart';
+import 'package:flame/extensions.dart';
 import 'package:model/client_declaration/client_declaration.dart';
 
 import 'package:model/request/client_request.dart';
@@ -10,8 +12,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
   WebSocketRepository({required this.isDebug}) {
+    final id = (1 + Random().nextInt(5)).toString();
     final url = isDebug ? kLocalUrl : kRemoteUrl;
-    channel = WebSocketChannel.connect(Uri.parse(url));
+    channel = WebSocketChannel.connect(Uri.parse("$url/$id"));
   }
   final bool isDebug;
   late final WebSocketChannel channel;

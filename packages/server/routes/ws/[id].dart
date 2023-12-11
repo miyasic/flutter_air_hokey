@@ -11,10 +11,21 @@ import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
 import 'package:uuid/v4.dart';
 
-Future<Response> onRequest(RequestContext context) async {
+Future<Response> onRequest(
+  RequestContext context,
+  String id,
+) async {
   final handler = webSocketHandler(
     (channel, protocol) {
-      final cubit = context.read<GameCubit>()..subscribe(channel);
+      final cubitMap = context.read<Map<String, GameCubit>>();
+      if (!cubitMap.containsKey(id)) {
+        cubitMap[id] = GameCubit(gameId: id);
+      }
+      final cubit = cubitMap[id];
+      if (cubit == null) {
+        return;
+      }
+      cubit.subscribe(channel);
       final uuid = const UuidV4().generate();
       final userRole = cubit.onNewAccess(uuid);
       final handshake =
