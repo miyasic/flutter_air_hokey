@@ -9,13 +9,13 @@ import 'package:model/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
-  WebSocketRepository({required this.isDebug}) {
+  WebSocketRepository({required this.isDebug, required this.id}) {
     final urlUtil = UrlUtil(isDebug: isDebug);
-    final id = (1 + Random().nextInt(5)).toString();
     final url = urlUtil.webSocketUrl;
     channel = WebSocketChannel.connect(Uri.parse("$url/$id"));
   }
   final bool isDebug;
+  final String id;
   late final WebSocketChannel channel;
 
   Stream<dynamic> getChannel() {

@@ -12,7 +12,7 @@ class HokeyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDebug = ref.watch(isDebugProvider);
-    final game = AirHokey(isDebug: isDebug);
+    final game = AirHokey(isDebug: isDebug, id: id);
     return SafeArea(
       child: GameWidget(
         game: game,
