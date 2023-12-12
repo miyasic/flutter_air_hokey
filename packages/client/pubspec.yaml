@@ -16,6 +16,7 @@ dependencies:
   json_annotation: ^4.8.1
   model:
     path: ../model
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
