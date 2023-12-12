@@ -1,5 +1,13 @@
+import 'package:air_hokey_client/provider/is_debug_proivder.dart';
 import 'package:air_hokey_client/util/url_util.dart';
 import 'package:dio/dio.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final roomRepositoryProvider = Provider(
+  (ref) => RoomRepository(
+    isDebug: ref.watch(isDebugProvider),
+  ),
+);
 
 class RoomRepository {
   RoomRepository({required this.isDebug}) {
