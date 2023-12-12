@@ -17,6 +17,7 @@ dependencies:
   model:
     path: ../model
   dio: ^5.4.0
+  auto_route: ^7.8.4
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +26,7 @@ dev_dependencies:
   freezed: ^2.4.5
   json_serializable: ^6.7.1
   flutter_lints: ^2.0.0
+  auto_route_generator: ^7.3.2
 
 flutter:
   uses-material-design: true
