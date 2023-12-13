@@ -16,7 +16,13 @@ class TopPage extends ConsumerWidget {
           onTap: () async {
             final String? id =
                 await ref.watch(roomRepositoryProvider).getRoomId();
-            context.router.push(HokeyRoute(id: id ?? 'hoge'));
+            if (context.mounted) {
+              if (id != null) {
+                context.router.push(HokeyRoute(id: id));
+              } else {
+                context.router.push(const NotFoundRoute());
+              }
+            }
           },
           child: const Text('TopPage'),
         ),

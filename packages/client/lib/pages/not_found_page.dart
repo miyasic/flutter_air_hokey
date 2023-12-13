@@ -1,5 +1,4 @@
 import 'package:air_hokey_client/app_router.dart';
-import 'package:air_hokey_client/pages/top_page.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 

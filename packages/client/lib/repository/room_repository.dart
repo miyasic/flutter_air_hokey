@@ -20,7 +20,6 @@ class RoomRepository {
   // remoteMatchUrlにアクセスしてルームIDを取得
   Future<String?> getRoomId() async {
     try {
-      print(urlUtil.matchUrl.toString());
       final response =
           await dio.get(urlUtil.matchUrl.toString()); // GETリクエストを送信
       if (response.statusCode == 200) {
@@ -29,7 +28,6 @@ class RoomRepository {
       return null; // ステータスコードが200以外の場合はnullを返す
     } catch (e) {
       // エラーハンドリング
-      print('DioError: $e');
       return null;
     }
   }
