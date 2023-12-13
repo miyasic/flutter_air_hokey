@@ -43,3 +43,14 @@ const PaletteEntry wallColor = BasicPalette.lightOrange;
 const double minFlameTime = 0.016; // 60fps
 const kLocalUrl = 'ws://localhost:8080/ws';
 const kRemoteUrl = 'wss://gamesample-ibiwnvw3aa-an.a.run.app/ws';
+
+const kLocalDomain = 'localhost:8080';
+const kRemoteDomain = 'gamesample-ibiwnvw3aa-an.a.run.app';
+
+const kWebSocketPath = '/ws';
+const kMatchPath = '/match';
+
+const kHttpScheme = 'http://';
+const kHttpsScheme = 'https://';
+const kWebSocketScheme = 'ws://';
+const kWebSocketSecureScheme = 'wss://';
