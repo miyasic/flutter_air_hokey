@@ -9,7 +9,7 @@ Response onRequest(RequestContext context) {
 
   final room = chooseRoom(availableRoom);
   if (room == null) {
-    final newRoom = createNewRoom();
+    final newRoom = createNewRoom(cubitMap.keys.toList());
     cubitMap[newRoom.key] = newRoom.value;
     return Response(body: newRoom.key, statusCode: 200);
   }
@@ -17,8 +17,11 @@ Response onRequest(RequestContext context) {
 }
 
 // 新しいRoomを作成
-MapEntry<String, GameCubit> createNewRoom() {
-  final id = const UuidV4().generate();
+MapEntry<String, GameCubit> createNewRoom(List keys) {
+  final id = const UuidV4().generate().substring(0, 8);
+  if (keys.contains(id)) {
+    return createNewRoom(keys);
+  }
   final cubit = GameCubit(gameId: id);
   return MapEntry(id, cubit);
 }
