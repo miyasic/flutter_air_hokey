@@ -4,6 +4,7 @@ import 'package:air_hokey_client/util/room_id_validator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @RoutePage()
@@ -23,14 +24,24 @@ class TopPage extends HookConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _RandomMatchButton(),
-              const SizedBox(height: 20),
-              _RoomIdFormField(
-                roomIdController: roomIdController,
+              const _RandomMatchButton(),
+              const Gap(20),
+              const Text(
+                "or",
+                style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 10),
-              _EnterRoomButton(
-                  roomIdController: roomIdController, formKey: formKey),
+              const Gap(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _RoomIdFormField(
+                    roomIdController: roomIdController,
+                  ),
+                  const Gap(20),
+                  _EnterRoomButton(
+                      roomIdController: roomIdController, formKey: formKey),
+                ],
+              ),
             ],
           ),
         ),
@@ -89,18 +100,16 @@ class _RoomIdFormField extends HookConsumerWidget {
   final TextEditingController roomIdController;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextFormField(
-          controller: roomIdController,
-          decoration: const InputDecoration(
-            labelText: 'Enter Room ID',
-            border: OutlineInputBorder(),
-          ),
-          validator: RoomIdValidator.validate,
+    return SizedBox(
+      width: 200,
+      child: TextFormField(
+        controller: roomIdController,
+        decoration: const InputDecoration(
+          labelText: 'Enter Room ID',
+          border: OutlineInputBorder(),
         ),
-      ],
+        validator: RoomIdValidator.validate,
+      ),
     );
   }
 }
