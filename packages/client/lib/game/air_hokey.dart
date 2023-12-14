@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:air_hokey_client/components/my_world.dart';
 import 'package:air_hokey_client/game/game_start_status.dart';
+import 'package:flame/components.dart';
 import 'package:model/client_declaration/client_declaration.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
@@ -25,7 +27,8 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug, required this.id}) {
+  AirHokey(
+      {required this.isDebug, required this.id, super.world, super.camera}) {
     webSocketRepository = WebSocketRepository(isDebug: isDebug, id: id);
   }
 
@@ -45,6 +48,11 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
+    print(super.camera.visibleWorldRect);
+    print(super.camera.viewport.size);
+    print(super.camera.viewport.position);
+    print(super.camera.viewfinder.anchor);
+    super.camera.viewfinder.anchor = Anchor.topLeft;
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
@@ -64,11 +72,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ball = Ball(size);
     _startWebSocketConnection(opponentPaddle);
     await addAll([
-      Field(
-        gameSize: size,
-        fieldSize: fieldSize,
-        paint: BasicPalette.darkBlue.paint(),
-      ),
+      world,
       _draggablePaddle!,
       opponentPaddle,
       startButton!,
