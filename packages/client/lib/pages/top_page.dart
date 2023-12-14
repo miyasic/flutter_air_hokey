@@ -3,6 +3,7 @@ import 'package:air_hokey_client/repository/room_repository.dart';
 import 'package:air_hokey_client/util/room_id_validator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -109,6 +110,9 @@ class _RoomIdFormField extends HookConsumerWidget {
           border: OutlineInputBorder(),
         ),
         validator: RoomIdValidator.validate,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(9),
+        ],
       ),
     );
   }
