@@ -52,7 +52,7 @@ class TopPage extends HookConsumerWidget {
 }
 
 class _RandomMatchButton extends HookConsumerWidget {
-  const _RandomMatchButton({super.key});
+  const _RandomMatchButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,7 +97,8 @@ class _EnterRoomButton extends HookConsumerWidget {
 }
 
 class _RoomIdFormField extends HookConsumerWidget {
-  const _RoomIdFormField({required this.roomIdController, super.key});
+  const _RoomIdFormField({required this.roomIdController, Key? key})
+      : super(key: key);
   final TextEditingController roomIdController;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
