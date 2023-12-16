@@ -27,8 +27,7 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey(
-      {required this.isDebug, required this.id, super.world, super.camera}) {
+  AirHokey({required this.isDebug, required this.id}) {
     webSocketRepository = WebSocketRepository(isDebug: isDebug, id: id);
   }
 
@@ -48,10 +47,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
-    print(super.camera.visibleWorldRect);
-    print(super.camera.viewport.size);
-    print(super.camera.viewport.position);
-    print(super.camera.viewfinder.anchor);
+    super.world = MyWorld(Vector2(size.x, size.y));
+    super.camera = CameraComponent(world: super.world);
     super.camera.viewfinder.anchor = Anchor.topLeft;
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
@@ -83,6 +80,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   // ループごとの衝突判定を消している。
   @override
   void update(double dt) {
+    (super.world as MyWorld).updateGameSize(size);
     super.update(dt);
     debugText.updateText([
       user?.debugViewText,

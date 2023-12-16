@@ -14,23 +14,10 @@ class HokeyPage extends ConsumerWidget {
   final String id;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameSize = MediaQuery.of(context).size;
     final bool isDebug = ref.watch(isDebugProvider);
-    final world = MyWorld(Vector2(gameSize.width, gameSize.height));
-    final camera = CameraComponent(
-      world: world,
-    );
-
-    // final camera = CameraComponent.withFixedResolution(
-    //   world: world,
-    //   width: gameSize.width, // ゲーム空間の横幅
-    //   height: gameSize.height, // ゲーム空間の高さ
-    // );
     final game = AirHokey(
-      world: world,
       isDebug: isDebug,
       id: id,
-      camera: camera,
     );
 
     return SafeArea(

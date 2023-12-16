@@ -16,7 +16,7 @@ class Field extends RectangleComponent {
           position: gameSize / 2,
           paint: paint,
         );
-  final Vector2 gameSize;
+  Vector2 gameSize;
   final Vector2 fieldSize;
   @override
   final Paint paint;
@@ -49,5 +49,10 @@ class Field extends RectangleComponent {
     add(
       BottomRightHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
+  }
+
+  updateGameSize(Vector2 gameSize) {
+    this.gameSize = gameSize;
+    position = gameSize / 2;
   }
 }

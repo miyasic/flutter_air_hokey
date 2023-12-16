@@ -5,22 +5,29 @@ import 'package:model/game_config/constants.dart';
 
 class MyWorld extends World with HasCollisionDetection {
   MyWorld(this.gameSize);
-  final Vector2 gameSize;
+  Vector2 gameSize;
   final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
+  Field? field;
   @override
   Future<void> onLoad() async {
-    print(gameSize);
     add(RectangleComponent(
         size: Vector2(10, 10),
         position: Vector2(0, 0),
         paint: BasicPalette.white.paint()));
 
-    add(
-      Field(
-        gameSize: gameSize,
-        fieldSize: fieldSize,
-        paint: BasicPalette.darkBlue.paint(),
-      ),
+    field = Field(
+      fieldSize: fieldSize,
+      gameSize: gameSize,
+      paint: BasicPalette.darkBlue.paint(),
     );
+    add(
+      field!,
+    );
+  }
+
+  updateGameSize(Vector2 gameSize) {
+    this.gameSize = gameSize;
+    print(this.gameSize);
+    field!.updateGameSize(gameSize);
   }
 }
