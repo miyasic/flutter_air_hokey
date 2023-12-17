@@ -99,8 +99,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         final scaleX = size.x / (fieldSize.x * kFieldXPaddingRate);
         final scaleY = size.y / (fieldSize.y * kFieldYPaddingRate);
         final scale = scaleX < scaleY ? scaleX : scaleY;
-        // print("Scale: $scale");
-        // super.camera.viewfinder.position = Vector2(field.x / 2, -size.y / 2);
         // // 縮小して、Fieldを画面サイズに合わせる。
         super.camera.viewfinder.zoom = scale;
 
