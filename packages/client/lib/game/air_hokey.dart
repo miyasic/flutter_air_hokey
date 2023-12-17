@@ -83,10 +83,18 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     final myWorld = super.world as MyWorld;
     final field = myWorld.field;
     if (field != null) {
-      final deltaX = (size.x - field.position.x * 2) / 2;
-      super.camera.viewport.position = Vector2(deltaX, 0);
-      final deltaY = (size.y - field.position.y * 2) / 2;
-      super.camera.viewport.position = Vector2(deltaX, deltaY);
+      if (size.x > fieldSize.x * 1.5) {
+        // 並行移動してFieldを画面の中心にする
+        final deltaX = (size.x - field.position.x * 2) / 2;
+        super.camera.viewport.position = Vector2(deltaX, 0);
+        final deltaY = (size.y - field.position.y * 2) / 2;
+        super.camera.viewport.position = Vector2(deltaX, deltaY);
+      } else {
+        final scale = size.x / (fieldSize.x * 1.5);
+        print("Scale: $scale");
+        // 縮小して、Fieldを画面サイズに合わせる。
+        super.camera.viewfinder.zoom = scale;
+      }
     }
 
     super.update(dt);
