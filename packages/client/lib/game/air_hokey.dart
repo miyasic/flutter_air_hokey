@@ -38,9 +38,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   GameState? gameState;
   Ball? ball;
   DraggablePaddle? _draggablePaddle;
+  StartButton? startButton;
 
   final debugText = DebugText();
-  StartButton? startButton;
+
   bool shouldCalc = false;
   double loop = 0;
   late final Vector2 firstGameSize;
@@ -56,26 +57,24 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     super.camera.viewport.anchor = Anchor.center;
     firstGameSize = Vector2(size.x, size.y);
 
-    startButton = StartButton(
-      onTap: _onTapStartButton,
-      gameSize: size,
-    );
-
-    _draggablePaddle = DraggablePaddle(
-        draggingPaddle: _draggingPaddle,
-        paddleSize: paddleSize,
-        fieldSize: fieldSize,
-        gameSize: size);
-
     ball = Ball(size);
+
+    // Worldに登録したCommponentにアクセスする。
     final opponentPaddle = (super.world as MyWorld).opponentPaddle;
     if (opponentPaddle != null) {
       _startWebSocketConnection(opponentPaddle);
     }
+    _draggablePaddle = (super.world as MyWorld).draggablePaddle;
+    if (_draggablePaddle != null) {
+      _draggablePaddle!.addDraggingPaddle(_draggingPaddle);
+    }
+    startButton = (super.world as MyWorld).startButton;
+    if (startButton != null) {
+      startButton!.setOnTap(_onTapStartButton);
+    }
+
     await addAll([
       world,
-      _draggablePaddle!,
-      startButton!,
       if (isDebug) debugText,
     ]);
   }
@@ -266,10 +265,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ball = Ball(size);
     startButton?.setEnable();
     _draggablePaddle = DraggablePaddle(
-        draggingPaddle: _draggingPaddle,
-        paddleSize: paddleSize,
-        fieldSize: fieldSize,
-        gameSize: size);
+        paddleSize: paddleSize, fieldSize: fieldSize, gameSize: size);
+    _draggablePaddle!.addDraggingPaddle(_draggingPaddle);
   }
 
   void _onGoal(GameState gameState) {

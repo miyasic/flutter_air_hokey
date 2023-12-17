@@ -7,7 +7,6 @@ import 'package:air_hokey_client/constants/constants.dart';
 
 class StartButton extends TextBoxComponent with TapCallbacks {
   StartButton({
-    required this.onTap,
     required this.gameSize,
   }) : super(
           text: 'Waiting ...',
@@ -17,13 +16,13 @@ class StartButton extends TextBoxComponent with TapCallbacks {
           align: Anchor.center,
         );
 
-  final Future<void> Function() onTap;
+  Future<void> Function()? onTap;
   final Vector2 gameSize;
   bool isEnabled = false;
 
   @override
   bool onTapDown(TapDownEvent event) {
-    onTap();
+    onTap!();
     return true;
   }
 
@@ -43,5 +42,9 @@ class StartButton extends TextBoxComponent with TapCallbacks {
   void setEnable({bool isEnabled = true}) {
     this.isEnabled = isEnabled;
     text = 'Start';
+  }
+
+  void setOnTap(Future<void> Function() onTap) {
+    this.onTap = onTap;
   }
 }
