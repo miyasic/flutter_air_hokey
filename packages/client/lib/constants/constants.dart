@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
+//Field settings
+const double kFieldXPaddingRate = 1.5;
+const double kFieldYPaddingRate = 1.2;
+
 //Paddle Settings
 const double kPaddleWidth = 100;
 const double kPaddleHeight = 20;
