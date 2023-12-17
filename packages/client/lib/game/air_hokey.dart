@@ -43,6 +43,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   StartButton? startButton;
   bool shouldCalc = false;
   double loop = 0;
+  late final Vector2 firstGameSize;
 
   final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
@@ -53,6 +54,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     super.camera = CameraComponent(world: super.world);
     super.camera.viewfinder.anchor = Anchor.center;
     super.camera.viewport.anchor = Anchor.center;
+    firstGameSize = Vector2(size.x, size.y);
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
@@ -85,20 +87,27 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   void update(double dt) {
     final myWorld = super.world as MyWorld;
     final field = myWorld.field;
+    final xThreshold = fieldSize.x * kFieldXPaddingRate;
+    final yThreshold = fieldSize.y * kFieldYPaddingRate;
     if (field != null) {
-      if (size.x > fieldSize.x * kFieldXPaddingRate &&
-          size.y > fieldSize.y * kFieldYPaddingRate) {
+      if (size.x > xThreshold && size.y > yThreshold) {
         // 並行移動してFieldを画面の中心にする
-        final deltaX = (field.position.x * 2 - size.x) / 2;
-        final deltaY = (field.position.y * 2 - size.y) / 2;
+        final deltaX = (firstGameSize.x - size.x) / 2;
+        final deltaY = (firstGameSize.y - size.y) / 2;
         super.camera.viewfinder.position = Vector2(deltaX, deltaY);
       } else {
         final scaleX = size.x / (fieldSize.x * kFieldXPaddingRate);
         final scaleY = size.y / (fieldSize.y * kFieldYPaddingRate);
         final scale = scaleX < scaleY ? scaleX : scaleY;
         // print("Scale: $scale");
+        // super.camera.viewfinder.position = Vector2(field.x / 2, -size.y / 2);
         // // 縮小して、Fieldを画面サイズに合わせる。
         super.camera.viewfinder.zoom = scale;
+
+        // 閾値のタイミングでのdeltaをviewFinderに設定する。
+        final deltaX = (firstGameSize.x - xThreshold) / 2;
+        final deltaY = (firstGameSize.y - yThreshold) / 2;
+        super.camera.viewfinder.position = Vector2(deltaX, deltaY);
       }
     }
 
