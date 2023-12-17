@@ -24,10 +24,4 @@ class MyWorld extends World with HasCollisionDetection {
       field!,
     );
   }
-
-  updateGameSize(Vector2 gameSize) {
-    this.gameSize = gameSize;
-    print(this.gameSize);
-    field!.updateGameSize(gameSize);
-  }
 }
