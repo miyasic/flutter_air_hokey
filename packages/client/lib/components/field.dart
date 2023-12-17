@@ -50,9 +50,4 @@ class Field extends RectangleComponent {
       BottomRightHitbox(size: Vector2(size.x, wallThickness), parentSize: size),
     );
   }
-
-  updateGameSize(Vector2 gameSize) {
-    this.gameSize = gameSize;
-    position = gameSize / 2;
-  }
 }
