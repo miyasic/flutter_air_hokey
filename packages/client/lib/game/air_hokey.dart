@@ -55,11 +55,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     super.camera.viewfinder.anchor = Anchor.center;
     super.camera.viewport.anchor = Anchor.center;
     firstGameSize = Vector2(size.x, size.y);
-    final opponentPaddle = OpponentPaddle(
-      paddleSize: paddleSize,
-      fieldSize: fieldSize,
-      gameSize: size,
-    );
+
     startButton = StartButton(
       onTap: _onTapStartButton,
       gameSize: size,
@@ -72,11 +68,13 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         gameSize: size);
 
     ball = Ball(size);
-    _startWebSocketConnection(opponentPaddle);
+    final opponentPaddle = (super.world as MyWorld).opponentPaddle;
+    if (opponentPaddle != null) {
+      _startWebSocketConnection(opponentPaddle);
+    }
     await addAll([
       world,
       _draggablePaddle!,
-      opponentPaddle,
       startButton!,
       if (isDebug) debugText,
     ]);
