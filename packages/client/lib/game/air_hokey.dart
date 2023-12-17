@@ -42,14 +42,17 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   final debugText = DebugText();
   StartButton? startButton;
   bool shouldCalc = false;
+  double loop = 0;
 
   final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
     super.world = MyWorld(Vector2(size.x, size.y));
+    super.world.debugMode = isDebug;
     super.camera = CameraComponent(world: super.world);
-    super.camera.viewfinder.anchor = Anchor.topLeft;
+    super.camera.viewfinder.anchor = Anchor.center;
+    super.camera.viewport.anchor = Anchor.center;
     final opponentPaddle = OpponentPaddle(
       paddleSize: paddleSize,
       fieldSize: fieldSize,
@@ -83,16 +86,18 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     final myWorld = super.world as MyWorld;
     final field = myWorld.field;
     if (field != null) {
-      if (size.x > fieldSize.x * 1.5) {
+      if (size.x > fieldSize.x * kFieldXPaddingRate &&
+          size.y > fieldSize.y * kFieldYPaddingRate) {
         // 並行移動してFieldを画面の中心にする
-        final deltaX = (size.x - field.position.x * 2) / 2;
-        super.camera.viewport.position = Vector2(deltaX, 0);
-        final deltaY = (size.y - field.position.y * 2) / 2;
-        super.camera.viewport.position = Vector2(deltaX, deltaY);
+        final deltaX = (field.position.x * 2 - size.x) / 2;
+        final deltaY = (field.position.y * 2 - size.y) / 2;
+        super.camera.viewfinder.position = Vector2(deltaX, deltaY);
       } else {
-        final scale = size.x / (fieldSize.x * 1.5);
-        print("Scale: $scale");
-        // 縮小して、Fieldを画面サイズに合わせる。
+        final scaleX = size.x / (fieldSize.x * kFieldXPaddingRate);
+        final scaleY = size.y / (fieldSize.y * kFieldYPaddingRate);
+        final scale = scaleX < scaleY ? scaleX : scaleY;
+        // print("Scale: $scale");
+        // // 縮小して、Fieldを画面サイズに合わせる。
         super.camera.viewfinder.zoom = scale;
       }
     }

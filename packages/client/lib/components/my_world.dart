@@ -10,18 +10,11 @@ class MyWorld extends World with HasCollisionDetection {
   Field? field;
   @override
   Future<void> onLoad() async {
-    add(RectangleComponent(
-        size: Vector2(10, 10),
-        position: Vector2(0, 0),
-        paint: BasicPalette.white.paint()));
-
     field = Field(
       fieldSize: fieldSize,
       gameSize: gameSize,
       paint: BasicPalette.darkBlue.paint(),
     );
-    add(
-      field!,
-    );
+    add(field!);
   }
 }
