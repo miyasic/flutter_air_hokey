@@ -28,9 +28,9 @@ class CountdownText extends TextComponent {
   }
 
   void pointText(GameState gameState, User user) {
-    final pointMap = gameState.pointMap;
     final myId = user.id;
     final opponentId = user.getOpponentUserId(gameState);
-    text = "${pointMap[myId]} : ${pointMap[opponentId]}";
+    text =
+        "${gameState.clientStateMap[myId]?.point} : ${gameState.clientStateMap[opponentId]?.point}";
   }
 }

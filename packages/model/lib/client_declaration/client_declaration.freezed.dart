@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'client_game_state.dart';
+part of 'client_declaration.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ClientGameState _$ClientGameStateFromJson(Map<String, dynamic> json) {
-  return _ClientGameState.fromJson(json);
+ClientDeclaration _$ClientDeclarationFromJson(Map<String, dynamic> json) {
+  return _ClientDeclaration.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ClientGameState {
+mixin _$ClientDeclaration {
   String get id => throw _privateConstructorUsedError;
   int get paddlePosition => throw _privateConstructorUsedError;
   BallState get ballState => throw _privateConstructorUsedError;
@@ -27,15 +27,15 @@ mixin _$ClientGameState {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClientGameStateCopyWith<ClientGameState> get copyWith =>
+  $ClientDeclarationCopyWith<ClientDeclaration> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ClientGameStateCopyWith<$Res> {
-  factory $ClientGameStateCopyWith(
-          ClientGameState value, $Res Function(ClientGameState) then) =
-      _$ClientGameStateCopyWithImpl<$Res, ClientGameState>;
+abstract class $ClientDeclarationCopyWith<$Res> {
+  factory $ClientDeclarationCopyWith(
+          ClientDeclaration value, $Res Function(ClientDeclaration) then) =
+      _$ClientDeclarationCopyWithImpl<$Res, ClientDeclaration>;
   @useResult
   $Res call(
       {String id,
@@ -47,9 +47,9 @@ abstract class $ClientGameStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ClientGameStateCopyWithImpl<$Res, $Val extends ClientGameState>
-    implements $ClientGameStateCopyWith<$Res> {
-  _$ClientGameStateCopyWithImpl(this._value, this._then);
+class _$ClientDeclarationCopyWithImpl<$Res, $Val extends ClientDeclaration>
+    implements $ClientDeclarationCopyWith<$Res> {
+  _$ClientDeclarationCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -94,11 +94,11 @@ class _$ClientGameStateCopyWithImpl<$Res, $Val extends ClientGameState>
 }
 
 /// @nodoc
-abstract class _$$ClientGameStateImplCopyWith<$Res>
-    implements $ClientGameStateCopyWith<$Res> {
-  factory _$$ClientGameStateImplCopyWith(_$ClientGameStateImpl value,
-          $Res Function(_$ClientGameStateImpl) then) =
-      __$$ClientGameStateImplCopyWithImpl<$Res>;
+abstract class _$$ClientDeclarationImplCopyWith<$Res>
+    implements $ClientDeclarationCopyWith<$Res> {
+  factory _$$ClientDeclarationImplCopyWith(_$ClientDeclarationImpl value,
+          $Res Function(_$ClientDeclarationImpl) then) =
+      __$$ClientDeclarationImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -112,11 +112,11 @@ abstract class _$$ClientGameStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ClientGameStateImplCopyWithImpl<$Res>
-    extends _$ClientGameStateCopyWithImpl<$Res, _$ClientGameStateImpl>
-    implements _$$ClientGameStateImplCopyWith<$Res> {
-  __$$ClientGameStateImplCopyWithImpl(
-      _$ClientGameStateImpl _value, $Res Function(_$ClientGameStateImpl) _then)
+class __$$ClientDeclarationImplCopyWithImpl<$Res>
+    extends _$ClientDeclarationCopyWithImpl<$Res, _$ClientDeclarationImpl>
+    implements _$$ClientDeclarationImplCopyWith<$Res> {
+  __$$ClientDeclarationImplCopyWithImpl(_$ClientDeclarationImpl _value,
+      $Res Function(_$ClientDeclarationImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -127,7 +127,7 @@ class __$$ClientGameStateImplCopyWithImpl<$Res>
     Object? ballState = null,
     Object? serverLoopCount = null,
   }) {
-    return _then(_$ClientGameStateImpl(
+    return _then(_$ClientDeclarationImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -150,16 +150,16 @@ class __$$ClientGameStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ClientGameStateImpl extends _ClientGameState {
-  const _$ClientGameStateImpl(
+class _$ClientDeclarationImpl extends _ClientDeclaration {
+  const _$ClientDeclarationImpl(
       {required this.id,
       required this.paddlePosition,
       required this.ballState,
       required this.serverLoopCount})
       : super._();
 
-  factory _$ClientGameStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ClientGameStateImplFromJson(json);
+  factory _$ClientDeclarationImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClientDeclarationImplFromJson(json);
 
   @override
   final String id;
@@ -172,14 +172,14 @@ class _$ClientGameStateImpl extends _ClientGameState {
 
   @override
   String toString() {
-    return 'ClientGameState(id: $id, paddlePosition: $paddlePosition, ballState: $ballState, serverLoopCount: $serverLoopCount)';
+    return 'ClientDeclaration(id: $id, paddlePosition: $paddlePosition, ballState: $ballState, serverLoopCount: $serverLoopCount)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ClientGameStateImpl &&
+            other is _$ClientDeclarationImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.paddlePosition, paddlePosition) ||
                 other.paddlePosition == paddlePosition) &&
@@ -197,28 +197,28 @@ class _$ClientGameStateImpl extends _ClientGameState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ClientGameStateImplCopyWith<_$ClientGameStateImpl> get copyWith =>
-      __$$ClientGameStateImplCopyWithImpl<_$ClientGameStateImpl>(
+  _$$ClientDeclarationImplCopyWith<_$ClientDeclarationImpl> get copyWith =>
+      __$$ClientDeclarationImplCopyWithImpl<_$ClientDeclarationImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ClientGameStateImplToJson(
+    return _$$ClientDeclarationImplToJson(
       this,
     );
   }
 }
 
-abstract class _ClientGameState extends ClientGameState {
-  const factory _ClientGameState(
+abstract class _ClientDeclaration extends ClientDeclaration {
+  const factory _ClientDeclaration(
       {required final String id,
       required final int paddlePosition,
       required final BallState ballState,
-      required final int serverLoopCount}) = _$ClientGameStateImpl;
-  const _ClientGameState._() : super._();
+      required final int serverLoopCount}) = _$ClientDeclarationImpl;
+  const _ClientDeclaration._() : super._();
 
-  factory _ClientGameState.fromJson(Map<String, dynamic> json) =
-      _$ClientGameStateImpl.fromJson;
+  factory _ClientDeclaration.fromJson(Map<String, dynamic> json) =
+      _$ClientDeclarationImpl.fromJson;
 
   @override
   String get id;
@@ -230,6 +230,6 @@ abstract class _ClientGameState extends ClientGameState {
   int get serverLoopCount;
   @override
   @JsonKey(ignore: true)
-  _$$ClientGameStateImplCopyWith<_$ClientGameStateImpl> get copyWith =>
+  _$$ClientDeclarationImplCopyWith<_$ClientDeclarationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

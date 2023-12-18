@@ -9,13 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   flame: ^1.9.1
   web_socket_channel: ^2.4.0
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   model:
     path: ../model
+  dio: ^5.4.0
+  auto_route: ^7.8.4
+  hooks_riverpod: ^2.4.9
+  flutter_hooks: ^0.20.3
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +28,7 @@ dev_dependencies:
   freezed: ^2.4.5
   json_serializable: ^6.7.1
   flutter_lints: ^2.0.0
+  auto_route_generator: ^7.3.2
 
 flutter:
   uses-material-design: true

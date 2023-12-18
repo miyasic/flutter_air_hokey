@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:model/client_game_state/client_game_state.dart';
+import 'package:model/client_declaration/client_declaration.dart';
+import 'package:model/client_state/client_state.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
 import 'package:model/ball_state/ball_state.dart';
@@ -12,15 +13,14 @@ import 'package:broadcast_bloc/broadcast_bloc.dart';
 
 class GameCubit extends BroadcastCubit<GameState> {
   // Create an instance with an initial state of 0.
-  GameCubit()
+  GameCubit({required this.gameId})
       : super(const GameState(
           ids: [],
-          positionMap: {},
           serverLoop: 0,
-          ballStateMap: {},
-          pointMap: {},
+          clientStateMap: {},
           isGoal: false,
         ));
+  final String gameId;
 
   @override
   Object toMessage(GameState state) {
@@ -43,13 +43,14 @@ class GameCubit extends BroadcastCubit<GameState> {
     }
     final newState = state.copyWith(
       ids: [...state.ids, uuid],
-      positionMap: {
-        ...state.positionMap,
-        uuid: 0,
-      },
-      pointMap: {
-        ...state.pointMap,
-        uuid: 0,
+      clientStateMap: {
+        ...state.clientStateMap,
+        uuid: ClientState(
+          id: uuid,
+          paddlePosition: 0,
+          point: 0,
+          declaredBallState: null,
+        ),
       },
       isReset: false,
     );
@@ -61,34 +62,37 @@ class GameCubit extends BroadcastCubit<GameState> {
     };
   }
 
-  void updateState(ClientGameState clientGameState) {
-    if (state.ballStateMap.keys.contains(clientGameState.id)) {
-      return;
+  void updateState(ClientDeclaration clientDeclaration) {
+    if (state.clientStateMap[clientDeclaration.id]!.declaredBallState != null) {
+      // Loopがズレているのでおかしい。
+      throw Exception("Loop is invalid");
     }
-    final newPositionMap = Map<String, int>.from(state.positionMap);
-    newPositionMap[clientGameState.id] = clientGameState.paddlePosition;
-    if (state.ballStateMap.isEmpty) {
+    final newClientStateMap =
+        Map<String, ClientState>.from(state.clientStateMap);
+    newClientStateMap[clientDeclaration.id] =
+        newClientStateMap[clientDeclaration.id]!
+            .copyWithClientDeclaration(clientDeclaration);
+    if (!state.isRequestedBallStateFromOtherClient) {
       // ボールの情報を追加する。
-      final newBallStateMap = Map<String, BallState>.from(state.ballStateMap);
-      newBallStateMap[clientGameState.id] = clientGameState.ballState;
-      emit(state.copyWith(
-          positionMap: newPositionMap,
-          ballStateMap: newBallStateMap,
-          isFixed: false));
+      emit(state.copyWith(clientStateMap: newClientStateMap, isFixed: false));
       return;
     }
     final newServerLoop = state.serverLoop + 1;
-    final aBallState = state.ballStateMap.values.first;
-    final bBallState = clientGameState.ballState;
+    final aBallState =
+        newClientStateMap[state.roomCreatorId]!.declaredBallState!;
+    final bBallState =
+        newClientStateMap[state.challengerId]!.declaredBallState!;
     if (aBallState == bBallState) {
       final newBallState = aBallState;
+
       if (_checkGoal(newBallState)) return;
-      emit(state.copyWith(
-          positionMap: newPositionMap,
-          ballState: newBallState,
-          ballStateMap: {},
-          serverLoop: newServerLoop,
-          isFixed: false));
+      emit(state
+          .copyWith(
+              clientStateMap: newClientStateMap,
+              ballState: newBallState,
+              serverLoop: newServerLoop,
+              isFixed: false)
+          .withoutDeclaredBallStates);
       return;
     }
 
@@ -97,35 +101,50 @@ class GameCubit extends BroadcastCubit<GameState> {
         ? aBallState
         : bBallState;
     if (_checkGoal(newBallState)) return;
-    emit(state.copyWith(
-        positionMap: newPositionMap,
-        ballState: newBallState,
-        ballStateMap: {},
-        serverLoop: newServerLoop,
-        isFixed: true));
+    emit(state
+        .copyWith(
+            clientStateMap: newClientStateMap,
+            ballState: newBallState,
+            serverLoop: newServerLoop,
+            isFixed: true)
+        .withoutDeclaredBallStates);
   }
 
   bool _checkGoal(BallState ballState) {
     // relativeYが正方向だとgameMasterのゴール
     if (ballState.relativeY < -kFieldSizeY / 2) {
-      final newPointMap = Map<String, int>.from(state.pointMap);
-      newPointMap[state.roomCreatorId] = (newPointMap[state.ids[0]] ?? 0) + 1;
+      final newClientStateMap =
+          Map<String, ClientState>.from(state.clientStateMap);
+      newClientStateMap[state.roomCreatorId] =
+          newClientStateMap[state.roomCreatorId]!.copyWith(
+              declaredBallState: null,
+              point: newClientStateMap[state.roomCreatorId]!.point + 1);
+      newClientStateMap[state.challengerId] =
+          newClientStateMap[state.challengerId]!.copyWith(
+        declaredBallState: null,
+      );
       emit(state.copyWith(
         ballState: null,
-        pointMap: newPointMap,
-        ballStateMap: {},
+        clientStateMap: newClientStateMap,
         serverLoop: 0,
         isGoal: true,
       ));
       return true;
     }
     if (ballState.relativeY > kFieldSizeY / 2) {
-      final newPointMap = Map<String, int>.from(state.pointMap);
-      newPointMap[state.challengerId] = (newPointMap[state.ids[1]] ?? 0) + 1;
+      final newClientStateMap =
+          Map<String, ClientState>.from(state.clientStateMap);
+      newClientStateMap[state.challengerId] =
+          newClientStateMap[state.challengerId]!.copyWith(
+              declaredBallState: null,
+              point: newClientStateMap[state.challengerId]!.point + 1);
+      newClientStateMap[state.roomCreatorId] =
+          newClientStateMap[state.roomCreatorId]!.copyWith(
+        declaredBallState: null,
+      );
       emit(state.copyWith(
         ballState: null,
-        pointMap: newPointMap,
-        ballStateMap: {},
+        clientStateMap: newClientStateMap,
         serverLoop: 0,
         isGoal: true,
       ));
@@ -135,16 +154,17 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   void reset(Reset reset) {
-    emit(const GameState(
+    emit(
+      const GameState(
         ids: [],
-        positionMap: {},
         ballState: null,
-        ballStateMap: {},
+        clientStateMap: {},
         serverLoop: 0,
         isFixed: false,
         isReset: true,
         isGoal: false,
-        pointMap: {}));
+      ),
+    );
   }
 
   void start(Start start) {

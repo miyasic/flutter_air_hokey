@@ -1,30 +1,30 @@
 import 'dart:convert';
+import 'package:air_hokey_client/util/url_util.dart';
+import 'package:model/client_declaration/client_declaration.dart';
 
-import 'package:air_hokey_client/constants/constants.dart';
-import 'package:model/client_game_state/client_game_state.dart';
 import 'package:model/request/client_request.dart';
 import 'package:model/reset/reset.dart';
 import 'package:model/start/start.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketRepository {
-  WebSocketRepository({required this.isDebug}) {
-    final url = isDebug ? kLocalUrl : kRemoteUrl;
-    channel = WebSocketChannel.connect(Uri.parse(url));
+  WebSocketRepository({required this.isDebug, required this.id}) {
+    final urlUtil = UrlUtil(isDebug: isDebug);
+    final url = urlUtil.webSocketUrl;
+    channel = WebSocketChannel.connect(Uri.parse("$url/$id"));
   }
   final bool isDebug;
+  final String id;
   late final WebSocketChannel channel;
-  // final channel = WebSocketChannel.connect(
-  //     Uri.parse('wss://gamesample-ibiwnvw3aa-an.a.run.app/ws'));
 
   Stream<dynamic> getChannel() {
     return channel.stream;
   }
 
-  void sendClientGameState(ClientGameState clientGameState) {
+  void sendClientDeclaration(ClientDeclaration clientDeclaration) {
     final request = ClientRequest(
-      type: ClientRequestType.clientGameState,
-      requestDetail: clientGameState,
+      type: ClientRequestType.clientDeclaration,
+      requestDetail: clientDeclaration,
     );
     _message(request);
   }
