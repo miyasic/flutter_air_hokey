@@ -16,7 +16,7 @@ class Field extends RectangleComponent {
           position: gameSize / 2,
           paint: paint,
         );
-  Vector2 gameSize;
+  final Vector2 gameSize;
   final Vector2 fieldSize;
   @override
   final Paint paint;
