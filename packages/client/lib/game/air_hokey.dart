@@ -227,6 +227,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _draggingPaddle(DragUpdateEvent event) {
+    final children = (super.world as MyWorld).children;
     final paddle = children.whereType<DraggablePaddle>().first;
 
     paddle.position.x += event.delta.x.round();
