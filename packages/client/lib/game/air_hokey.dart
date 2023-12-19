@@ -277,6 +277,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       return;
     }
     this.gameState = gameState;
-    add(startButton!);
+    final myWorld = super.world as MyWorld;
+    myWorld.add(startButton!);
   }
 }
