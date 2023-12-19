@@ -57,8 +57,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     super.camera.viewport.anchor = Anchor.center;
     firstGameSize = Vector2(size.x, size.y);
 
-    ball = Ball(size);
-
     // Worldに登録したCommponentにアクセスする。
     final opponentPaddle = (super.world as MyWorld).opponentPaddle;
     if (opponentPaddle != null) {
@@ -72,6 +70,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     if (startButton != null) {
       startButton!.setOnTap(_onTapStartButton);
     }
+    ball = (super.world as MyWorld).ball;
 
     await addAll([
       world,
@@ -195,7 +194,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ball = Ball(size);
     ball?.draw(gameState.ballState, user, size);
     await _countdown();
-    add(ball!);
+    final myWorld = super.world as MyWorld;
+    myWorld.add(ball!);
     _calcPositionAndSendState(gameState);
   }
 
