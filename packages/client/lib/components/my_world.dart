@@ -1,3 +1,4 @@
+import 'package:air_hokey_client/components/ball.dart';
 import 'package:air_hokey_client/components/button/start_button.dart';
 import 'package:air_hokey_client/components/field.dart';
 import 'package:air_hokey_client/components/paddle/draggable_paddle.dart';
@@ -17,6 +18,7 @@ class MyWorld extends World with HasCollisionDetection, DragCallbacks {
   OpponentPaddle? opponentPaddle;
   DraggablePaddle? draggablePaddle;
   StartButton? startButton;
+  Ball? ball;
   @override
   Future<void> onLoad() async {
     field = Field(
