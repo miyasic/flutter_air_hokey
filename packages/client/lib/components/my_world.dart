@@ -44,7 +44,4 @@ class MyWorld extends World with HasCollisionDetection, DragCallbacks {
       startButton!,
     ]);
   }
-
-  // todo:resetメソッドを実装
-  void _onReset() {}
 }
