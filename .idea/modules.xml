@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/packages/client/melos_air_hokey_client.iml" filepath="$PROJECT_DIR$/packages/client/melos_air_hokey_client.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/server/melos_air_hokey_server.iml" filepath="$PROJECT_DIR$/packages/server/melos_air_hokey_server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/model/melos_model.iml" filepath="$PROJECT_DIR$/packages/model/melos_model.iml" />
       <module fileurl="file://$PROJECT_DIR$/melos_air_hokey.iml" filepath="$PROJECT_DIR$/melos_air_hokey.iml" />
     </modules>
   </component>
