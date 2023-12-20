@@ -174,4 +174,21 @@ class GameCubit extends BroadcastCubit<GameState> {
       isGoal: false,
     ));
   }
+
+  // RoomOwnerかChallengerが切断した場合、ゲームを終了する。
+  void onUnsubscribe(String uuid) {
+    if (state.ids.contains(uuid)) {
+      final newIds = state.ids.where((element) => element != uuid).toList();
+      // clientStateMapから切断したプレイヤーを削除した新しいMapを作成
+      final Map<String, ClientState> newMap = {
+        for (var id in state.clientStateMap.keys.where((key) => key != uuid))
+          id: state.clientStateMap[id]!
+      };
+      emit(state.copyWith(
+        ids: newIds,
+        clientStateMap: newMap,
+        isDisconnect: true,
+      ));
+    }
+  }
 }
