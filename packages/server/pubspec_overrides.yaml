@@ -1,3 +1,4 @@
 # melos_managed_dependency_overrides: model
 dependency_overrides:
-  {model: {path: ../model}}
+  model:
+    path: ../model

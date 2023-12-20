@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:air_hokey_client/components/my_world.dart';
 import 'package:air_hokey_client/game/game_start_status.dart';
+import 'package:flame/components.dart';
 import 'package:model/client_declaration/client_declaration.dart';
 import 'package:model/game_config/constants.dart';
 import 'package:model/game_state/game_state.dart';
@@ -36,42 +38,42 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   GameState? gameState;
   Ball? ball;
   DraggablePaddle? _draggablePaddle;
+  StartButton? startButton;
 
   final debugText = DebugText();
-  StartButton? startButton;
+
   bool shouldCalc = false;
+  double loop = 0;
+  late final Vector2 firstGameSize;
 
   final fieldSize = Vector2(kFieldSizeX, kFieldSizeY);
   final paddleSize = Vector2(kPaddleWidth, kPaddleHeight);
   @override
   Future<void>? onLoad() async {
-    final opponentPaddle = OpponentPaddle(
-      paddleSize: paddleSize,
-      fieldSize: fieldSize,
-      gameSize: size,
-    );
-    startButton = StartButton(
-      onTap: _onTapStartButton,
-      gameSize: size,
-    );
+    super.world = MyWorld(Vector2(size.x, size.y));
+    super.world.debugMode = isDebug;
+    super.camera = CameraComponent(world: super.world);
+    super.camera.viewfinder.anchor = Anchor.center;
+    super.camera.viewport.anchor = Anchor.center;
+    firstGameSize = Vector2(size.x, size.y);
 
-    _draggablePaddle = DraggablePaddle(
-        draggingPaddle: _draggingPaddle,
-        paddleSize: paddleSize,
-        fieldSize: fieldSize,
-        gameSize: size);
+    // Worldに登録したCommponentにアクセスする。
+    final opponentPaddle = (super.world as MyWorld).opponentPaddle;
+    if (opponentPaddle != null) {
+      _startWebSocketConnection(opponentPaddle);
+    }
+    _draggablePaddle = (super.world as MyWorld).draggablePaddle;
+    if (_draggablePaddle != null) {
+      _draggablePaddle!.addDraggingPaddle(_draggingPaddle);
+    }
+    startButton = (super.world as MyWorld).startButton;
+    if (startButton != null) {
+      startButton!.setOnTap(_onTapStartButton);
+    }
+    ball = (super.world as MyWorld).ball;
 
-    ball = Ball(size);
-    _startWebSocketConnection(opponentPaddle);
     await addAll([
-      Field(
-        gameSize: size,
-        fieldSize: fieldSize,
-        paint: BasicPalette.darkBlue.paint(),
-      ),
-      _draggablePaddle!,
-      opponentPaddle,
-      startButton!,
+      world,
       if (isDebug) debugText,
     ]);
   }
@@ -79,6 +81,30 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   // ループごとの衝突判定を消している。
   @override
   void update(double dt) {
+    final myWorld = super.world as MyWorld;
+    final field = myWorld.field;
+    final xThreshold = fieldSize.x * kFieldXPaddingRate;
+    final yThreshold = fieldSize.y * kFieldYPaddingRate;
+    if (field != null) {
+      if (size.x > xThreshold && size.y > yThreshold) {
+        // 並行移動してFieldを画面の中心にする
+        final deltaX = (firstGameSize.x - size.x) / 2;
+        final deltaY = (firstGameSize.y - size.y) / 2;
+        super.camera.viewfinder.position = Vector2(deltaX, deltaY);
+      } else {
+        final scaleX = size.x / (fieldSize.x * kFieldXPaddingRate);
+        final scaleY = size.y / (fieldSize.y * kFieldYPaddingRate);
+        final scale = scaleX < scaleY ? scaleX : scaleY;
+        // // 縮小して、Fieldを画面サイズに合わせる。
+        super.camera.viewfinder.zoom = scale;
+
+        // 閾値のタイミングでのdeltaをviewFinderに設定する。
+        final deltaX = (firstGameSize.x - xThreshold) / 2;
+        final deltaY = (firstGameSize.y - yThreshold) / 2;
+        super.camera.viewfinder.position = Vector2(deltaX, deltaY);
+      }
+    }
+
     super.update(dt);
     debugText.updateText([
       user?.debugViewText,
@@ -168,7 +194,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ball = Ball(size);
     ball?.draw(gameState.ballState, user, size);
     await _countdown();
-    add(ball!);
+    final myWorld = super.world as MyWorld;
+    myWorld.add(ball!);
     _calcPositionAndSendState(gameState);
   }
 
@@ -200,6 +227,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _draggingPaddle(DragUpdateEvent event) {
+    final children = (super.world as MyWorld).children;
     final paddle = children.whereType<DraggablePaddle>().first;
 
     paddle.position.x += event.delta.x.round();
@@ -221,7 +249,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   Future<void> _countdown() async {
     final countdownText = CountdownText(gameSize: size);
-    await add(countdownText);
+    final world = (super.world as MyWorld);
+    world.add(countdownText);
 
     countdownText.pointText(gameState!, user!);
     await Future<void>.delayed(const Duration(seconds: 1));
@@ -238,10 +267,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     ball = Ball(size);
     startButton?.setEnable();
     _draggablePaddle = DraggablePaddle(
-        draggingPaddle: _draggingPaddle,
-        paddleSize: paddleSize,
-        fieldSize: fieldSize,
-        gameSize: size);
+        paddleSize: paddleSize, fieldSize: fieldSize, gameSize: size);
+    _draggablePaddle!.addDraggingPaddle(_draggingPaddle);
   }
 
   void _onGoal(GameState gameState) {
@@ -250,6 +277,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       return;
     }
     this.gameState = gameState;
-    add(startButton!);
+    final myWorld = super.world as MyWorld;
+    myWorld.add(startButton!);
   }
 }

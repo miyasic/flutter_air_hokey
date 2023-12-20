@@ -5,8 +5,7 @@ import 'package:air_hokey_client/constants/constants.dart';
 
 class DraggablePaddle extends Paddle with DragCallbacks {
   DraggablePaddle(
-      {required this.draggingPaddle,
-      required super.fieldSize,
+      {required super.fieldSize,
       required super.paddleSize,
       required super.gameSize})
       : super(
@@ -17,11 +16,16 @@ class DraggablePaddle extends Paddle with DragCallbacks {
                     paddleSize.y -
                     kPaddleStartY));
 
-  final void Function(DragUpdateEvent event) draggingPaddle;
+  void Function(DragUpdateEvent event)? draggingPaddle;
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    draggingPaddle(event);
+    final draggingPaddle = this.draggingPaddle;
+    if (draggingPaddle != null) draggingPaddle(event);
     super.onDragUpdate(event);
+  }
+
+  addDraggingPaddle(void Function(DragUpdateEvent event) draggingPaddle) {
+    this.draggingPaddle = draggingPaddle;
   }
 }
