@@ -28,6 +28,7 @@ mixin _$GameState {
   bool get isFixed => throw _privateConstructorUsedError;
   bool get isReset => throw _privateConstructorUsedError;
   bool get isGoal => throw _privateConstructorUsedError;
+  bool get isDisconnect => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $GameStateCopyWith<$Res> {
       int serverLoop,
       bool isFixed,
       bool isReset,
-      bool isGoal});
+      bool isGoal,
+      bool isDisconnect});
 
   $BallStateCopyWith<$Res>? get ballState;
 }
@@ -72,6 +74,7 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
     Object? isFixed = null,
     Object? isReset = null,
     Object? isGoal = null,
+    Object? isDisconnect = null,
   }) {
     return _then(_value.copyWith(
       ids: null == ids
@@ -101,6 +104,10 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
       isGoal: null == isGoal
           ? _value.isGoal
           : isGoal // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDisconnect: null == isDisconnect
+          ? _value.isDisconnect
+          : isDisconnect // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -133,7 +140,8 @@ abstract class _$$GameStateImplCopyWith<$Res>
       int serverLoop,
       bool isFixed,
       bool isReset,
-      bool isGoal});
+      bool isGoal,
+      bool isDisconnect});
 
   @override
   $BallStateCopyWith<$Res>? get ballState;
@@ -157,6 +165,7 @@ class __$$GameStateImplCopyWithImpl<$Res>
     Object? isFixed = null,
     Object? isReset = null,
     Object? isGoal = null,
+    Object? isDisconnect = null,
   }) {
     return _then(_$GameStateImpl(
       ids: null == ids
@@ -187,6 +196,10 @@ class __$$GameStateImplCopyWithImpl<$Res>
           ? _value.isGoal
           : isGoal // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDisconnect: null == isDisconnect
+          ? _value.isDisconnect
+          : isDisconnect // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -201,7 +214,8 @@ class _$GameStateImpl extends _GameState {
       required this.serverLoop,
       this.isFixed = false,
       this.isReset = false,
-      this.isGoal = false})
+      this.isGoal = false,
+      this.isDisconnect = false})
       : _ids = ids,
         _clientStateMap = clientStateMap,
         super._();
@@ -238,10 +252,13 @@ class _$GameStateImpl extends _GameState {
   @override
   @JsonKey()
   final bool isGoal;
+  @override
+  @JsonKey()
+  final bool isDisconnect;
 
   @override
   String toString() {
-    return 'GameState(ids: $ids, ballState: $ballState, clientStateMap: $clientStateMap, serverLoop: $serverLoop, isFixed: $isFixed, isReset: $isReset, isGoal: $isGoal)';
+    return 'GameState(ids: $ids, ballState: $ballState, clientStateMap: $clientStateMap, serverLoop: $serverLoop, isFixed: $isFixed, isReset: $isReset, isGoal: $isGoal, isDisconnect: $isDisconnect)';
   }
 
   @override
@@ -258,7 +275,9 @@ class _$GameStateImpl extends _GameState {
                 other.serverLoop == serverLoop) &&
             (identical(other.isFixed, isFixed) || other.isFixed == isFixed) &&
             (identical(other.isReset, isReset) || other.isReset == isReset) &&
-            (identical(other.isGoal, isGoal) || other.isGoal == isGoal));
+            (identical(other.isGoal, isGoal) || other.isGoal == isGoal) &&
+            (identical(other.isDisconnect, isDisconnect) ||
+                other.isDisconnect == isDisconnect));
   }
 
   @JsonKey(ignore: true)
@@ -271,7 +290,8 @@ class _$GameStateImpl extends _GameState {
       serverLoop,
       isFixed,
       isReset,
-      isGoal);
+      isGoal,
+      isDisconnect);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +315,8 @@ abstract class _GameState extends GameState {
       required final int serverLoop,
       final bool isFixed,
       final bool isReset,
-      final bool isGoal}) = _$GameStateImpl;
+      final bool isGoal,
+      final bool isDisconnect}) = _$GameStateImpl;
   const _GameState._() : super._();
 
   factory _GameState.fromJson(Map<String, dynamic> json) =
@@ -315,6 +336,8 @@ abstract class _GameState extends GameState {
   bool get isReset;
   @override
   bool get isGoal;
+  @override
+  bool get isDisconnect;
   @override
   @JsonKey(ignore: true)
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>

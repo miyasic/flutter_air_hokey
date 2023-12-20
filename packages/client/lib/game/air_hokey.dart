@@ -168,6 +168,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         _onGoal(gameState);
         return;
       }
+      if (gameState.isDisconnect) {
+        _onDisconnect();
+        return;
+      }
       final localGameState = this.gameState;
       opponentPaddle.updatePosition(gameState, user!);
       // ここでpositionを更新する
@@ -279,5 +283,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     this.gameState = gameState;
     final myWorld = super.world as MyWorld;
     myWorld.add(startButton!);
+  }
+
+  void _onDisconnect() {
+    // TODO:切断されましたのダイアログを表示する。
+    webSocketRepository.close();
   }
 }

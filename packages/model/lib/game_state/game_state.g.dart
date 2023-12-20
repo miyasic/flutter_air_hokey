@@ -19,6 +19,7 @@ _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
       isFixed: json['isFixed'] as bool? ?? false,
       isReset: json['isReset'] as bool? ?? false,
       isGoal: json['isGoal'] as bool? ?? false,
+      isDisconnect: json['isDisconnect'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
@@ -30,4 +31,5 @@ Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
       'isFixed': instance.isFixed,
       'isReset': instance.isReset,
       'isGoal': instance.isGoal,
+      'isDisconnect': instance.isDisconnect,
     };
