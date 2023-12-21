@@ -71,7 +71,7 @@ Future<Response> onRequest(
           }
         },
         onDone: () {
-          cubit.onUnsubscribe(uuid);
+          cubit.onDisconnected(uuid);
           cubit.unsubscribe(channel);
           // プレイヤーが1人もいなくなった場合はRoomを削除する。
           if (cubit.state.ids.isEmpty) {

@@ -176,7 +176,7 @@ class GameCubit extends BroadcastCubit<GameState> {
   }
 
   // RoomOwnerかChallengerが切断した場合、ゲームを終了する。
-  void onUnsubscribe(String uuid) {
+  void onDisconnected(String uuid) {
     if (state.ids.contains(uuid)) {
       final newIds = state.ids.where((element) => element != uuid).toList();
       // clientStateMapから切断したプレイヤーを削除した新しいMapを作成
