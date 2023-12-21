@@ -27,10 +27,12 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug, required this.id}) {
+  AirHokey(
+      {required this.isDebug, required this.showDialog, required this.id}) {
     webSocketRepository = WebSocketRepository(isDebug: isDebug, id: id);
   }
 
+  final void Function() showDialog;
   final bool isDebug;
   final String id;
   late final WebSocketRepository webSocketRepository;
@@ -287,6 +289,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
   void _onDisconnect() {
     // TODO:切断されましたのダイアログを表示する。
+    showDialog();
     webSocketRepository.close();
   }
 }
