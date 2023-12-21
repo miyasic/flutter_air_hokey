@@ -19,6 +19,7 @@ class HokeyPage extends ConsumerWidget {
     void _showDialog() {
       showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (context) => ExitRoomDialog(
                 onTapYes: () {
                   AutoRouter.of(context).pop();
