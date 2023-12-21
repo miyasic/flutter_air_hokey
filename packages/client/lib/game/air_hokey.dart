@@ -288,7 +288,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _onDisconnect() {
-    // TODO:切断されましたのダイアログを表示する。
     showDialog();
     webSocketRepository.close();
   }
