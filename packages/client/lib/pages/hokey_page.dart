@@ -1,3 +1,4 @@
+import 'package:air_hokey_client/app_router.dart';
 import 'package:air_hokey_client/components/my_world.dart';
 import 'package:air_hokey_client/game/air_hokey.dart';
 import 'package:air_hokey_client/provider/is_debug_proivder.dart';
@@ -19,10 +20,9 @@ class HokeyPage extends ConsumerWidget {
     void _showDialog() {
       showDialog(
           context: context,
-          barrierDismissible: false,
           builder: (context) => ExitRoomDialog(
                 onTapYes: () {
-                  AutoRouter.of(context).pop();
+                  AutoRouter.of(context).push(const TopRoute());
                 },
               ));
     }

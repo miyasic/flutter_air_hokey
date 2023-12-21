@@ -6,18 +6,22 @@ class ExitRoomDialog extends StatelessWidget {
   final void Function() onTapYes;
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('ゲーム終了'),
-      content: const Text('対戦相手が退出しました。ルームを退出します。'),
-      actions: [
-        TextButton(
-          onPressed: () async {
-            await AutoRouter.of(context).pop();
-            onTapYes();
-          },
-          child: const Text('はい'),
-        ),
-      ],
+    return PopScope(
+      onPopInvoked: (didPop) {
+        onTapYes();
+      },
+      child: AlertDialog(
+        title: const Text('ゲーム終了'),
+        content: const Text('対戦相手が退出しました。ルームを退出します。'),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await AutoRouter.of(context).pop();
+            },
+            child: const Text('はい'),
+          ),
+        ],
+      ),
     );
   }
 }
