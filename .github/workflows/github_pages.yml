@@ -31,7 +31,7 @@ jobs:
         working-directory: packages/client
       - run: flutter pub get
         working-directory: packages/client
-      - run: flutter build web --web-renderer html --base-href /${{ steps.repo.outputs.repository }}/
+      - run: flutter build web --web-renderer canvaskit --base-href /${{ steps.repo.outputs.repository }}/
         working-directory: packages/client
 
       - name: Deploy
