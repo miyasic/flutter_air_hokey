@@ -27,10 +27,12 @@ import '../components/ball.dart';
 import '../constants/constants.dart';
 
 class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
-  AirHokey({required this.isDebug, required this.id}) {
+  AirHokey(
+      {required this.isDebug, required this.showDialog, required this.id}) {
     webSocketRepository = WebSocketRepository(isDebug: isDebug, id: id);
   }
 
+  final void Function() showDialog;
   final bool isDebug;
   final String id;
   late final WebSocketRepository webSocketRepository;
@@ -168,6 +170,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         _onGoal(gameState);
         return;
       }
+      if (gameState.isDisconnect) {
+        _onDisconnect();
+        return;
+      }
       final localGameState = this.gameState;
       opponentPaddle.updatePosition(gameState, user!);
       // ここでpositionを更新する
@@ -279,5 +285,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     this.gameState = gameState;
     final myWorld = super.world as MyWorld;
     myWorld.add(startButton!);
+  }
+
+  void _onDisconnect() {
+    showDialog();
+    webSocketRepository.close();
   }
 }

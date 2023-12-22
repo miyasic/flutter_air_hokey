@@ -15,6 +15,7 @@ class GameState with _$GameState {
     @Default(false) bool isFixed,
     @Default(false) bool isReset,
     @Default(false) bool isGoal,
+    @Default(false) bool isDisconnect,
   }) = _GameState;
   const GameState._();
 

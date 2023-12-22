@@ -70,7 +70,14 @@ Future<Response> onRequest(
             }
           }
         },
-        onDone: () => cubit.unsubscribe(channel),
+        onDone: () {
+          cubit.onDisconnected(uuid);
+          cubit.unsubscribe(channel);
+          // プレイヤーが1人もいなくなった場合はRoomを削除する。
+          if (cubit.state.ids.isEmpty) {
+            cubitMap.remove(id);
+          }
+        },
       );
     },
   );
