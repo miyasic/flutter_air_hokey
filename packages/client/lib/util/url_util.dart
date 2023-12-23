@@ -11,4 +11,10 @@ class UrlUtil {
   Uri get matchUrl => isDebug
       ? Uri.parse("$kHttpScheme$kLocalDomain$kMatchPath")
       : Uri.parse("$kHttpsScheme$kRemoteDomain$kMatchPath");
+
+  Uri getPageUrl(String path) {
+    return isDebug
+        ? Uri.parse("$kHttpsScheme$kRemotePageDomain$path")
+        : Uri.parse("$kHttpsScheme$kRemotePageDomain$path");
+  }
 }
