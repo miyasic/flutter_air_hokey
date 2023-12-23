@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
   flame: ^1.9.1
   web_socket_channel: ^2.4.0
   freezed_annotation: ^2.4.1
