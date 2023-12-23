@@ -59,4 +59,4 @@ const kHttpsScheme = 'https://';
 const kWebSocketScheme = 'ws://';
 const kWebSocketSecureScheme = 'wss://';
 
-const kRemotePageDomain = 'miyaji555.github.io/flutter_air_hokey';
+const kRemotePageDomain = 'miyaji555.github.io/flutter_air_hokey/#';
