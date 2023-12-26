@@ -31,6 +31,6 @@ class CountdownText extends TextComponent {
     final myId = user.id;
     final opponentId = user.getOpponentUserId(gameState);
     text =
-        "${gameState.clientStateMap[myId]?.point} : ${gameState.clientStateMap[opponentId]?.point}";
+        "${gameState.clientStateMap[myId]?.point ?? 0} : ${gameState.clientStateMap[opponentId]?.point ?? 0}";
   }
 }
