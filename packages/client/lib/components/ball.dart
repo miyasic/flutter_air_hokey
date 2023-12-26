@@ -58,7 +58,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     if (ballState == null) return; // 基本的にnullで入ってくることはない
     if (user == null) return; // 基本的にnullで入ってくることはない
     switch (user.userRole) {
-      case UserRole.roomCreator:
+      case UserRole.roomCreator || UserRole.spectator:
         x = ballState.relativeX + gameSize.x / 2;
         y = ballState.relativeY + gameSize.y / 2;
         positionForRequest = position.clone();
@@ -74,8 +74,6 @@ class Ball extends CircleComponent with CollisionCallbacks {
         velocity.y = ballState.vy;
         velocity *= -1;
         velocityForRequest = velocity.clone();
-      case UserRole.spectator:
-      // todo: 観戦者用の処理を実装
     }
   }
 
