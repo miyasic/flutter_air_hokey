@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:air_hokey_client/components/paddle/paddle.dart';
 import 'package:air_hokey_client/constants/constants.dart';
 import 'package:air_hokey_client/state/user.dart';
+import 'package:model/handshake/handshake.dart';
 
 class OpponentPaddle extends Paddle {
   OpponentPaddle(
@@ -27,9 +28,10 @@ class OpponentPaddle extends Paddle {
       return;
     }
     // 対戦相手のIDを取得するため、positionMapからユーザー自身のIDを除外
-    final opponentId = gameState.clientStateMap.keys.firstWhere(
-      (id) => id != user.id,
-    );
+    final opponentId = user.userRole == UserRole.spectator
+        ? gameState.challengerId
+        : gameState.getOpponentUserId(user.id);
+
     final x = gameState.clientStateMap[opponentId]?.paddlePosition.toDouble();
     if (x == null) {
       return;

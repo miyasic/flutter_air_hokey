@@ -45,6 +45,13 @@ extension GameStateX on GameState {
     return ids[1];
   }
 
+  String getOpponentUserId(String userId) {
+    if (ids.length < 2) throw Exception("No opponent");
+    if (userId == ids[0]) return ids[1];
+    if (userId == ids[1]) return ids[0];
+    throw Exception("You are spectator.");
+  }
+
   // 既にもう片方がボールStateをリクエスト済みかどうか
   bool get isRequestedBallStateFromOtherClient {
     if (ids.length < 2) return false;
