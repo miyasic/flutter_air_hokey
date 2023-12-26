@@ -113,7 +113,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       gameState?.debugViewText,
       ball?.getDebugViewText(size)
     ]);
-    if (gameState?.ids.length == 2) {
+    if (gameState?.ids.length == 2 && user!.userRole != UserRole.spectator) {
       startButton?.setEnable();
     }
     if (shouldCalc) {
@@ -217,6 +217,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _calcPositionAndSendState(GameState gameState) {
+    if (user!.userRole == UserRole.spectator) {
+      // 観戦者の場合計算もしないし、送信もしない
+      return;
+    }
     // ボールの位置を計算
     ball?.calcPositionForRequest(user, size);
     // 新しいボールの位置を送信する
