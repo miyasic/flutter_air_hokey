@@ -37,3 +37,9 @@ enum UserRole {
   /// 観戦者
   spectator
 }
+
+extension UserRoleExtension on UserRole {
+  bool get isRoomCreator => this == UserRole.roomCreator;
+  bool get isChallenger => this == UserRole.challenger;
+  bool get isSpectator => this == UserRole.spectator;
+}

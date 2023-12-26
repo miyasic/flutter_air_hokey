@@ -217,7 +217,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _calcPositionAndSendState(GameState gameState) {
-    if (user!.userRole == UserRole.spectator) {
+    if (user!.userRole.isSpectator) {
       // 観戦者の場合計算もしないし、送信もしない
       return;
     }
@@ -237,6 +237,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _draggingPaddle(DragUpdateEvent event) {
+    if (user!.userRole.isSpectator) {
+      return;
+    }
     final children = (super.world as MyWorld).children;
     final paddle = children.whereType<DraggablePaddle>().first;
 

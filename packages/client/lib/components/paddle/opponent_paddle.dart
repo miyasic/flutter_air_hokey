@@ -28,7 +28,7 @@ class OpponentPaddle extends Paddle {
       return;
     }
     // 対戦相手のIDを取得するため、positionMapからユーザー自身のIDを除外
-    final opponentId = user.userRole == UserRole.spectator
+    final opponentId = user.userRole.isSpectator
         ? gameState.challengerId
         : gameState.getOpponentUserId(user.id);
 
