@@ -11,13 +11,11 @@ import 'package:model/reset/reset.dart';
 import 'package:model/start/start.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:air_hokey_client/components/button/start_button.dart';
 import 'package:air_hokey_client/components/countdown_text.dart';
 import 'package:air_hokey_client/components/debug_text.dart';
-import 'package:air_hokey_client/components/field.dart';
 import 'package:air_hokey_client/components/paddle/draggable_paddle.dart';
 import 'package:air_hokey_client/components/paddle/opponent_paddle.dart';
 import 'package:air_hokey_client/repository/web_socket_repository.dart';
@@ -113,7 +111,7 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       gameState?.debugViewText,
       ball?.getDebugViewText(size)
     ]);
-    if (gameState?.ids.length == 2) {
+    if (gameState?.ids.length == 2 && user!.userRole != UserRole.spectator) {
       startButton?.setEnable();
     }
     if (shouldCalc) {
@@ -155,6 +153,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         case 'handshake':
           final handShake = Handshake.fromJson(json['responseDetail']);
           user = User(id: handShake.id, userRole: handShake.userRole);
+          _draggablePaddle!.updateColor(user!.userRole);
+          opponentPaddle.updateColor(user!.userRole);
           return handShake.gameState;
         default:
           throw Exception('Unknown response type');
@@ -176,6 +176,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       }
       final localGameState = this.gameState;
       opponentPaddle.updatePosition(gameState, user!);
+      _draggablePaddle!.updatePosition(gameState, user!);
+
       // ここでpositionを更新する
       this.gameState = gameState;
       // 2人揃っていない場合は早期リターン
@@ -217,6 +219,10 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _calcPositionAndSendState(GameState gameState) {
+    if (user!.userRole.isSpectator) {
+      // 観戦者の場合計算もしないし、送信もしない
+      return;
+    }
     // ボールの位置を計算
     ball?.calcPositionForRequest(user, size);
     // 新しいボールの位置を送信する
@@ -233,6 +239,9 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void _draggingPaddle(DragUpdateEvent event) {
+    if (user!.userRole.isSpectator) {
+      return;
+    }
     final children = (super.world as MyWorld).children;
     final paddle = children.whereType<DraggablePaddle>().first;
 
@@ -271,7 +280,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     webSocketRepository.close();
     ball?.removeFromParent();
     ball = Ball(size);
-    startButton?.setEnable();
     _draggablePaddle = DraggablePaddle(
         paddleSize: paddleSize, fieldSize: fieldSize, gameSize: size);
     _draggablePaddle!.addDraggingPaddle(_draggingPaddle);

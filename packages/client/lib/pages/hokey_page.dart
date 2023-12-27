@@ -22,7 +22,7 @@ class HokeyPage extends ConsumerWidget {
           context: context,
           builder: (context) => ExitRoomDialog(
                 onTapYes: () {
-                  AutoRouter.of(context).replaceAll([TopRoute()]);
+                  AutoRouter.of(context).replaceAll([const TopRoute()]);
                 },
               ));
     }
@@ -45,7 +45,7 @@ class HokeyPage extends ConsumerWidget {
 final qrVisibleProvider = StateProvider<bool>((ref) => false);
 
 class _FloatingQRButton extends HookConsumerWidget {
-  const _FloatingQRButton({required this.id, required this.isDebug, super.key});
+  const _FloatingQRButton({required this.id, required this.isDebug});
   final String id;
   final bool isDebug;
   @override
@@ -68,7 +68,7 @@ class _FloatingQRButton extends HookConsumerWidget {
 }
 
 class _QRContainer extends ConsumerWidget {
-  const _QRContainer({required this.id, required this.isDebug, super.key});
+  const _QRContainer({required this.id, required this.isDebug});
   final String id;
   final bool isDebug;
 
