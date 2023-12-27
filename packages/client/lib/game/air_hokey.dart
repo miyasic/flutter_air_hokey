@@ -280,7 +280,6 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
     webSocketRepository.close();
     ball?.removeFromParent();
     ball = Ball(size);
-    startButton?.setEnable();
     _draggablePaddle = DraggablePaddle(
         paddleSize: paddleSize, fieldSize: fieldSize, gameSize: size);
     _draggablePaddle!.addDraggingPaddle(_draggingPaddle);
