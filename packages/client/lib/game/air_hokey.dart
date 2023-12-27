@@ -176,6 +176,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
       }
       final localGameState = this.gameState;
       opponentPaddle.updatePosition(gameState, user!);
+      _draggablePaddle!.updatePosition(gameState, user!);
+
       // ここでpositionを更新する
       this.gameState = gameState;
       // 2人揃っていない場合は早期リターン

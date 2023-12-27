@@ -1,7 +1,10 @@
+import 'package:air_hokey_client/state/user.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:air_hokey_client/components/paddle/paddle.dart';
 import 'package:air_hokey_client/constants/constants.dart';
+import 'package:model/game_state/game_state.dart';
+import 'package:model/handshake/handshake.dart';
 
 class DraggablePaddle extends Paddle with DragCallbacks {
   DraggablePaddle(
@@ -27,5 +30,25 @@ class DraggablePaddle extends Paddle with DragCallbacks {
 
   addDraggingPaddle(void Function(DragUpdateEvent event) draggingPaddle) {
     this.draggingPaddle = draggingPaddle;
+  }
+
+  // 観戦者の場合のみ利用する。
+  void updatePosition(GameState gameState, User user) {
+    if (gameState.clientStateMap.keys.length < 2) {
+      return;
+    }
+    // 観戦者の場合のみ利用するのでそれ以外の場合はreturn
+    if (!user.userRole.isSpectator) {
+      return;
+    }
+
+    final roomCreatorId = gameState.roomCreatorId;
+    final x =
+        gameState.clientStateMap[roomCreatorId]?.paddlePosition.toDouble();
+    if (x == null) {
+      return;
+    }
+    final relativeX = -x + gameSize.x / 2 - paddleSize.x / 2;
+    position = Vector2(relativeX, position.y);
   }
 }
