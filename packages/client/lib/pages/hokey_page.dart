@@ -22,7 +22,7 @@ class HokeyPage extends ConsumerWidget {
           context: context,
           builder: (context) => ExitRoomDialog(
                 onTapYes: () {
-                  AutoRouter.of(context).replaceAll([TopRoute()]);
+                  AutoRouter.of(context).replaceAll([const TopRoute()]);
                 },
               ));
     }
