@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:model/handshake/handshake.dart';
 
 import '../../constants/constants.dart';
 
@@ -30,5 +31,10 @@ class Paddle extends RectangleComponent with CollisionCallbacks {
     add(paddleHitbox);
 
     return super.onLoad();
+  }
+
+  void updateColor(UserRole role) {
+    final color = role.isSpectator ? kDisablePaddleColor : kPaddleColor;
+    paint.color = color;
   }
 }

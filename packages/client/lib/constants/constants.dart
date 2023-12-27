@@ -13,6 +13,7 @@ const double kPaddleHeight = 20;
 //Start position from bottom.
 const double kPaddleStartY = 50;
 const Color kPaddleColor = Colors.blue;
+const Color kDisablePaddleColor = Colors.grey;
 
 //Ball Settings
 const double kBallRadius = 10;

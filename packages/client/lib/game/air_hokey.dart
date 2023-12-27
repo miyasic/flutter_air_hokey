@@ -153,6 +153,8 @@ class AirHokey extends FlameGame with HasCollisionDetection, KeyboardEvents {
         case 'handshake':
           final handShake = Handshake.fromJson(json['responseDetail']);
           user = User(id: handShake.id, userRole: handShake.userRole);
+          _draggablePaddle!.updateColor(user!.userRole);
+          opponentPaddle.updateColor(user!.userRole);
           return handShake.gameState;
         default:
           throw Exception('Unknown response type');
