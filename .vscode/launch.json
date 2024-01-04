@@ -8,6 +8,13 @@
       "type": "dart"
     },
     {
+      "name": "client-release",
+      "program": "packages/client/lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+    },
+    {
       "name": "client-debug",
       "program": "packages/client/lib/main.dart",
       "request": "launch",
