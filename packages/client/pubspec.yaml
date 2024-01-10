@@ -24,6 +24,7 @@ dependencies:
   gap: ^3.0.1
   qr_flutter: ^4.1.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,6 +33,15 @@ dev_dependencies:
   json_serializable: ^6.7.1
   flutter_lints: ^2.0.0
   auto_route_generator: ^7.3.2
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
+
+
+flutter_launcher_icons:
+   android: true
+   ios: true
+   image_path: 'assets/images/icon.png'
+   adaptive_icon_background: '#ffffff'
+   adaptive_icon_foreground: 'assets/images/icon_adaptive_foreground.png'
